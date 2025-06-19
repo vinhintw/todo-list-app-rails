@@ -1,10 +1,9 @@
 default: &default
   adapter: postgresql
-  database: todo_list
-  username: myapp
-  password: password1
-  host: localhost
-  port: 5432
+  host: <%= ENV.fetch("POSTGRES_HOST", "localhost") %>
+  port: <%= ENV.fetch("POSTGRES_PORT", 5432) %>
+  username: <%= ENV.fetch("POSTGRES_USER", "myapp") %>
+  password: <%= ENV.fetch("POSTGRES_PASSWORD", "password1") %>
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
 development:
@@ -16,7 +15,7 @@ development:
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: todo_list_test
+  database: <%= ENV.fetch("POSTGRES_DB", "todo_list_test") %>
 
 
 # Store production database in the storage/ directory, which by default
