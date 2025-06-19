@@ -4,6 +4,7 @@ class TasksTest < ApplicationSystemTestCase
   setup do
     @task = tasks(:one)
     @user = users(:one)
+    login_as(@user)
   end
 
   test "visiting the index" do
@@ -15,13 +16,12 @@ class TasksTest < ApplicationSystemTestCase
     visit tasks_url
     click_on "New task"
 
-    fill_in "Content", with: @task.content
-    fill_in "End time", with: @task.end_time
-    fill_in "Priority", with: @task.priority
-    fill_in "Start time", with: @task.start_time
-    fill_in "Status", with: @task.status
-    fill_in "Title", with: @task.title
-    fill_in "User", with: @task.user_id
+    fill_in "Title", with: "New Test Task"
+    fill_in "Content", with: "Test content"
+    fill_in "Start time", with: "2025-06-20T09:00"
+    fill_in "End time", with: "2025-06-20T17:00"
+    select "Medium", from: "Priority"
+    select "Pending", from: "Status"
     click_on "Create Task"
 
     assert_text "Task was successfully created"
@@ -32,13 +32,12 @@ class TasksTest < ApplicationSystemTestCase
     visit task_url(@task)
     click_on "Edit this task", match: :first
 
-    fill_in "Content", with: @task.content
-    fill_in "End time", with: @task.end_time.to_s
-    fill_in "Priority", with: @task.priority
-    fill_in "Start time", with: @task.start_time.to_s
-    fill_in "Status", with: @task.status
-    fill_in "Title", with: @task.title
-    fill_in "User", with: @task.user_id
+    fill_in "Title", with: "Updated Task Title"
+    fill_in "Content", with: "Updated content"
+    fill_in "Start time", with: "2025-06-21T10:00"
+    fill_in "End time", with: "2025-06-21T18:00"
+    select "High", from: "Priority"
+    select "In Progress", from: "Status"
     click_on "Update Task"
 
     assert_text "Task was successfully updated"

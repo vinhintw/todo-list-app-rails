@@ -8,5 +8,7 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
     fill_in "email_address", with: user.email_address
     fill_in "password", with: "password"
     click_on "Sign in"
+    # Wait for redirect to happen - should redirect to tasks after login
+    assert_current_path tasks_path
   end
 end

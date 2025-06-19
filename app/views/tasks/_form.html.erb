@@ -2,7 +2,6 @@
   <% if task.errors.any? %>
     <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mt-3">
       <h2><%= pluralize(task.errors.count, "error") %> prohibited this task from being saved:</h2>
-
       <ul class="list-disc ml-6">
         <% task.errors.each do |error| %>
           <li><%= error.full_message %></li>
@@ -10,42 +9,30 @@
       </ul>
     </div>
   <% end %>
-
   <div class="my-5">
     <%= form.label :title %>
     <%= form.text_field :title, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": task.errors[:title].none?, "border-red-400 focus:outline-red-600": task.errors[:title].any?}] %>
   </div>
-
   <div class="my-5">
     <%= form.label :content %>
     <%= form.textarea :content, rows: 4, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": task.errors[:content].none?, "border-red-400 focus:outline-red-600": task.errors[:content].any?}] %>
   </div>
-
   <div class="my-5">
     <%= form.label :start_time %>
     <%= form.datetime_field :start_time, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": task.errors[:start_time].none?, "border-red-400 focus:outline-red-600": task.errors[:start_time].any?}] %>
   </div>
-
   <div class="my-5">
     <%= form.label :end_time %>
     <%= form.datetime_field :end_time, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": task.errors[:end_time].none?, "border-red-400 focus:outline-red-600": task.errors[:end_time].any?}] %>
   </div>
-
   <div class="my-5">
     <%= form.label :priority %>
-    <%= form.number_field :priority, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": task.errors[:priority].none?, "border-red-400 focus:outline-red-600": task.errors[:priority].any?}] %>
+    <%= form.select :priority, options_for_select([['Low', 'low'], ['Medium', 'medium'], ['High', 'high'], ['Urgent', 'urgent']], task.priority), {}, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": task.errors[:priority].none?, "border-red-400 focus:outline-red-600": task.errors[:priority].any?}] %>
   </div>
-
   <div class="my-5">
     <%= form.label :status %>
-    <%= form.number_field :status, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": task.errors[:status].none?, "border-red-400 focus:outline-red-600": task.errors[:status].any?}] %>
+    <%= form.select :status, options_for_select([['Pending', 'pending'], ['In Progress', 'in_progress'], ['Completed', 'completed'], ['Cancelled', 'cancelled']], task.status), {}, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": task.errors[:status].none?, "border-red-400 focus:outline-red-600": task.errors[:status].any?}] %>
   </div>
-
-  <div class="my-5">
-    <%= form.label :user_id %>
-    <%= form.text_field :user_id, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": task.errors[:user_id].none?, "border-red-400 focus:outline-red-600": task.errors[:user_id].any?}] %>
-  </div>
-
   <div class="inline">
     <%= form.submit class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white inline-block font-medium cursor-pointer" %>
   </div>

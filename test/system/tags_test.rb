@@ -4,6 +4,7 @@ class TagsTest < ApplicationSystemTestCase
   setup do
     @tag = tags(:one)
     @user = users(:one)
+    login_as(@user)
   end
 
   test "visiting the index" do
@@ -15,7 +16,7 @@ class TagsTest < ApplicationSystemTestCase
     visit tags_url
     click_on "New tag"
 
-    fill_in "Name", with: @tag.name
+    fill_in "Name", with: "new_test_tag"
     click_on "Create Tag"
 
     assert_text "Tag was successfully created"
