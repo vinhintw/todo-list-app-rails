@@ -35,6 +35,36 @@ class UserTest < ActiveSupport::TestCase
     assert_equal "test@example.com", @user.email_address
   end
 
+  test "email should be present" do
+    @user.email_address = ""
+    assert_not @user.valid?
+  end
+
+  test "email should be unique" do
+    @user.save
+    duplicate_user = User.new(
+      email_address: @user.email_address,
+      username: "different_username",
+      password: "password123"
+    )
+    assert_not duplicate_user.valid?
+  end
+
+  test "email should be valid format" do
+    valid_emails = %w[test@example.com user@foo.COM A_US-ER@f.b.org first.last@foo.jp alice+bob@baz.cn]
+    invalid_emails = %w[plainaddress @missingdomain.com user@.com user@domain. .user@domain.com user@domain..com]
+
+    valid_emails.each do |email|
+      @user.email_address = email
+      assert @user.valid?, "#{email} should be valid"
+    end
+
+    invalid_emails.each do |email|
+      @user.email_address = email
+      assert_not @user.valid?, "#{email} should not be valid"
+    end
+  end
+
   test "default role should be normal" do
     @user.save
     assert @user.normal?

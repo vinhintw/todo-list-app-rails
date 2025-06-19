@@ -3,6 +3,7 @@ require "application_system_test_case"
 class TasksTest < ApplicationSystemTestCase
   setup do
     @task = tasks(:one)
+    @user = users(:one)
   end
 
   test "visiting the index" do

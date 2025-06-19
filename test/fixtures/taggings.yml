@@ -1,0 +1,16 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  task: one
+  tag: one
+  assigned_at: 2025-06-19 21:34:18
+
+two:
+  task: one
+  tag: two
+  assigned_at: 2025-06-19 21:34:18
+
+three:
+  task: two
+  tag: personal
+  assigned_at: 2025-06-19 21:34:18
