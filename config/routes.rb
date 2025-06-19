@@ -2,7 +2,8 @@ Rails.application.routes.draw do
   resources :tags
   resources :tasks
   get "home" => "home#index"
-  resource :session
+  resource :session, only: [ :new, :create, :destroy ]
+  resource :registration, only: [ :new, :create ]
   resources :passwords, param: :token
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
