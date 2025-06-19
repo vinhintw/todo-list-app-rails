@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_19_085434) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_19_133418) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -21,6 +21,24 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_19_085434) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_sessions_on_user_id"
+  end
+
+  create_table "taggings", force: :cascade do |t|
+    t.bigint "task_id", null: false
+    t.bigint "tag_id", null: false
+    t.datetime "assigned_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tag_id"], name: "index_taggings_on_tag_id"
+    t.index ["task_id", "tag_id"], name: "index_taggings_on_task_id_and_tag_id", unique: true
+    t.index ["task_id"], name: "index_taggings_on_task_id"
+  end
+
+  create_table "tags", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_tags_on_name", unique: true
   end
 
   create_table "tasks", force: :cascade do |t|
@@ -47,5 +65,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_19_085434) do
   end
 
   add_foreign_key "sessions", "users"
+  add_foreign_key "taggings", "tags"
+  add_foreign_key "taggings", "tasks"
   add_foreign_key "tasks", "users"
 end
