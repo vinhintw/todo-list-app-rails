@@ -3,8 +3,62 @@ class TasksController < ApplicationController
 
   # GET /tasks or /tasks.json
   def index
-    @tasks = Task.all
+    @tasks = filter_tasks(Current.user.tasks.includes(:tags))
   end
+
+  def all
+    @tasks = filter_tasks(Current.user.tasks.includes(:tags))
+    render :index
+  end
+
+  # GET /tasks/pending
+  def pending
+    @tasks = filter_tasks(Current.user.tasks.pending.includes(:tags))
+    render :index
+  end
+
+  # GET /tasks/in_progress
+  def in_progress
+    @tasks = filter_tasks(Current.user.tasks.in_progress.includes(:tags))
+    render :index
+  end
+
+  # GET /tasks/completed
+  def completed
+    @tasks = filter_tasks(Current.user.tasks.completed.includes(:tags))
+    render :index
+  end
+
+  # GET /tasks/cancelled
+  def cancelled
+    @tasks = filter_tasks(Current.user.tasks.cancelled.includes(:tags))
+    render :index
+  end
+
+  # GET /tasks/low_priority
+  def low_priority
+    @tasks = filter_tasks(Current.user.tasks.low.includes(:tags))
+    render :index
+  end
+
+  # GET /tasks/medium_priority
+  def medium_priority
+    @tasks = filter_tasks(Current.user.tasks.medium.includes(:tags))
+    render :index
+  end
+
+  # GET /tasks/high_priority
+  def high_priority
+    @tasks = filter_tasks(Current.user.tasks.high.includes(:tags))
+    render :index
+  end
+
+  # GET /tasks/urgent_priority
+  def urgent_priority
+    @tasks = filter_tasks(Current.user.tasks.urgent.includes(:tags))
+    render :index
+  end
+
 
   # GET /tasks/1 or /tasks/1.json
   def show
@@ -66,5 +120,31 @@ class TasksController < ApplicationController
     # Only allow a list of trusted parameters through.
     def task_params
       params.expect(task: [ :title, :content, :start_time, :end_time, :priority, :status, :user_id ])
+    end
+
+    # Filter tasks based on search and tag parameters
+    def filter_tasks(tasks)
+      tasks = tasks.where("title ILIKE ? OR content ILIKE ?", "%#{params[:search]}%", "%#{params[:search]}%") if params[:search].present?
+      tasks = tasks.joins(:tags).where(tags: { name: params[:tag] }) if params[:tag].present?
+
+      # Apply sorting based on sort parameter
+      case params[:sort]
+      when "priority_asc"
+        tasks.order(:priority)
+      when "priority_desc"
+        tasks.order(priority: :desc)
+      when "start_time_asc"
+        tasks.order(:start_time)
+      when "start_time_desc"
+        tasks.order(start_time: :desc)
+      when "end_time_asc"
+        tasks.order(:end_time)
+      when "end_time_desc"
+        tasks.order(end_time: :desc)
+      when "created_asc"
+        tasks.order(:created_at)
+      else
+        tasks.order(created_at: :desc)
+      end
     end
 end
