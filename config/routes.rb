@@ -1,6 +1,18 @@
 Rails.application.routes.draw do
   get "home/index"
-  resources :tasks
+  resources :tasks do
+    collection do
+      get :all
+      get :pending
+      get :in_progress
+      get :completed
+      get :cancelled
+      get :low_priority
+      get :medium_priority
+      get :high_priority
+      get :urgent_priority
+    end
+  end
   resource :session, only: [ :new, :create, :destroy ]
   resource :registration, only: [ :new, :create ]
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
