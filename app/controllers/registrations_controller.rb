@@ -8,6 +8,7 @@ class RegistrationsController < ApplicationController
 
   def create
     @user = User.new(registration_params)
+    @user.role = Role.find_by(name: "user") # Assign default user role
 
     if @user.save
       start_new_session_for @user

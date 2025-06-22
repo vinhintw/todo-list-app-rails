@@ -20,6 +20,12 @@ Rails.application.routes.draw do
   get "admin", to: "admin#index"
   get "admin/users/:id", to: "admin#user_details", as: "admin_user_details"
   delete "admin/users/:id", to: "admin#destroy_user", as: "admin_destroy_user"
+  patch "admin/users/:id/role", to: "admin#update_user_role", as: "admin_update_user_role"
+
+  # Role management routes
+  get "admin/roles", to: "admin#roles", as: "admin_roles"
+  post "admin/roles", to: "admin#create_role", as: "admin_create_role"
+  delete "admin/roles/:id", to: "admin#destroy_role", as: "admin_destroy_role"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
