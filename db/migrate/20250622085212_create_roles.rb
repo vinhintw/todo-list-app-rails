@@ -17,10 +17,6 @@ class CreateRoles < ActiveRecord::Migration[8.0]
     Role.find_or_create_by(name: 'user') do |role|
       role.description = 'Standard user with basic access to personal tasks'
     end
-
-    Role.find_or_create_by(name: 'moderator') do |role|
-      role.description = 'Enhanced user with limited administrative privileges'
-    end
   end
 
   def down
