@@ -152,7 +152,7 @@ class TasksController < ApplicationController
       tasks = tasks.joins(:tags).where(tags: { name: params[:tag] }) if params[:tag].present?
 
       # Apply sorting based on sort parameter
-      case params[:sort]
+      sorted_tasks = case params[:sort]
       when "priority_asc"
         tasks.order(:priority)
       when "priority_desc"
@@ -170,5 +170,8 @@ class TasksController < ApplicationController
       else
         tasks.order(created_at: :desc)
       end
+
+      # Add pagination
+      sorted_tasks.page(params[:page]).per(10)
     end
 end
