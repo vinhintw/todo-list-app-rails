@@ -1,6 +1,6 @@
 <% content_for :title, "Admin Dashboard - User Management" %>
-<div class="min-h-screen bg-gray-50 py-8">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="min-h-screen bg-gray-50 py-4 md:py-0">
+  <div class="max-w-7xl mx-auto md:px-4">
     <!-- Header -->
     <div class="mb-8">
       <h1 class="text-3xl font-bold text-gray-900">User Management</h1>
@@ -36,7 +36,7 @@
     <!-- Admin Users Table -->
     <div class="bg-white shadow rounded-lg mb-8">
       <div class="px-6 py-4 border-b border-gray-200">
-        <h2 class="text-lg font-medium text-gray-900">Administrators (<%= @admin_users.count %>)</h2>
+        <h2 class="text-lg font-medium text-gray-900">Administrators (<%= @admin_users.total_count %>)</h2>
       </div>
       <div class="overflow-x-auto">
         <table class="min-w-full divide-y divide-gray-200">
@@ -132,11 +132,35 @@
           <p class="mt-1 text-sm text-gray-500">There are no users with admin privileges.</p>
         </div>
       <% end %>
+      <!-- Admin Users Pagination -->
+      <% if @admin_users.total_pages > 1 %>
+        <div class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
+          <div class="flex-1 flex justify-between sm:hidden">
+            <%= paginate @admin_users, param_name: :admin_page, theme: 'tailwind' %>
+          </div>
+          <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+            <div>
+              <p class="text-sm text-gray-700">
+                Showing
+                <span class="font-medium"><%= @admin_users.offset_value + 1 %></span>
+                to
+                <span class="font-medium"><%= [@admin_users.offset_value + @admin_users.limit_value, @admin_users.total_count].min %></span>
+                of
+                <span class="font-medium"><%= @admin_users.total_count %></span>
+                administrators
+              </p>
+            </div>
+            <div>
+              <%= paginate @admin_users, param_name: :admin_page, theme: 'tailwind' %>
+            </div>
+          </div>
+        </div>
+      <% end %>
     </div>
     <!-- Normal Users Table -->
     <div class="bg-white shadow rounded-lg mb-8">
       <div class="px-6 py-4 border-b border-gray-200">
-        <h2 class="text-lg font-medium text-gray-900">Regular Users (<%= @normal_users.count %>)</h2>
+        <h2 class="text-lg font-medium text-gray-900">Regular Users (<%= @normal_users.total_count %>)</h2>
       </div>
       <div class="overflow-x-auto">
         <table class="min-w-full divide-y divide-gray-200">
@@ -224,6 +248,32 @@
           <p class="mt-1 text-sm text-gray-500">There are no regular users in the system.</p>
         </div>
       <% end %>
+      <!-- Normal Users Pagination -->
+      <div class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
+        <div class="flex-1 flex justify-between sm:hidden">
+          <% if @normal_users.total_pages > 1 %>
+            <%= paginate @normal_users, param_name: :normal_page, theme: 'tailwind' %>
+          <% end %>
+        </div>
+        <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+          <div>
+            <p class="text-sm text-gray-700">
+              Showing
+              <span class="font-medium"><%= @normal_users.offset_value + 1 %></span>
+              to
+              <span class="font-medium"><%= [@normal_users.offset_value + @normal_users.limit_value, @normal_users.total_count].min %></span>
+              of
+              <span class="font-medium"><%= @normal_users.total_count %></span>
+              regular users
+            </p>
+          </div>
+          <div>
+            <% if @normal_users.total_pages > 1 %>
+              <%= paginate @normal_users, param_name: :normal_page, theme: 'tailwind' %>
+            <% end %>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

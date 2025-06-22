@@ -31,6 +31,66 @@ users_data = [
     username: "user2",
     password: "password123",
     role: :normal
+  },
+  {
+    email_address: "user3@example.com",
+    username: "user3",
+    password: "password123",
+    role: :normal
+  },
+  {
+    email_address: "user4@example.com",
+    username: "user4",
+    password: "password123",
+    role: :normal
+  },
+  {
+    email_address: "user5@example.com",
+    username: "user5",
+    password: "password123",
+    role: :normal
+  },
+  {
+    email_address: "user6@example.com",
+    username: "user6",
+    password: "password123",
+    role: :normal
+  },
+  {
+    email_address: "user7@example.com",
+    username: "user7",
+    password: "password123",
+    role: :normal
+  },
+  {
+    email_address: "user8@example.com",
+    username: "user8",
+    password: "password123",
+    role: :normal
+  },
+  {
+    email_address: "user9@example.com",
+    username: "user9",
+    password: "password123",
+    role: :normal
+  },
+  {
+    email_address: "user10@example.com",
+    username: "user10",
+    password: "password123",
+    role: :normal
+  },
+  {
+    email_address: "user11@example.com",
+    username: "user11",
+    password: "password123",
+    role: :normal
+  },
+  {
+    email_address: "user12@example.com",
+    username: "user12",
+    password: "password123",
+    role: :normal
   }
 ]
 

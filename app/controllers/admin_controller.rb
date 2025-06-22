@@ -3,10 +3,10 @@ class AdminController < ApplicationController
 
   def index
     # Admin users with task statistics
-    @admin_users = User.admin.includes(:tasks)
+    @admin_users = User.admin.includes(:tasks).page(params[:admin_page]).per(10)
 
     # Normal users with task statistics
-    @normal_users = User.normal.includes(:tasks)
+    @normal_users = User.normal.includes(:tasks).page(params[:normal_page]).per(10)
 
     # General statistics
     @total_users = User.count
