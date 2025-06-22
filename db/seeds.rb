@@ -5,15 +5,27 @@ Task.delete_all
 Tag.delete_all
 Session.delete_all
 User.delete_all
+Role.delete_all
 
 puts "Creating seed data..."
+
+# Create roles first
+admin_role = Role.find_or_create_by!(name: "admin") do |role|
+  role.description = "Administrator with full system access"
+end
+
+user_role = Role.find_or_create_by!(name: "user") do |role|
+  role.description = "Regular user with limited access"
+end
+
+puts "Created roles: #{Role.count}"
 
 # Create admin user
 admin = User.find_or_create_by!(email_address: "admin@example.com") do |user|
   user.username = "admin"
   user.password = "password123"
   user.password_confirmation = "password123"
-  user.role = :admin
+  user.role = admin_role
 end
 
 puts "Created admin user: #{admin.username} (#{admin.email_address})"
@@ -23,74 +35,62 @@ users_data = [
   {
     email_address: "user1@example.com",
     username: "user1",
-    password: "password123",
-    role: :normal
+    password: "password123"
   },
   {
     email_address: "user2@example.com",
     username: "user2",
-    password: "password123",
-    role: :normal
+    password: "password123"
   },
   {
     email_address: "user3@example.com",
     username: "user3",
-    password: "password123",
-    role: :normal
+    password: "password123"
   },
   {
     email_address: "user4@example.com",
     username: "user4",
-    password: "password123",
-    role: :normal
+    password: "password123"
   },
   {
     email_address: "user5@example.com",
     username: "user5",
-    password: "password123",
-    role: :normal
+    password: "password123"
   },
   {
     email_address: "user6@example.com",
     username: "user6",
-    password: "password123",
-    role: :normal
+    password: "password123"
   },
   {
     email_address: "user7@example.com",
     username: "user7",
-    password: "password123",
-    role: :normal
+    password: "password123"
   },
   {
     email_address: "user8@example.com",
     username: "user8",
-    password: "password123",
-    role: :normal
+    password: "password123"
   },
   {
     email_address: "user9@example.com",
     username: "user9",
-    password: "password123",
-    role: :normal
+    password: "password123"
   },
   {
     email_address: "user10@example.com",
     username: "user10",
-    password: "password123",
-    role: :normal
+    password: "password123"
   },
   {
     email_address: "user11@example.com",
     username: "user11",
-    password: "password123",
-    role: :normal
+    password: "password123"
   },
   {
     email_address: "user12@example.com",
     username: "user12",
-    password: "password123",
-    role: :normal
+    password: "password123"
   }
 ]
 
@@ -99,10 +99,10 @@ users_data.each do |user_attrs|
     u.username = user_attrs[:username]
     u.password = user_attrs[:password]
     u.password_confirmation = user_attrs[:password]
-    u.role = user_attrs[:role]
+    u.role = user_role
   end
 
-  puts "Created user: #{user.username} (#{user.email_address}) - Role: #{user.role}"
+  puts "Created user: #{user.username} (#{user.email_address}) - Role: #{user.role.name}"
 end
 
 # Create tags
