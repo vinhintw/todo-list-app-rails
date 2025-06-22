@@ -15,6 +15,11 @@ Rails.application.routes.draw do
   end
   resource :session, only: [ :new, :create, :destroy ]
   resource :registration, only: [ :new, :create ]
+
+  # Admin routes
+  get "admin", to: "admin#index"
+  get "admin/users/:id", to: "admin#user_details", as: "admin_user_details"
+  delete "admin/users/:id", to: "admin#destroy_user", as: "admin_destroy_user"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

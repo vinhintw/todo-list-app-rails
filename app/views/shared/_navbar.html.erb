@@ -16,7 +16,7 @@
         <% end %>
       </div>
       <!-- Desktop Search Bar -->
-      <% if authenticated? %>
+      <% if authenticated? && controller_name != 'admin' %>
         <div class="hidden md:block md:w-[300px] flex-1 justify-center px-2 lg:w-[600px]">
           <div class="max-w-lg w-full lg:max-w-2xl mx-auto">
             <%= form_with url: tasks_path, method: :get, local: true, class: "relative" do |form| %>
