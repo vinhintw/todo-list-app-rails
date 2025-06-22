@@ -18,6 +18,7 @@ Rails.application.routes.draw do
 
   # Admin routes
   get "admin", to: "admin#index"
+  get "admin/users/:id", to: "admin#user_details", as: "admin_user_details"
   delete "admin/users/:id", to: "admin#destroy_user", as: "admin_destroy_user"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
