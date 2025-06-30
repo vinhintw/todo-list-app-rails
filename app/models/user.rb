@@ -8,4 +8,6 @@ class User < ApplicationRecord
   validates :username, presence: true, length: { minimum: 3 }
 
   normalizes :email_address, with: ->(e) { e.strip.downcase }
+
+  has_many :tasks, dependent: :destroy
 end
