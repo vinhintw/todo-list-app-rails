@@ -3,6 +3,7 @@ module Authentication
 
   included do
     before_action :require_authentication
+    before_action :set_current_user
     helper_method :authenticated?, :current_user
   end
 
@@ -10,9 +11,17 @@ module Authentication
     def allow_unauthenticated_access(**options)
       skip_before_action :require_authentication, **options
     end
+
+    def redirect_authenticated_user(**options)
+      before_action :redirect_if_authenticated, **options
+    end
   end
 
   private
+    def set_current_user
+      Current.user = current_user
+    end
+
     def authenticated?
       current_user.present?
     end
@@ -43,5 +52,17 @@ module Authentication
 
     def terminate_session
       session[:user_id] = nil
+    end
+
+    def redirect_if_authenticated
+      if authenticated?
+        redirect_to root_path, notice: "You are already signed in."
+      end
+    end
+
+    def redirect_if_unauthenticated
+      unless authenticated?
+        redirect_to login_path, alert: "Please sign in to continue."
+      end
     end
 end
