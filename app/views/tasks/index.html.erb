@@ -1,1 +1,104 @@
 <% content_for :title, "Tasks" %>
+<div class="w-full">
+  <% if notice.present? %>
+    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-md inline-block" id="notice"><%= notice %></p>
+  <% end %>
+  <div class="flex justify-between items-center">
+    <h1 class="font-bold text-4xl">Tasks</h1>
+    <%= link_to "New task", new_task_path, class: "rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white block font-medium" %>
+  </div>
+  <div id="tasks" class="min-w-full divide-y divide-gray-200 space-y-5">
+    <% if @tasks.any? %>
+      <% @tasks.each do |task| %>
+        <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
+          <div class="flex justify-between items-start">
+            <div class="flex-1">
+              <!-- Task Title -->
+              <div class="mb-4">
+                <h3 class="text-lg font-semibold text-gray-900 mb-1">
+                  <%= link_to task.title, task, class: "hover:text-blue-600" %>
+                </h3>
+              </div>
+              <!-- Task Description -->
+              <% if task.content.present? %>
+                <div class="mb-4">
+                  <h4 class="text-sm font-medium text-gray-700 mb-1">Description:</h4>
+                  <p class="text-gray-600 text-sm leading-relaxed" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                    <%= truncate(task.content, length: 120) %>
+                  </p>
+                </div>
+              <% end %>
+              <!-- Priority and Status -->
+              <div class="mb-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <!-- Priority -->
+                  <div class="flex items-center space-x-2">
+                    <span class="text-sm font-medium text-gray-700 min-w-[60px]">Priority:</span>
+                    <%= badge(:priority, task) %>
+                  </div>
+                  <!-- Status -->
+                  <div class="flex items-center space-x-2">
+                    <span class="text-sm font-medium text-gray-700 min-w-[60px]">Status:</span>
+                    <%= badge(:status, task) %>
+                  </div>
+                </div>
+              </div>
+              <!-- Time Information -->
+              <% if task.start_time.present? || task.end_time.present? %>
+                <div class="mb-4">
+                  <h4 class="text-sm font-medium text-gray-700 mb-2">Time Schedule:</h4>
+                  <div class="bg-blue-50 p-3 rounded-md border border-blue-200">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+                      <% if task.start_time.present? %>
+                        <div class="flex items-center space-x-2">
+                          <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                          </svg>
+                          <span class="font-medium text-blue-700">Start:</span>
+                          <span class="text-blue-800"><%= task.start_time.strftime("%d/%m/%Y %H:%M") %></span>
+                        </div>
+                      <% end %>
+                      <% if task.end_time.present? %>
+                        <div class="flex items-center space-x-2">
+                          <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                          </svg>
+                          <span class="font-medium text-blue-700">End:</span>
+                          <span class="text-blue-800"><%= task.end_time.strftime("%d/%m/%Y %H:%M") %></span>
+                        </div>
+                      <% end %>
+                    </div>
+                    <% if task.start_time.present? && task.end_time.present? %>
+                      <div class="mt-2 pt-2 border-t border-blue-200">
+                        <div class="flex items-center space-x-2 text-sm">
+                          <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                          </svg>
+                          <span class="font-medium text-blue-700">Duration:</span>
+                          <span class="text-blue-800 font-semibold">
+                            <% duration = ((task.end_time - task.start_time) / 1.hour).round(1) %>
+                            <%= duration == duration.to_i ? duration.to_i : duration %> hours
+                          </span>
+                        </div>
+                      </div>
+                    <% end %>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+            <!-- Action Buttons -->
+            <div class="flex flex-col gap-2 ml-6 flex-shrink-0">
+              <%= link_to "Edit", edit_task_path(task), class: "text-center rounded-md px-4 py-2 bg-blue-100 hover:bg-blue-200 text-blue-700 text-sm font-medium transition-colors" %>
+              <%= button_to "Delete", task, method: :delete, class: "rounded-md px-4 py-2 text-white bg-red-600 hover:bg-red-700 text-sm font-medium transition-colors", data: { turbo_confirm: "Are you sure you want to delete this task?" } %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    <% else %>
+      <div class="text-center py-12">
+        <p class="text-gray-500 text-lg mb-4">No tasks found.</p>
+        <%= link_to "Create your first task", new_task_path, class: "rounded-md px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white font-medium" %>
+      </div>
+    <% end %>
+  </div>
+</div>
