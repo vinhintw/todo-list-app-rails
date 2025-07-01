@@ -21,13 +21,6 @@ def badge_class(type, value)
     "#{base_classes} #{color_classes}"
 end
 
-# badge helper methods for tasks
-# These methods provide a more flexible way to generate badges for different types of attributes like priority and status.
-# They can be used in views to display task attributes with appropriate styling.
-
-# Example usage in a view:
-# <%= badge(:priority, task) %>
-# <%= badge(:status, task) %>
 def badge(type, task)
     value = task.send(type)
     text = type == :priority ? value.capitalize : value.humanize
