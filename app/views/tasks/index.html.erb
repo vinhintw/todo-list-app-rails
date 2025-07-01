@@ -34,12 +34,12 @@
                   <!-- Priority -->
                   <div class="flex items-center space-x-2">
                     <span class="text-sm font-medium text-gray-700 min-w-[60px]">Priority:</span>
-                    <%= priority_badge(task) %>
+                    <%= badge(:priority, task) %>
                   </div>
                   <!-- Status -->
                   <div class="flex items-center space-x-2">
                     <span class="text-sm font-medium text-gray-700 min-w-[60px]">Status:</span>
-                    <%= status_badge(task) %>
+                    <%= badge(:status, task) %>
                   </div>
                 </div>
               </div>
