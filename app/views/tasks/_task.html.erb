@@ -7,14 +7,21 @@
     <strong class="block font-medium mb-1">Content:</strong>
     <%= task.content %>
   </div>
-  <div>
-    <strong class="block font-medium mb-1">Start time:</strong>
-    <%= task.start_time.strftime("%d/%m/%Y %H:%M") %>
-  </div>
-  <div>
-    <strong class="block font-medium mb-1">End time:</strong>
-    <%= task.end_time.strftime("%d/%m/%Y %H:%M") %>
-  </div>
+  <% if task.end_time.present? %>
+    <div>
+      <strong class="block font-medium mb-1">Start time:</strong>
+      <%= task.start_time.strftime("%d/%m/%Y %H:%M") %>
+    </div>
+    <div>
+      <strong class="block font-medium mb-1">End time:</strong>
+      <%= task.end_time.strftime("%d/%m/%Y %H:%M") %>
+    </div>
+    <div>
+      <strong class="block font-medium mb-1">Duration:</strong>
+      <% duration = ((task.end_time - task.start_time) / 1.hour).round(1) %>
+      <%= duration == duration.to_i ? duration.to_i : duration %> hours
+    </div>
+  <% end %>
   <div>
     <strong class="block font-medium mb-1">Priority:</strong>
     <%= task.priority %>
@@ -22,11 +29,6 @@
   <div>
     <strong class="block font-medium mb-1">Status:</strong>
     <%= task.status %>
-  </div>
-  <div>
-    <strong class="block font-medium mb-1">Duration:</strong>
-    <% duration = ((task.end_time - task.start_time) / 1.hour).round(1) %>
-    <%= duration == duration.to_i ? duration.to_i : duration %> hours
   </div>
   <% if task.tags.any? %>
     <div>
