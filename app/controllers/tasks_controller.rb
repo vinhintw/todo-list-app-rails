@@ -66,22 +66,28 @@ class TasksController < ApplicationController
 
   # GET /tasks/new
   def new
-    @task = Task.new
+    @task = Current.user.tasks.build
+    @tags = Tag.all
   end
 
   # GET /tasks/1/edit
   def edit
+    @tags = Tag.all
   end
 
   # POST /tasks or /tasks.json
   def create
-    @task = Task.new(task_params)
+    @task = Current.user.tasks.build(task_params)
 
     respond_to do |format|
       if @task.save
+        # Handle tags
+        update_task_tags(@task, params[:task][:tag_ids])
+
         format.html { redirect_to @task, notice: "Task was successfully created." }
         format.json { render :show, status: :created, location: @task }
       else
+        @tags = Tag.all
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @task.errors, status: :unprocessable_entity }
       end
@@ -92,9 +98,13 @@ class TasksController < ApplicationController
   def update
     respond_to do |format|
       if @task.update(task_params)
+        # Handle tags update
+        update_task_tags(@task, params[:task][:tag_ids])
+
         format.html { redirect_to @task, notice: "Task was successfully updated." }
         format.json { render :show, status: :ok, location: @task }
       else
+        @tags = Tag.all
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @task.errors, status: :unprocessable_entity }
       end
@@ -114,13 +124,27 @@ class TasksController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_task
-      @task = Task.find(params.expect(:id))
+      @task = Task.includes(:tags).find(params.expect(:id))
     end
 
     # Only allow a list of trusted parameters through.
     def task_params
-      params.expect(task: [ :title, :content, :start_time, :end_time, :priority, :status, :user_id ])
+      params.expect(task: [ :title, :content, :start_time, :end_time, :priority, :status, tag_ids: [] ])
     end
+
+    # Update task tags efficiently
+    def update_task_tags(task, tag_ids)
+      return unless tag_ids.present?
+
+      # Clear existing tags
+      task.taggings.destroy_all
+
+      # Add new tags
+      tag_ids.reject(&:blank?).each do |tag_id|
+        task.taggings.create!(tag_id: tag_id)
+      end
+    end
+
 
     # Filter tasks based on search and tag parameters
     def filter_tasks(tasks)
