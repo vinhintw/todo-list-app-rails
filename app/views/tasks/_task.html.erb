@@ -9,11 +9,11 @@
   </div>
   <div>
     <strong class="block font-medium mb-1">Start time:</strong>
-    <%= task.start_time %>
+    <%= task.start_time.strftime("%d/%m/%Y %H:%M") %>
   </div>
   <div>
     <strong class="block font-medium mb-1">End time:</strong>
-    <%= task.end_time %>
+    <%= task.end_time.strftime("%d/%m/%Y %H:%M") %>
   </div>
   <div>
     <strong class="block font-medium mb-1">Priority:</strong>
@@ -23,4 +23,21 @@
     <strong class="block font-medium mb-1">Status:</strong>
     <%= task.status %>
   </div>
+  <div>
+    <strong class="block font-medium mb-1">Duration:</strong>
+    <% duration = ((task.end_time - task.start_time) / 1.hour).round(1) %>
+    <%= duration == duration.to_i ? duration.to_i : duration %> hours
+  </div>
+  <% if task.tags.any? %>
+    <div>
+      <strong class="block font-medium mb-1">Tags:</strong>
+      <div class="flex flex-wrap gap-2 mt-2">
+        <% task.tags.each do |tag| %>
+          <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-purple-100 text-purple-800 border border-purple-200">
+            <%= tag.name %>
+          </span>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
 </div>
