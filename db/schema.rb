@@ -17,7 +17,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_19_133418) do
   create_table "taggings", force: :cascade do |t|
     t.bigint "task_id", null: false
     t.bigint "tag_id", null: false
-    t.datetime "assigned_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["tag_id"], name: "index_taggings_on_tag_id"
