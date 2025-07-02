@@ -3,9 +3,70 @@
   <% if notice.present? %>
     <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-md inline-block" id="notice"><%= notice %></p>
   <% end %>
-  <div class="flex justify-between items-center">
-    <h1 class="font-bold text-4xl">Tasks</h1>
-    <%= link_to "New task", new_task_path, class: "rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white block font-medium" %>
+  <!-- Mobile Search Bar (below navbar on mobile) -->
+  <div class="px-2 pt-4 md:hidden block">
+    <div class="relative">
+      <div class="w-full rounded-full focus-visible:ring-slate-200">
+        <% if authenticated? %>
+          <%= form_with url: tasks_path, method: :get, local: true, class: "relative" do |form| %>
+            <%= form.text_field :search, 
+                  placeholder: "Search tasks...", 
+                  value: params[:search],
+                  class: "block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" %>
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+              </svg>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <!-- Header with title and new task button -->
+  <div class="flex justify-between items-center mb-6 mt-4 md:mt-0">
+    <div>
+      <h1 class="font-bold text-4xl text-gray-900">
+        <%= @current_filter&.humanize || 'My' %> Tasks
+      </h1>
+      <p class="text-gray-600 mt-1"><%= pluralize(@tasks.count, 'task') %> found</p>
+    </div>
+    <%= link_to "New task", new_task_path, class: "rounded-md px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-medium shadow-sm" %>
+  </div>
+  <!-- Desktop Tags Filter Bar -->
+  <div class="md:block mb-6">
+    <div class="flex flex-wrap gap-2">
+      <%= link_to "All Tags", tasks_path(sort: params[:sort], search: params[:search]), 
+          class: "inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium #{'bg-indigo-100 text-indigo-800' if params[:tag].blank?} #{'bg-gray-100 text-gray-700 hover:bg-gray-200' if params[:tag].present?}" %>
+      <% Tag.joins(:tasks).where(tasks: { user: Current.user }).distinct.limit(10).each do |tag| %>
+        <%= link_to tag.name.capitalize, tasks_path(tag: tag.name, status: params[:status], sort: params[:sort], search: params[:search]), 
+            class: "inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium #{'bg-indigo-100 text-indigo-800' if params[:tag] == tag.name} #{'bg-gray-100 text-gray-700 hover:bg-gray-200' if params[:tag] != tag.name}" %>
+      <% end %>
+      <% if Tag.joins(:tasks).where(tasks: { user: Current.user }).distinct.count > 10 %>
+        <button data-controller="touch" data-action="touchstart->touch#touchStart touchend->touch#touchEnd touchcancel->touch#touchCancel" class="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 touch-target no-select">
+          +<%= Tag.joins(:tasks).where(tasks: { user: Current.user }).distinct.count - 10 %> more
+        </button>
+      <% end %>
+    </div>
+  </div>
+  <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6 bg-gray-50 p-4 rounded-lg space-y-3 md:space-y-0">
+    <div class="flex flex-col md:flex-row md:items-center md:space-x-4 space-y-2 md:space-y-0">
+      <label class="text-sm font-medium text-gray-700">Order by:</label>
+      <%= form_with url: request.path, method: :get, local: true, class: "flex items-center space-x-2" do |form| %>
+        <%= form.hidden_field :search, value: params[:search] if params[:search].present? %>
+        <%= form.hidden_field :tag, value: params[:tag] if params[:tag].present? %>
+        <%= form.select :sort, [
+          ['Newest', ''],
+          ['Oldest', 'created_asc'],
+          ['Priority Low to High', 'priority_asc'],
+          ['Priority High to Low', 'priority_desc'],
+          ['Start Time Earliest', 'start_time_asc'],
+          ['Start Time Latest', 'start_time_desc'],
+          ['End Time Earliest', 'end_time_asc'],
+          ['End Time Latest', 'end_time_desc']
+        ], { prompt: 'Select sorting option', selected: params[:sort] }, { class: "block w-full md:w-auto px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm", onchange: "this.form.submit();" } %>
+      <% end %>
+    </div>
   </div>
   <div id="tasks" class="min-w-full divide-y divide-gray-200 space-y-5">
     <% if @tasks.any? %>
