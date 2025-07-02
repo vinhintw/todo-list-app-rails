@@ -1,6 +1,18 @@
 Rails.application.routes.draw do
   get "home/index"
-  resources :tasks
+  resources :tasks do
+    collection do
+      get :all
+      get :pending
+      get :in_progress
+      get :completed
+      get :cancelled
+      get :low_priority
+      get :medium_priority
+      get :high_priority
+      get :urgent_priority
+    end
+  end
   get "/login", to: "sessions#new"
   post "/login", to: "sessions#create"
   delete "/logout", to: "sessions#destroy"
