@@ -84,40 +84,40 @@
 
 #### 1-2: 安裝 Rails
 
-- 以 gem 指令安裝 Rails
-- 安裝最新版本的 Rails
-- 以 `rails -v` 指令來確認 Rails 的版本
+- 以 gem 指令安裝 Rails ✅
+- 安裝最新版本的 Rails ✅
+- 以 `rails -v` 指令來確認 Rails 的版本 ✅
 
 #### 1-3: 安裝資料庫（PostgreSQL）
 
-- 在你使用的 OS 下安裝 PostgreSQL
-	- macOS 的話，請以 `brew` 等工具安裝
+- 在你使用的 OS 下安裝 PostgreSQL ✅
+	- macOS 的話，請以 `brew` 等工具安裝 ✅
 
 ### 步驟2: 在 GitHub 建立 repository
 
-- 在你的環境中安裝 Git
+- 在你的環境中安裝 Git ✅
 	- macOS 的話，請以 `brew` 等工具安裝
 	- 以 `git config` 設定 user name 和 email
-- 請考慮專案名稱（也等於 repo 名稱）
-- 建立 repo
+- 請考慮專案名稱（也等於 repo 名稱）✅
+- 建立 repo ✅
 	- 如果沒有帳號的話，先申請帳號
 	- 接著建立空白的 repo
 
 ### 步驟3: 建立 Rails 專案
 
-- 以 `rails new` 指令，建立 Rails 應用程式最低限度的樣板和檔案
-- 在 `rails new` 產生的專案目錄下，建立 `docs` 資料夾，並將本教程文件 commit 進去
+- 以 `rails new` 指令，建立 Rails 應用程式最低限度的樣板和檔案 ✅
+- 在 `rails new` 產生的專案目錄下，建立 `docs` 資料夾，並將本教程文件 commit 進去 ✅
 	- 目的是為了方便之後開發時可以參考
-- 將成品 push 到 GitHub 的 repo
-- 將使用的 Ruby 版號寫進 `Gemfile`（也請確認 Rails 版號是否有標明）
+- 將成品 push 到 GitHub 的 repo ✅
+- 將使用的 Ruby 版號寫進 `Gemfile`（也請確認 Rails 版號是否有標明） ✅
 
 ### 步驟4: 想像網站成品會是什麼樣子
 
-- 開始進行設計之前，先和導師一起討論對最終成品的預想。建議在紙上畫 prototype
-- 請參照網站需求，開始想需要怎樣的資料結構
+- 開始進行設計之前，先和導師一起討論對最終成品的預想。建議在紙上畫 prototype ✅
+- 請參照網站需求，開始想需要怎樣的資料結構 ✅
 	- 需要哪些 model (或資料表)？
 	- 資料表會需要哪些欄位？
-- 有想法之後，將 model 的關係圖手繪出來（或其他繪圖軟體）
+- 有想法之後，將 model 的關係圖手繪出來（或其他繪圖軟體）✅
 	- 完成後將關係圖拍照存檔，放進 repo 裡
 	- 把 table schema 寫進 `README.md`（model 名稱、欄位名稱、資料形態）
 
@@ -125,14 +125,14 @@
 
 ### 步驟5: 資料庫連接等週邊設定
 
-- 建立新的 topic 分支
+- 建立新的 topic 分支 ✅
 	- 之後都在 topic 分支上開發並進行 commit
-- 安裝 bundler
-- 在 `Gemfile` 安裝 `pg`（PostgreSQL 的 adapter）
-- 設定 `database.yml`
-- 以 `rails db:create` 建立資料庫
-- 以 `rails db` 確認有正確連接資料庫
-- 在 GitHub 上建立 PR 並請人 review
+- 安裝 bundler ✅
+- 在 `Gemfile` 安裝 `pg`（PostgreSQL 的 adapter）✅
+- 設定 `database.yml` ✅
+- 以 `rails db:create` 建立資料庫 ✅
+- 以 `rails db` 確認有正確連接資料庫 ✅
+- 在 GitHub 上建立 PR 並請人 review ✅
 	- 必要時，請在 PR 上標柱 WIP（Work In Progress）
 	- 收到 Comment 後就做必要的處置。收到兩個 LGTM（Looks Good To Me） 後就可以 merge 回 master
 
@@ -140,22 +140,22 @@
 
 開始來做管理任務所需要的 CRUD。一開始先簡單做，只要能記錄名字和任務內容即可。
 
-- 以 `rails generate` 指令建立 CRUD 所需的 model 類別
-- 撰寫 migration 並以此建立資料表
+- 以 `rails generate` 指令建立 CRUD 所需的 model 類別 ✅
+- 撰寫 migration 並以此建立資料表 ✅
 	- 非常重要：migration 要確定能安全回到上一步的狀態！請養成以 `redo` 確認的習慣
-- 以 `rails c` 指令，透過 model 確認有正確連接資料庫
+- 以 `rails c` 指令，透過 model 確認有正確連接資料庫 ✅
 	- 順便試著以 ActiveRecord 方式建立任務，確認能順利建立
-- 在 GitHub 上發 PR 並請人 review
+- 在 GitHub 上發 PR 並請人 review ✅
 
 ### 步驟7: 新增、修改、檢視、刪除任務
 
-- 製作任務的列表、新增、檢視以及修改頁面
+- 製作任務的列表、新增、檢視以及修改頁面 ✅ pr#5
 	- 以 `rails generate` 指令產生 controller
 		- 請和導師討論要用哪一種 template engine（ERB / Slim / Haml..etc）
 	- 實做 controller 和 view 必要的部分
 	- 完成新增、修改、刪除動作之後，需要在畫面上顯示 Flash 訊息
-- 修改 `routes.rb`，讓 `http://localhost:3000/` 會顯示任務的列表頁面
-- 在 GitHub 上發 PR 並請人 review
+- 修改 `routes.rb`，讓 `http://localhost:3000/` 會顯示任務的列表頁面 ✅ pr#5
+- 在 GitHub 上發 PR 並請人 review ✅
 
 ※ 之後的 PR，如果覺得過於龐大（超過15個檔案變動），就需要開始考慮分割成多個 PR
 
@@ -184,7 +184,7 @@
 
 ### 步驟11: 任務列表以建立時間排序
 
-- 資料預設是以 id 進行排序，請試著讓它以建立時間排序
+- 資料預設是以 id 進行排序，請試著讓它以建立時間排序 ✅ pr#18
 - 完成後，撰寫此功能 feature spec
 
 ### 步驟12: 資料驗證
@@ -213,20 +213,20 @@
 
 ### 步驟14: 加入結束時間，並以時間排序
 
-- 任務可設定結束時間
-- 列表頁可以結束時間排序
+- 任務可設定結束時間 ✅ pr#5
+- 列表頁可以結束時間排序 ✅ pr#18
 - 擴充 spec
 - PR/review 後佈署
 
 ### 步驟15: 加入狀態，並且能夠查詢
 
-- 在任務上加入狀態（待處理、進行中、完成）
+- 在任務上加入狀態（待處理、進行中、完成✅
 	- 【選項】不是初學者的話，可以使用管理 state 的 gem
-- 在列表頁面，要能夠以標題和狀態進行查詢
+- 在列表頁面，要能夠以標題和狀態進行查詢✅
 	- 【選項】不是初學者的話，可以使用 ransack 等 gem
-- 在設定條件查詢時，請觀察 log 並確認 SQL 的變化
-	- 之後的步驟也需要這麼做，請養成習慣
-- 建立 search index
+- 在設定條件查詢時，請觀察 log 並確認 SQL 的變化✅
+	- 之後的步驟也需要這麼做，請養成習慣✅
+- 建立 search index✅
 	- 使用 Factory Bot 和 Faker 準備多筆資料 
 	- 準備一定程度的測試資料後，觀察 log/development.log 以確認加入 index 後對速度的改善
 	- 【選項】使用 PostgreSQL 的 explain 等功能，檢視資料庫端的 index 使用狀況
@@ -245,30 +245,30 @@
 
 ### 步驟18: 加入設計
 
-- 使用 TailwindCSS，為目前的作品套入設計
+- 使用 TailwindCSS，為目前的作品套入設計 ✅
 	- 【選項】自己寫 CSS 來設計
 
 ### 步驟19: 支援多人使用
 
-- 建立使用者 model
-- 以 seed 建立第一個使用者
-- 建立使用者和任務的關聯
-	- 建立關聯所需的 index
-	- 要避免 N+1 問題
+- 建立使用者 model✅
+- 以 seed 建立第一個使用者✅
+- 建立使用者和任務的關聯✅
+	- 建立關聯所需的 index✅
+	- 要避免 N+1 問題✅
 	- ※ 需要考慮到此步驟前的任務尚未存在使用者，此時會發生什麼情況？要如何解決？
 	- ※ 推上 Heroku 時，已經建立過的任務，要和使用者建立關係（資料維護）
 - 試著以 `rails console` 方式建立使用者，並確認使用者與任務關聯，順利建立任務
 
 ### 步驟20: 註冊/登入/登出功能
 
-- 這裡不使用任何 Gem，請自己實做
+- 這裡不使用任何 Gem，請自己實做 ✅ pr#4
 	- 不使用 devise 等便利的 Gem，是為了讓新人能更深入了解 Rails 中 HTTP cookie 和 session 的原理
 	- 以及加強對一般認證機制的理解（例如密碼的處理）
-- 實做註冊的功能與頁面
-- 實做登入的功能與頁面
-- 未登入時，不能進入任務管理頁面
-- 請改成只能看到自己建立的任務
-- 實做登出功能
+- 實做註冊的功能與頁面 ✅ pr#4
+- 實做登入的功能與頁面 ✅ pr#4
+- 未登入時，不能進入任務管理頁面 ✅ pr#4
+- 請改成只能看到自己建立的任務 ✅ pr#18
+- 實做登出功能✅ pr#5
 
 ### 步驟21: 使用者管理頁面
 
@@ -292,8 +292,8 @@
 
 ### 步驟23: 為任務加入標籤
 
-- 一個任務可以設定多個的標籤
-- 能夠以標籤進行搜尋
+- 一個任務可以設定多個的標籤 ✅ pr#6
+- 能夠以標籤進行搜尋 ✅ pr#18
 
 ### 步驟24: 設定錯誤頁面
 
