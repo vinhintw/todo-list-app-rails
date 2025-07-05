@@ -1,6 +1,8 @@
 class User < ApplicationRecord
   has_secure_password
 
+  has_many :tasks, dependent: :destroy
+
   # role management
   enum :role, { normal: 0, admin: 1 }
   # validations user model
