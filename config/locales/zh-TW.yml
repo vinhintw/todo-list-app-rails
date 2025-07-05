@@ -1,0 +1,100 @@
+zh-TW:
+  # Common
+  back: "返回"
+  edit: "編輯"
+  delete: "刪除"
+  create: "建立"
+  update: "更新"
+  show: "顯示"
+  new: "新建"
+  cancel: "取消"
+  confirm: "確認"
+  
+  # Task related
+  tasks:
+    title: "任務"
+    new_task: "新任務"
+    edit_task: "編輯任務"
+    show_task: "顯示任務"
+    create_task: "建立任務"
+    update_task: "更新任務"
+    delete_task: "刪除任務"
+    back_to_tasks: "返回任務列表"
+    no_tasks_found: "沒有找到任務。"
+    create_first_task: "建立你的第一個任務"
+    task_title: "任務標題"
+    task_content: "任務內容"
+    description: "描述"
+    priority: "優先順序"
+    status: "狀態"
+    start_time: "開始時間"
+    end_time: "結束時間"
+    time_schedule: "時間安排"
+    start: "開始"
+    end: "結束"
+    duration: "持續時間"
+    hours: "小時"
+    destroy_this_task: "刪除此任務"
+    edit_this_task: "編輯此任務"
+    
+  # Priority levels
+  priority:
+    low: "低"
+    medium: "中"
+    high: "高"
+    urgent: "緊急"
+    
+  # Status levels  
+  status:
+    pending: "待處理"
+    in_progress: "進行中"
+    completed: "已完成"
+    cancelled: "已取消"
+    
+  # Flash messages
+  flash:
+    task_created: "任務已成功建立。"
+    task_updated: "任務已成功更新。"
+    task_destroyed: "任務已成功刪除。"
+    
+  # Authentication
+  auth:
+    login: "登入"
+    logout: "登出"
+    sign_in: "登入"
+    email_address: "電子郵件地址"
+    password: "密碼"
+    invalid_credentials: "請嘗試其他電子郵件地址或密碼。"
+    rate_limit_exceeded: "稍後再試。"
+    
+  # Confirmations
+  confirmations:
+    delete_task: "你確定要刪除此任務嗎？"
+    are_you_sure: "你確定嗎？"
+    
+  # Validation errors
+  errors:
+    title_blank: "標題不能為空"
+    title_too_long: "標題太長（最多 %{count} 個字符）"
+    content_too_long: "內容太長（最多 %{count} 個字符）"
+    end_time_after_start: "結束時間必須在開始時間之後"
+    time_presence: "如果設定了時間，開始時間和結束時間都必須存在"
+    messages:
+      blank: "不能為空"
+      too_long: "太長（最多 %{count} 個字符）"
+      
+  # ActiveRecord validation messages
+  activerecord:
+    errors:
+      models:
+        task:
+          attributes:
+            title:
+              blank: "標題不能為空"
+              too_long: "標題太長（最多 %{count} 個字符）"
+            content:
+              too_long: "內容太長（最多 %{count} 個字符）"
+            start_time:
+              blank: "開始時間不能為空"
+            end_time:
+              blank: "結束時間不能為空"
