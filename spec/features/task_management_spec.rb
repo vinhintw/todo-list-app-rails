@@ -36,4 +36,32 @@ RSpec.feature 'Task Management', type: :feature do
       expect(page).to have_content("Title can't be blank")
     end
   end
+
+  # Test viewing tasks
+  describe 'Viewing tasks' do
+    scenario 'User can view their tasks list' do
+      # create tasks for the user
+      create(:task, user: user, title: 'Task One')
+      create(:task, user: user, title: 'Task Two')
+
+      visit '/tasks'
+
+      expect(page).to have_content('Task One')
+      expect(page).to have_content('Task Two')
+    end
+
+    scenario 'User should only see their own tasks' do
+      # Create task for the current user
+      create(:task, user: user, title: 'My Task')
+
+      # Create task for another user
+      other_user = create(:user)
+      create(:task, user: other_user, title: 'Other User Task')
+
+      visit '/tasks'
+
+      expect(page).to have_content('My Task')
+      expect(page).not_to have_content('Other User Task')
+    end
+  end
 end
