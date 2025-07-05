@@ -168,9 +168,9 @@
 - 用Factory-Bot 與 faker 建立資料 ✅
 
 ※ 參照 Better Specs ， 將測試寫得更簡潔
-- 導入 GitHub Action CI 之類的 CI 工具，每次 Push 後自動跑 Spec
+- 導入 GitHub Action CI 之類的 CI 工具，每次 Push 後自動跑 Spec ✅
 	- 太難的話可以請導師幫忙設定
-- 安裝 rubocop 以統一程式風格
+- 安裝 rubocop 以統一程式風格 ✅
 
 ### 步驟9: 將網站中的中文部分共用化
 

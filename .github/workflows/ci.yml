@@ -89,7 +89,7 @@ jobs:
           POSTGRES_USER: myapp
           POSTGRES_PASSWORD: password1
           POSTGRES_DB: todo_list_test
-        run: bin/rails db:test:prepare test test:system
+        run: bin/rails db:test:prepare && bundle exec rspec
 
       - name: Keep screenshots from failed system tests
         uses: actions/upload-artifact@v4
