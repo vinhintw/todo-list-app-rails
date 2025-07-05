@@ -64,4 +64,35 @@ RSpec.feature 'Task Management', type: :feature do
       expect(page).not_to have_content('Other User Task')
     end
   end
+
+  # Test editing tasks
+  describe 'Editing tasks' do
+    scenario 'User can edit their own task via index page' do
+      create(:task, user: user, title: 'Original Title', content: 'Original content')
+
+      visit '/tasks'
+      expect(page).to have_content('Original Title')
+
+      click_link 'Edit'
+
+      # change title and content
+      fill_in 'Title', with: 'Updated Title'
+      fill_in 'Content', with: 'Updated content'
+      click_button 'Update Task'
+
+      expect(page).to have_content('Task was successfully updated')
+      expect(page).to have_content('Updated Title')
+      expect(page).to have_content('Updated content')
+    end
+
+    scenario 'User cannot update task without title' do
+      task = create(:task, user: user, title: 'Original Title')
+
+      visit "/tasks/#{task.id}/edit"
+      fill_in 'Title', with: ''
+      click_button 'Update Task'
+
+      expect(page).to have_content("Title can't be blank")
+    end
+  end
 end
