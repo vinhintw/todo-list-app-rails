@@ -75,25 +75,25 @@
 
 ## 必修課題
 
-### 步驟1: 建立 Rails 的開發環境
+### 步驟1: 建立 Rails 的開發環境 ✅
 
-#### 1-1: 安裝 Ruby
+#### 1-1: 安裝 Ruby ✅
 
 - 利用 [rbenv](https://github.com/rbenv/rbenv) 或 [RVM](https://rvm.io) 安裝最新版本的 Ruby
 - 以 `ruby -v` 指令來確認 Ruby 的版本
 
-#### 1-2: 安裝 Rails
+#### 1-2: 安裝 Rails ✅
 
 - 以 gem 指令安裝 Rails
 - 安裝最新版本的 Rails
 - 以 `rails -v` 指令來確認 Rails 的版本
 
-#### 1-3: 安裝資料庫（PostgreSQL）
+#### 1-3: 安裝資料庫（PostgreSQL）✅
 
 - 在你使用的 OS 下安裝 PostgreSQL
 	- macOS 的話，請以 `brew` 等工具安裝
 
-### 步驟2: 在 GitHub 建立 repository
+### 步驟2: 在 GitHub 建立 repository ✅
 
 - 在你的環境中安裝 Git
 	- macOS 的話，請以 `brew` 等工具安裝
@@ -103,7 +103,7 @@
 	- 如果沒有帳號的話，先申請帳號
 	- 接著建立空白的 repo
 
-### 步驟3: 建立 Rails 專案
+### 步驟3: 建立 Rails 專案 ✅
 
 - 以 `rails new` 指令，建立 Rails 應用程式最低限度的樣板和檔案
 - 在 `rails new` 產生的專案目錄下，建立 `docs` 資料夾，並將本教程文件 commit 進去
@@ -111,7 +111,7 @@
 - 將成品 push 到 GitHub 的 repo
 - 將使用的 Ruby 版號寫進 `Gemfile`（也請確認 Rails 版號是否有標明）
 
-### 步驟4: 想像網站成品會是什麼樣子
+### 步驟4: 想像網站成品會是什麼樣子 ✅
 
 - 開始進行設計之前，先和導師一起討論對最終成品的預想。建議在紙上畫 prototype
 - 請參照網站需求，開始想需要怎樣的資料結構
@@ -123,7 +123,7 @@
 
 ※ 在這個階段，model 關係圖不需要是完全正確的。以現在所能預想的範圍來規劃就好（做到後面的步驟，發現需要修改時再來調整的概念）
 
-### 步驟5: 資料庫連接等週邊設定
+### 步驟5: 資料庫連接等週邊設定 ✅
 
 - 建立新的 topic 分支
 	- 之後都在 topic 分支上開發並進行 commit
@@ -136,7 +136,7 @@
 	- 必要時，請在 PR 上標柱 WIP（Work In Progress）
 	- 收到 Comment 後就做必要的處置。收到兩個 LGTM（Looks Good To Me） 後就可以 merge 回 master
 
-### 步驟6: 建立任務 model
+### 步驟6: 建立任務 model ✅
 
 開始來做管理任務所需要的 CRUD。一開始先簡單做，只要能記錄名字和任務內容即可。
 
@@ -147,7 +147,7 @@
 	- 順便試著以 ActiveRecord 方式建立任務，確認能順利建立
 - 在 GitHub 上發 PR 並請人 review
 
-### 步驟7: 新增、修改、檢視、刪除任務
+### 步驟7: 新增、修改、檢視、刪除任務 ✅
 
 - 製作任務的列表、新增、檢視以及修改頁面
 	- 以 `rails generate` 指令產生 controller
@@ -159,18 +159,18 @@
 
 ※ 之後的 PR，如果覺得過於龐大（超過15個檔案變動），就需要開始考慮分割成多個 PR
 
-### 步驟8: 寫 E2E 測試
+### 步驟8: 寫 E2E 測試 ✅
 
-- 寫 spec 的事前準備
+- 寫 spec 的事前準備 ✅
 	- 安裝 gem 'rspec-rails'
 	- 準備 `spec/spec_helper.rb` 、`spec/rails_helper.rb`
-- 針對任務的功能來寫 feature spec
-- 用Factory-Bot 與 faker 建立資料
+- 針對任務的功能來寫 feature spec ✅
+- 用Factory-Bot 與 faker 建立資料 ✅
 
 ※ 參照 Better Specs ， 將測試寫得更簡潔
-- 導入 GitHub Action CI 之類的 CI 工具，每次 Push 後自動跑 Spec
+- 導入 GitHub Action CI 之類的 CI 工具，每次 Push 後自動跑 Spec ✅
 	- 太難的話可以請導師幫忙設定
-- 安裝 rubocop 以統一程式風格
+- 安裝 rubocop 以統一程式風格 ✅
 
 ### 步驟9: 將網站中的中文部分共用化
 

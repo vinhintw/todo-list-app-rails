@@ -28,4 +28,102 @@
 #       enabled: "ON"
 
 en:
-  hello: "Hello world"
+  # Common
+  back: "Back"
+  edit: "Edit"
+  delete: "Delete"
+  create: "Create"
+  update: "Update"
+  show: "Show"
+  new: "New"
+  cancel: "Cancel"
+  confirm: "Confirm"
+  
+  # Task related
+  tasks:
+    title: "Tasks"
+    new_task: "New task"
+    edit_task: "Editing task"
+    show_task: "Showing task"
+    create_task: "Create Task"
+    update_task: "Update Task"
+    delete_task: "Delete Task"
+    back_to_tasks: "Back to tasks"
+    no_tasks_found: "No tasks found."
+    create_first_task: "Create your first task"
+    task_title: "Title"
+    task_content: "Content"
+    description: "Description"
+    priority: "Priority"
+    status: "Status"
+    start_time: "Start time"
+    end_time: "End time"
+    time_schedule: "Time Schedule"
+    start: "Start"
+    end: "End"
+    duration: "Duration"
+    hours: "hours"
+    destroy_this_task: "Destroy this task"
+    edit_this_task: "Edit this task"
+    
+  # Priority levels
+  priority:
+    low: "Low"
+    medium: "Medium"
+    high: "High"
+    urgent: "Urgent"
+    
+  # Status levels  
+  status:
+    pending: "Pending"
+    in_progress: "In Progress"
+    completed: "Completed"
+    cancelled: "Cancelled"
+    
+  # Flash messages
+  flash:
+    task_created: "Task was successfully created."
+    task_updated: "Task was successfully updated."
+    task_destroyed: "Task was successfully destroyed."
+    
+  # Authentication
+  auth:
+    login: "Login"
+    logout: "Logout"
+    sign_in: "Sign in"
+    email_address: "Email address"
+    password: "Password"
+    invalid_credentials: "Try another email address or password."
+    rate_limit_exceeded: "Try again later."
+    
+  # Confirmations
+  confirmations:
+    delete_task: "Are you sure you want to delete this task?"
+    are_you_sure: "Are you sure?"
+    
+  # Validation errors
+  errors:
+    title_blank: "Title can't be blank"
+    title_too_long: "Title is too long (maximum is %{count} characters)"
+    content_too_long: "Content is too long (maximum is %{count} characters)"
+    end_time_after_start: "End time must be after start time"
+    time_presence: "Start time and end time must be present if time is set"
+    messages:
+      blank: "can't be blank"
+      too_long: "is too long (maximum is %{count} characters)"
+      
+  # ActiveRecord validation messages
+  activerecord:
+    errors:
+      models:
+        task:
+          attributes:
+            title:
+              blank: "Title can't be blank"
+              too_long: "Title is too long (maximum is %{count} characters)"
+            content:
+              too_long: "Content is too long (maximum is %{count} characters)"
+            start_time:
+              blank: "Start time can't be blank"
+            end_time:
+              blank: "End time can't be blank"
