@@ -50,6 +50,8 @@ group :development, :test do
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
 
   gem "rspec-rails"
+  gem "factory_bot_rails"
+  gem "faker"
 
   # Load environment variables from .env file
   gem "dotenv-rails"
