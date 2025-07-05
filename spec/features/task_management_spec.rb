@@ -24,4 +24,16 @@ RSpec.feature 'Task Management', type: :feature do
       expect(page).to have_content('My first task')
     end
   end
+
+  # Test validation
+  describe 'Validation' do
+    scenario 'User cannot create task without title' do
+      visit '/tasks/new'
+
+      # Leave title blank
+      click_button 'Create Task'
+
+      expect(page).to have_content("Title can't be blank")
+    end
+  end
 end
