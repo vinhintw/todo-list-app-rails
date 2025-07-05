@@ -95,4 +95,31 @@ RSpec.feature 'Task Management', type: :feature do
       expect(page).to have_content("Title can't be blank")
     end
   end
+
+  # Test viewing task details
+  describe 'Viewing task details' do
+    scenario 'User can view task details via show page' do
+      task = create(:task,
+        user: user,
+        title: 'Detailed Task',
+        content: 'This is the detailed content of the task',
+        priority: 'high',
+        status: 'pending'
+      )
+
+      visit '/tasks'
+      expect(page).to have_content('Detailed Task')
+
+      click_link 'Detailed Task'
+
+      expect(page).to have_current_path("/tasks/#{task.id}")
+      expect(page).to have_content('Detailed Task')
+      expect(page).to have_content('This is the detailed content of the task')
+      expect(page).to have_content('Showing task')
+
+      expect(page).to have_link('Edit this task')
+      expect(page).to have_link('Back to tasks')
+      expect(page).to have_button('Destroy this task')
+    end
+  end
 end
