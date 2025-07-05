@@ -122,4 +122,37 @@ RSpec.feature 'Task Management', type: :feature do
       expect(page).to have_button('Destroy this task')
     end
   end
+
+  # Test deleting tasks from index page
+  describe 'Deleting tasks' do
+    scenario 'User can delete their own task via index page' do
+      create(:task, user: user, title: 'Task to Delete', content: 'This will be deleted')
+
+      visit '/tasks'
+      expect(page).to have_content('Task to Delete')
+
+      click_button 'Delete'
+
+      expect(page).to have_content('Task was successfully destroyed')
+      expect(page).not_to have_content('Task to Delete')
+      expect(page).to have_current_path('/tasks')
+    end
+  end
+
+  # Test deleting from detail page
+  describe 'Deleting tasks from detail page' do
+    scenario 'User can delete their own task from show page' do
+      task = create(:task, user: user, title: 'Task to Delete from Show', content: 'Will be deleted')
+
+      visit "/tasks/#{task.id}"
+      expect(page).to have_content('Task to Delete from Show')
+      expect(page).to have_content('Will be deleted')
+
+      click_button 'Destroy this task'
+
+      expect(page).to have_content('Task was successfully destroyed')
+      expect(page).to have_current_path('/tasks')
+      expect(page).not_to have_content('Task to Delete from Show')
+    end
+  end
 end
