@@ -15,7 +15,8 @@ RSpec.feature 'Task Management', type: :feature do
   # create a task
   describe 'Creating a task' do
     scenario 'User can create a simple task' do
-      visit '/tasks/new'
+      visit '/tasks'
+      click_link 'New task'
 
       fill_in 'Title', with: 'My first task'
       click_button 'Create Task'
@@ -28,7 +29,8 @@ RSpec.feature 'Task Management', type: :feature do
   # Test validation
   describe 'Validation' do
     scenario 'User cannot create task without title' do
-      visit '/tasks/new'
+      visit '/tasks'
+      click_link 'New task'
 
       # Leave title blank
       click_button 'Create Task'
@@ -153,6 +155,54 @@ RSpec.feature 'Task Management', type: :feature do
       expect(page).to have_content('Task was successfully destroyed')
       expect(page).to have_current_path('/en/tasks')
       expect(page).not_to have_content('Task to Delete from Show')
+    end
+  end
+
+  # Test task ordering
+  describe 'Task ordering' do
+    scenario 'Tasks are displayed in creation time order (newest first)' do
+      # Create tasks at different times
+      travel_to 3.hours.ago do
+        create(:task, user: user, title: 'First Task (Oldest)')
+      end
+
+      travel_to 2.hours.ago do
+        create(:task, user: user, title: 'Second Task (Middle)')
+      end
+
+      travel_to 1.hour.ago do
+        create(:task, user: user, title: 'Third Task (Newest)')
+      end
+
+      visit '/tasks'
+
+      # Check that tasks are displayed in the correct order (newest first)
+      task_titles = page.all('h3 a').map(&:text)
+
+      expect(task_titles).to eq([
+        'Third Task (Newest)',
+        'Second Task (Middle)',
+        'First Task (Oldest)'
+      ])
+    end
+
+    scenario 'Newly created task appears at the top of the list' do
+      create(:task, user: user, title: 'Existing Task')
+
+      visit '/tasks'
+      expect(page).to have_content('Existing Task')
+
+      click_link 'New task'
+      fill_in 'Title', with: 'Brand New Task'
+      click_button 'Create Task'
+
+      visit '/tasks'
+
+      first_task_title = page.first('h3 a').text
+      expect(first_task_title).to eq('Brand New Task')
+
+      expect(page).to have_content('Brand New Task')
+      expect(page).to have_content('Existing Task')
     end
   end
 end
