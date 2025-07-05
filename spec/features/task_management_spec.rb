@@ -112,7 +112,7 @@ RSpec.feature 'Task Management', type: :feature do
 
       click_link 'Detailed Task'
 
-      expect(page).to have_current_path("/tasks/#{task.id}")
+      expect(page).to have_current_path("/en/tasks/#{task.id}")
       expect(page).to have_content('Detailed Task')
       expect(page).to have_content('This is the detailed content of the task')
       expect(page).to have_content('Showing task')
@@ -135,7 +135,7 @@ RSpec.feature 'Task Management', type: :feature do
 
       expect(page).to have_content('Task was successfully destroyed')
       expect(page).not_to have_content('Task to Delete')
-      expect(page).to have_current_path('/tasks')
+      expect(page).to have_current_path('/en/tasks')
     end
   end
 
@@ -151,7 +151,7 @@ RSpec.feature 'Task Management', type: :feature do
       click_button 'Destroy this task'
 
       expect(page).to have_content('Task was successfully destroyed')
-      expect(page).to have_current_path('/tasks')
+      expect(page).to have_current_path('/en/tasks')
       expect(page).not_to have_content('Task to Delete from Show')
     end
   end
