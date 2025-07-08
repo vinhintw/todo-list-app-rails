@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.feature 'Task Management', type: :feature do
   # create user
   let(:user) { create(:user) }
+  let(:other_user) { create(:user) }
 
   before do
     # login
@@ -14,12 +15,13 @@ RSpec.feature 'Task Management', type: :feature do
 
   # create a task
   context 'Creating a task' do
-    scenario 'User can create a simple task' do
+    before do
       visit new_task_path
-
       fill_in 'Title', with: 'My first task'
       click_button 'Create Task'
+    end
 
+    it 'User can create a simple task' do
       expect(page).to have_content('Task was successfully created')
       expect(page).to have_content('My first task')
     end
@@ -27,132 +29,191 @@ RSpec.feature 'Task Management', type: :feature do
 
   # Test validation
   describe 'Validation' do
-    scenario 'User cannot create task without title' do
-      visit new_task_path
+    context 'when creating a task with invalid data' do
+      before do
+        visit new_task_path
 
-      # Leave title blank
-      click_button 'Create Task'
+        # Leave title blank
+        click_button 'Create Task'
+      end
 
-      expect(page).to have_content("Title can't be blank")
+      it 'User cannot create task without title' do
+        expect(page).to have_content("Title can't be blank")
+      end
     end
   end
 
   # Test viewing tasks
   describe 'Viewing tasks' do
-    scenario 'User can view their tasks list' do
-      # create tasks for the user
-      create(:task, user: user, title: 'Task One')
-      create(:task, user: user, title: 'Task Two')
+    context 'when user has tasks' do
+      before do
+        # create tasks for the user
+        create(:task, user: user, title: 'Task One')
+        create(:task, user: user, title: 'Task Two')
 
-      visit tasks_path
+        visit tasks_path
+      end
 
-      expect(page).to have_content('Task One')
-      expect(page).to have_content('Task Two')
+      it 'User can view their tasks list' do
+        expect(page).to have_content('Task One')
+        expect(page).to have_content('Task Two')
+      end
     end
 
-    scenario 'User should only see their own tasks' do
-      # Create task for the current user
-      create(:task, user: user, title: 'My Task')
+    context 'when two users have tasks' do
+      before do
+        create(:task, user: user, title: 'My Task')
+        create(:task, user: other_user, title: 'Other User Task')
 
-      # Create task for another user
-      other_user = create(:user)
-      create(:task, user: other_user, title: 'Other User Task')
+        visit tasks_path
+      end
 
-      visit '/tasks'
-
-      expect(page).to have_content('My Task')
-      expect(page).not_to have_content('Other User Task')
+      it 'User should only see their own tasks' do
+        expect(page).to have_content('My Task')
+        expect(page).not_to have_content('Other User Task')
+      end
     end
   end
 
   # Test editing tasks
   describe 'Editing tasks' do
-    scenario 'User can edit their own task via index page' do
-      create(:task, user: user, title: 'Original Title', content: 'Original content')
+    context 'when user edits their own task' do
+      before do
+        create(:task, user: user, title: 'Original Title', content: 'Original content')
 
-      visit tasks_path
-      expect(page).to have_content('Original Title')
+        visit tasks_path
+        expect(page).to have_content('Original Title')
 
-      click_link 'Edit'
+        click_link 'Edit'
 
-      # change title and content
-      fill_in 'Title', with: 'Updated Title'
-      fill_in 'Content', with: 'Updated content'
-      click_button 'Update Task'
+        fill_in 'Title', with: 'Updated Title'
+        fill_in 'Content', with: 'Updated content'
+        click_button 'Update Task'
+      end
 
-      expect(page).to have_content('Task was successfully updated')
-      expect(page).to have_content('Updated Title')
-      expect(page).to have_content('Updated content')
+      it 'User can edit their own task via index page' do
+        expect(page).to have_content('Task was successfully updated')
+        expect(page).to have_content('Updated Title')
+        expect(page).to have_content('Updated content')
+      end
     end
 
-    scenario 'User cannot update task without title' do
-      task = create(:task, user: user, title: 'Original Title')
+    context 'when user edits a task with invalid data' do
+      before do
+        task = create(:task, user: user, title: 'Original Title')
 
-      visit "/tasks/#{task.id}/edit"
-      fill_in 'Title', with: ''
-      click_button 'Update Task'
-
-      expect(page).to have_content("Title can't be blank")
+        visit edit_task_path(task)
+        fill_in 'Title', with: ''
+        click_button 'Update Task'
+      end
+      it 'User cannot update task without title' do
+        expect(page).to have_content("Title can't be blank")
+      end
     end
   end
 
   # Test viewing task details
   describe 'Viewing task details' do
-    scenario 'User can view task details via show page' do
-      task = create(:task,
+    context 'when user has tasks and clicks on a task' do
+      let!(:task) do
+        create(:task,
         user: user,
         title: 'Detailed Task',
         content: 'This is the detailed content of the task',
         priority: 'high',
         status: 'pending'
-      )
+        )
+      end
 
-      visit '/tasks'
-      expect(page).to have_content('Detailed Task')
+      before do
+        visit tasks_path
+      end
 
-      click_link 'Detailed Task'
+      it 'User can view task details from index page' do
+        expect(page).to have_content('Detailed Task')
+      end
 
-      expect(page).to have_current_path("/en/tasks/#{task.id}")
-      expect(page).to have_content('Detailed Task')
-      expect(page).to have_content('This is the detailed content of the task')
-      expect(page).to have_content('Showing task')
+      before do
+        click_link 'Detailed Task'
+      end
 
-      expect(page).to have_link('Edit this task')
-      expect(page).to have_link('Back to tasks')
-      expect(page).to have_button('Destroy this task')
+      it 'User can view task details' do
+        expect(page).to have_current_path(task_path(task))
+        expect(page).to have_content('Detailed Task')
+        expect(page).to have_content('This is the detailed content of the task')
+        expect(page).to have_content('Showing task')
+
+        expect(page).to have_link('Edit this task')
+        expect(page).to have_link('Back to tasks')
+        expect(page).to have_button('Destroy this task')
+      end
     end
   end
 
   # Test deleting tasks from index page
   describe 'Deleting tasks' do
-    scenario 'User can delete their own task via index page' do
-      create(:task, user: user, title: 'Task to Delete', content: 'This will be deleted')
+    context 'when user deletes their own task from index page' do
+      let!(:task) do
+        create(:task,
+          user: user,
+          title: 'Task to Delete',
+          content: 'This will be deleted'
+        )
+      end
 
-      visit '/tasks'
-      expect(page).to have_content('Task to Delete')
+      before do
+        visit tasks_path
+      end
 
-      click_button 'Delete'
+      it 'User can see their own task from index page' do
+        expect(page).to have_content('Task to Delete')
+      end
 
-      expect(page).to have_content('Task was successfully destroyed')
-      expect(page).not_to have_content('Task to Delete')
-      expect(page).to have_current_path('/en/tasks')
+      context 'after clicking delete button' do
+        before do
+          click_button 'Delete'
+        end
+
+        it 'User sees confirmation and task is removed' do
+          expect(page).to have_content('Task was successfully destroyed')
+          expect(page).not_to have_content('Task to Delete')
+          expect(page).to have_current_path(tasks_path)
+        end
+      end
     end
   end
 
   # Test deleting from detail page
   describe 'Deleting tasks from detail page' do
-    scenario 'User can delete their own task from show page' do
-      task = create(:task, user: user, title: 'Task to Delete from Show', content: 'Will be deleted')
+    context 'when user deletes their own task from show page' do
+      let!(:task) do
+        create(:task,
+          user: user,
+          title: 'Task to Delete from Show',
+          content: 'Will be deleted'
+        )
+      end
 
-      visit "/tasks/#{task.id}"
-      expect(page).to have_content('Task to Delete from Show')
-      expect(page).to have_content('Will be deleted')
+      before do
+        visit task_path(task)
+      end
 
-      click_button 'Destroy this task'
+      it 'User can see the task details' do
+        expect(page).to have_content('Task to Delete from Show')
+        expect(page).to have_content('Will be deleted')
+      end
 
-      expect(page).to have_content('Task was successfully destroyed')
-      expect(page).to have_current_path('/en/tasks')
-      expect(page).not_to have_content('Task to Delete from Show')
+      context 'after clicking destroy button' do
+        before do
+          click_button 'Destroy this task'
+        end
+
+        it 'User sees confirmation and task is removed' do
+          expect(page).to have_content('Task was successfully destroyed')
+          expect(page).to have_current_path(tasks_path)
+          expect(page).not_to have_content('Task to Delete from Show')
+        end
+      end
     end
   end
 end
