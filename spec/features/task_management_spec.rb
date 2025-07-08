@@ -6,16 +6,16 @@ RSpec.feature 'Task Management', type: :feature do
 
   before do
     # login
-    visit '/login'
+    visit login_path
     fill_in 'email_address', with: user.email_address
-    fill_in 'password', with: 'password123'
+    fill_in 'password', with: user.password
     click_button 'Sign in'
   end
 
   # create a task
-  describe 'Creating a task' do
+  context 'Creating a task' do
     scenario 'User can create a simple task' do
-      visit '/tasks/new'
+      visit new_task_path
 
       fill_in 'Title', with: 'My first task'
       click_button 'Create Task'
@@ -28,7 +28,7 @@ RSpec.feature 'Task Management', type: :feature do
   # Test validation
   describe 'Validation' do
     scenario 'User cannot create task without title' do
-      visit '/tasks/new'
+      visit new_task_path
 
       # Leave title blank
       click_button 'Create Task'
@@ -44,7 +44,7 @@ RSpec.feature 'Task Management', type: :feature do
       create(:task, user: user, title: 'Task One')
       create(:task, user: user, title: 'Task Two')
 
-      visit '/tasks'
+      visit tasks_path
 
       expect(page).to have_content('Task One')
       expect(page).to have_content('Task Two')
@@ -70,7 +70,7 @@ RSpec.feature 'Task Management', type: :feature do
     scenario 'User can edit their own task via index page' do
       create(:task, user: user, title: 'Original Title', content: 'Original content')
 
-      visit '/tasks'
+      visit tasks_path
       expect(page).to have_content('Original Title')
 
       click_link 'Edit'
