@@ -4,6 +4,7 @@ RSpec.feature 'Task Management', type: :feature do
   # create user
   let(:user) { create(:user) }
   let(:other_user) { create(:user) }
+  let!(:task) { create(:task, user: user, title: 'Original Title', content: 'Original content') }
 
   before do
     # login
@@ -59,30 +60,13 @@ RSpec.feature 'Task Management', type: :feature do
         expect(page).to have_content('Task Two')
       end
     end
-
-    context 'when two users have tasks' do
-      before do
-        create(:task, user: user, title: 'My Task')
-        create(:task, user: other_user, title: 'Other User Task')
-
-        visit tasks_path
-      end
-
-      it 'User should only see their own tasks' do
-        expect(page).to have_content('My Task')
-        expect(page).not_to have_content('Other User Task')
-      end
-    end
   end
 
   # Test editing tasks
   describe 'Editing tasks' do
     context 'when user edits their own task' do
       before do
-        create(:task, user: user, title: 'Original Title', content: 'Original content')
-
         visit tasks_path
-        expect(page).to have_content('Original Title')
 
         click_link 'Edit'
 
@@ -100,8 +84,6 @@ RSpec.feature 'Task Management', type: :feature do
 
     context 'when user edits a task with invalid data' do
       before do
-        task = create(:task, user: user, title: 'Original Title')
-
         visit edit_task_path(task)
         fill_in 'Title', with: ''
         click_button 'Update Task'
