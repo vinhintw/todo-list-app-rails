@@ -27,14 +27,6 @@ module ApplicationHelper
     content_tag :span, text, class: badge_class(type, value)
   end
 
-  def url_for_with_locale(options = {})
-    if options.is_a?(Hash)
-      url_for(options.merge(locale: I18n.locale))
-    else
-      url_for(options)
-    end
-  end
-
   def default_url_options
     { locale: I18n.locale }
   end
