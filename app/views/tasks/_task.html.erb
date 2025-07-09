@@ -1,26 +1,26 @@
 <div id="<%= dom_id task %>" class="w-full sm:w-auto my-5 space-y-5">
   <div>
-    <strong class="block font-medium mb-1">Title:</strong>
+    <strong class="block font-medium mb-1"><%= t('tasks.task_title') %>:</strong>
     <%= task.title %>
   </div>
   <div>
-    <strong class="block font-medium mb-1">Content:</strong>
+    <strong class="block font-medium mb-1"><%= t('tasks.task_content') %>:</strong>
     <%= task.content %>
   </div>
   <div>
-    <strong class="block font-medium mb-1">Start time:</strong>
+    <strong class="block font-medium mb-1"><%= t('tasks.start_time') %>:</strong>
     <%= task.start_time %>
   </div>
   <div>
-    <strong class="block font-medium mb-1">End time:</strong>
+    <strong class="block font-medium mb-1"><%= t('tasks.end_time') %>:</strong>
     <%= task.end_time %>
   </div>
   <div>
-    <strong class="block font-medium mb-1">Priority:</strong>
-    <%= task.priority %>
+    <strong class="block font-medium mb-1"><%= t('tasks.priority') %>:</strong>
+    <%= t("priority.#{task.priority}") if task.priority %>
   </div>
   <div>
-    <strong class="block font-medium mb-1">Status:</strong>
-    <%= task.status %>
+    <strong class="block font-medium mb-1"><%= t('tasks.status') %>:</strong>
+    <%= t("status.#{task.status}") if task.status %>
   </div>
 </div>
