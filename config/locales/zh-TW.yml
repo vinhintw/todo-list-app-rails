@@ -71,30 +71,25 @@ zh-TW:
   confirmations:
     delete_task: "你確定要刪除此任務嗎？"
     are_you_sure: "你確定嗎？"
-    
-  # Validation errors
-  errors:
-    title_blank: "標題不能為空"
-    title_too_long: "標題太長（最多 %{count} 個字符）"
-    content_too_long: "內容太長（最多 %{count} 個字符）"
-    end_time_after_start: "結束時間必須在開始時間之後"
-    time_presence: "如果設定了時間，開始時間和結束時間都必須存在"
-    messages:
-      blank: "不能為空"
-      too_long: "太長（最多 %{count} 個字符）"
-      
+  
   # ActiveRecord validation messages
   activerecord:
+    attributes:
+        task:
+          title: "標題"
+          content: "內容"
     errors:
+      messages:
+        not_saved: "禁止保存此任務:"
       models:
         task:
           attributes:
-            title:
-              blank: "標題不能為空"
-              too_long: "標題太長（最多 %{count} 個字符）"
+            title: 
+              blank: "不能為空"
+              too_long: "太長（最多 %{count} 個字符）"
             content:
-              too_long: "內容太長（最多 %{count} 個字符）"
-            start_time:
-              blank: "開始時間不能為空"
+              too_long: "太長（最多 %{count} 個字符）"
             end_time:
-              blank: "結束時間不能為空"
+              end_time_after_start: "結束時間必須在開始時間之後"
+            prohibited: "禁止保存此任務"
+  error: "錯誤"
