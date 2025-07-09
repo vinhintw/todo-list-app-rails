@@ -205,49 +205,57 @@ RSpec.feature 'Task Management', type: :feature do
 
   # Test task ordering
   describe 'Task ordering' do
-    scenario 'Tasks are displayed in creation time order (newest first)' do
+    context 'when viewing tasks' do
       # Create tasks at different times
-      travel_to 3.hours.ago do
-        create(:task, user: user, title: 'First Task (Oldest)')
-      end
+      before do
+        travel_to 3.hours.ago do
+          create(:task, user: user, title: 'First Task (Oldest)')
+        end
 
-      travel_to 2.hours.ago do
-        create(:task, user: user, title: 'Second Task (Middle)')
-      end
+        travel_to 2.hours.ago do
+          create(:task, user: user, title: 'Second Task (Middle)')
+        end
 
-      travel_to 1.hour.ago do
-        create(:task, user: user, title: 'Third Task (Newest)')
-      end
+        travel_to 1.hour.ago do
+          create(:task, user: user, title: 'Third Task (Newest)')
+        end
 
-      visit tasks_path
+        visit tasks_path
+      end
 
       # Check that tasks are displayed in the correct order (newest first)
-      task_titles = page.all('h3 a').map(&:text)
+      let(:task_titles) { page.all('h3 a').map(&:text) }
 
-      expect(task_titles).to eq([
-        'Third Task (Newest)',
-        'Second Task (Middle)',
-        'First Task (Oldest)'
-      ])
+      it {
+        expect(task_titles).to eq([
+          'Third Task (Newest)',
+          'Second Task (Middle)',
+          'First Task (Oldest)'
+        ])
+      }
     end
 
-    scenario 'Newly created task appears at the top of the list' do
-      create(:task, user: user, title: 'Existing Task')
+    context 'when viewing tasks' do
+      let!(:task) { create(:task, user: user, title: 'Existing Task') }
 
-      visit tasks_path
-      expect(page).to have_content('Existing Task')
+      before do
+        visit tasks_path
+      end
 
-      click_link 'New task'
-      fill_in 'Title', with: 'Brand New Task'
-      click_button 'Create Task'
+      it { expect(page).to have_content('Existing Task') }
 
-      visit tasks_path
+      before do
+        click_link 'New task'
+        fill_in 'Title', with: 'Brand New Task'
+        click_button 'Create Task'
 
-      first_task_title = page.first('h3 a').text
-      expect(first_task_title).to eq('Brand New Task')
+        visit tasks_path
+      end
 
-      expect(page).to have_content('Brand New Task')
-      expect(page).to have_content('Existing Task')
+      let(:first_task_title) { page.first('h3 a').text }
+      it { expect(first_task_title).to eq('Brand New Task') }
+      it { expect(page).to have_content('Brand New Task') }
+      it { expect(page).to have_content('Existing Task') }
     end
   end
 end
