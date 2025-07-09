@@ -11,19 +11,19 @@ RSpec.feature 'Task Management', type: :feature do
     visit login_path
     fill_in 'email_address', with: user.email_address
     fill_in 'password', with: user.password
-    click_button 'Sign in'
+    click_button I18n.t('auth.sign_in')
   end
 
   # create a task
   context 'Creating a task' do
     before do
       visit new_task_path
-      fill_in 'Title', with: 'My first task'
-      click_button 'Create Task'
+      fill_in I18n.t('tasks.task_title'), with: 'My first task'
+      click_button I18n.t('tasks.create_task')
     end
 
     it 'User can create a simple task' do
-      expect(page).to have_content('Task was successfully created')
+      expect(page).to have_content(I18n.t('flash.task_created'))
       expect(page).to have_content('My first task')
     end
   end
@@ -35,11 +35,11 @@ RSpec.feature 'Task Management', type: :feature do
         visit new_task_path
 
         # Leave title blank
-        click_button 'Create Task'
+        click_button I18n.t('tasks.create_task')
       end
 
       it 'User cannot create task without title' do
-        expect(page).to have_content("Title can't be blank")
+        expect(page).to have_content(I18n.t('activerecord.errors.models.task.attributes.title.blank'))
       end
     end
   end
@@ -68,15 +68,15 @@ RSpec.feature 'Task Management', type: :feature do
       before do
         visit tasks_path
 
-        click_link 'Edit'
+        click_link I18n.t("edit")
 
-        fill_in 'Title', with: 'Updated Title'
-        fill_in 'Content', with: 'Updated content'
-        click_button 'Update Task'
+        fill_in I18n.t("tasks.task_title"), with: 'Updated Title'
+        fill_in I18n.t("tasks.task_content"), with: 'Updated content'
+        click_button I18n.t("tasks.update_task")
       end
 
       it 'User can edit their own task via index page' do
-        expect(page).to have_content('Task was successfully updated')
+        expect(page).to have_content(I18n.t("flash.task_updated"))
         expect(page).to have_content('Updated Title')
         expect(page).to have_content('Updated content')
       end
@@ -84,12 +84,12 @@ RSpec.feature 'Task Management', type: :feature do
 
     context 'when user edits a task with invalid data' do
       before do
-        visit edit_task_path(task)
-        fill_in 'Title', with: ''
-        click_button 'Update Task'
+        visit edit_task_path(locale: I18n.locale, id: task.id)
+        fill_in I18n.t("tasks.task_title"), with: ''
+        click_button I18n.t("tasks.update_task")
       end
       it 'User cannot update task without title' do
-        expect(page).to have_content("Title can't be blank")
+        expect(page).to have_content(I18n.t('activerecord.errors.models.task.attributes.title.blank'))
       end
     end
   end
@@ -120,14 +120,18 @@ RSpec.feature 'Task Management', type: :feature do
       end
 
       it 'User can view task details' do
-        expect(page).to have_current_path(task_path(task))
+        expect(page).to have_current_path(task_path(locale: I18n.locale, id: task.id))
         expect(page).to have_content('Detailed Task')
         expect(page).to have_content('This is the detailed content of the task')
-        expect(page).to have_content('Showing task')
+        expect(page).to have_content(I18n.t('tasks.show_task'))
 
-        expect(page).to have_link('Edit this task')
-        expect(page).to have_link('Back to tasks')
-        expect(page).to have_button('Destroy this task')
+        expect(page).to have_link(I18n.t('tasks.edit_this_task'))
+        expect(page).to have_link(I18n.t('tasks.back_to_tasks'))
+        expect(page).to have_button(I18n.t('tasks.destroy_this_task'))
+      end
+
+      describe 'User can view task details' do
+        it { expect(page).to have_content('Detailed Task') }
       end
     end
   end
@@ -157,9 +161,9 @@ RSpec.feature 'Task Management', type: :feature do
         end
 
         it 'User sees confirmation and task is removed' do
-          expect(page).to have_content('Task was successfully destroyed')
+          expect(page).to have_content(I18n.t('flash.task_destroyed'))
           expect(page).not_to have_content('Task to Delete')
-          expect(page).to have_current_path(tasks_path)
+          expect(page).to have_current_path(tasks_path(locale: I18n.locale))
         end
       end
     end
@@ -177,7 +181,7 @@ RSpec.feature 'Task Management', type: :feature do
       end
 
       before do
-        visit task_path(task)
+        visit task_path(locale: I18n.locale, id: task.id)
       end
 
       it 'User can see the task details' do
@@ -187,12 +191,12 @@ RSpec.feature 'Task Management', type: :feature do
 
       context 'after clicking destroy button' do
         before do
-          click_button 'Destroy this task'
+          click_button I18n.t('tasks.destroy_this_task')
         end
 
         it 'User sees confirmation and task is removed' do
-          expect(page).to have_content('Task was successfully destroyed')
-          expect(page).to have_current_path(tasks_path)
+          expect(page).to have_content(I18n.t('flash.task_destroyed'))
+          expect(page).to have_current_path(tasks_path(locale: I18n.locale))
           expect(page).not_to have_content('Task to Delete from Show')
         end
       end
