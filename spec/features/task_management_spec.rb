@@ -205,7 +205,8 @@ RSpec.feature 'Task Management', type: :feature do
 
   # Test task ordering
   describe 'Task ordering' do
-    context 'when viewing tasks' do
+    context 'when viewing tasks ordered by created_at' do
+      let(:task_titles) { page.all('h3 a').map(&:text) }
       # Create tasks at different times
       before do
         travel_to 3.hours.ago do
@@ -223,28 +224,23 @@ RSpec.feature 'Task Management', type: :feature do
         visit tasks_path
       end
 
-      # Check that tasks are displayed in the correct order (newest first)
-      let(:task_titles) { page.all('h3 a').map(&:text) }
 
-      it {
+      it 'displays tasks in newest first order' do
         expect(task_titles).to eq([
           'Third Task (Newest)',
           'Second Task (Middle)',
           'First Task (Oldest)'
         ])
-      }
+      end
     end
 
-    context 'when viewing tasks' do
-      let!(:task) { create(:task, user: user, title: 'Existing Task') }
+    context 'when creating a new task' do
+      let(:task_titles) { page.all('h3 a').map(&:text) }
+      let!(:existing_task) { create(:task, user: user, title: 'Existing Task') }
 
       before do
         visit tasks_path
-      end
 
-      it { expect(page).to have_content('Existing Task') }
-
-      before do
         click_link 'New task'
         fill_in 'Title', with: 'Brand New Task'
         click_button 'Create Task'
@@ -252,10 +248,9 @@ RSpec.feature 'Task Management', type: :feature do
         visit tasks_path
       end
 
-      let(:first_task_title) { page.first('h3 a').text }
-      it { expect(first_task_title).to eq('Brand New Task') }
-      it { expect(page).to have_content('Brand New Task') }
-      it { expect(page).to have_content('Existing Task') }
+      it 'shows both tasks in correct order (newest first)' do
+        expect(task_titles).to eq([ 'Brand New Task', existing_task.title ])
+      end
     end
   end
 end
