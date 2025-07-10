@@ -221,6 +221,7 @@ RSpec.feature 'Task Management', type: :feature do
           create(:task, user: user, title: 'Third Task (Newest)')
         end
 
+        travel_back
         visit tasks_path
       end
 
