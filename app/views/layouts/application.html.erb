@@ -17,14 +17,13 @@
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
-  <body class="bg-gray-50 text-gray-800 min-h-screen">
-    <div class="flex">
-      <div class="flex-1">
-        <%= render 'shared/navbar' %>
-        <main class="px-4 lg:p-8">
-          <%= yield %>
-        </main>
-      </div>
+  <body class="bg-gray-50 text-gray-800 flex min-h-screen">
+    <%= render 'shared/sidebar' if authenticated? %>
+    <div class="flex-1">
+      <%= render 'shared/navbar' %>
+      <main class="px-2 md:p-4">
+        <%= yield %>
+      </main>
     </div>
   </body>
 </html>
