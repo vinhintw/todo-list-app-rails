@@ -10,9 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_07_080753) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_11_095612) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+  enable_extension "pg_trgm"
 
   create_table "tasks", force: :cascade do |t|
     t.string "title", null: false
@@ -24,6 +25,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_07_080753) do
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["created_at"], name: "index_tasks_on_created_at"
+    t.index ["end_time"], name: "index_tasks_on_end_time"
+    t.index ["status"], name: "index_tasks_on_status"
     t.index ["user_id"], name: "index_tasks_on_user_id"
     t.check_constraint "content IS NULL OR length(content) <= 5000", name: "content_length_check"
     t.check_constraint "length(title::text) <= 255", name: "title_length_check"
