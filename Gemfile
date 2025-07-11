@@ -52,6 +52,7 @@ group :development, :test do
   gem "rspec-rails"
   gem "factory_bot_rails"
   gem "faker"
+  gem "ransack"
 
   # Load environment variables from .env file
   gem "dotenv-rails"
