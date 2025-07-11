@@ -9,8 +9,9 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
             </svg>
           </button>
+          <% else %>
+           <%= sidebar_brand_link %>
         <% end %>
-        <%= link_to "TaskManager", root_path, class: "flex items-center px-2 py-2 text-xl font-bold text-indigo-600 hover:text-indigo-700" %>
       </div>
       <!-- Desktop Search Bar -->
       <%= render "shared/desktop_search_bar" if authenticated? %>
