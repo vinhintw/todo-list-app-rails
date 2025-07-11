@@ -107,6 +107,7 @@ en:
       task:
         title: "Title"
         content: "Content"
+        end_time: "End time"
     errors:
       messages:
         not_saved: "prohibited this task from being saved:"
@@ -119,5 +120,5 @@ en:
             content:
               too_long: "is too long (maximum is %{count} characters)"
             end_time:
-              end_time_after_start: "End time must be after start time"
+              end_time_after_start: "must be after start time"
   error: "error"

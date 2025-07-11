@@ -17,7 +17,7 @@ class Task < ApplicationRecord
     return unless start_time.present? && end_time.present?
 
     if end_time <= start_time
-      errors.add(:base, I18n.t("activerecord.errors.models.task.attributes.end_time.end_time_after_start"))
+      errors.add(:end_time, I18n.t("activerecord.errors.models.task.attributes.end_time.end_time_after_start"))
     end
   end
 end
