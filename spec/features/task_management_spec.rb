@@ -205,29 +205,27 @@ RSpec.feature 'Task Management', type: :feature do
 
   # Test task ordering by end_time
   describe 'Task ordering by end_time' do
-    context 'when viewing tasks ordered by end_time' do
-      let(:task_titles) { page.all('h3 a').map(&:text) }
-      let!(:task_a) { create(:task, user: user, title: 'Task A',
-        start_time: Time.current,
-        end_time: 1.day.from_now) }
-      let!(:task_b) { create(:task, user: user, title: 'Task B',
-        start_time: Time.current,
-        end_time: 2.days.from_now) }
-      let!(:task_c) { create(:task, user: user, title: 'Task C',
-        start_time: Time.current,
-        end_time: 3.days.from_now) }
+    let(:task_titles) { page.all('h3 a').map(&:text) }
+    let!(:task_a) { create(:task, user: user, title: 'Task A',
+      start_time: Time.current,
+      end_time: 1.day.from_now) }
+    let!(:task_b) { create(:task, user: user, title: 'Task B',
+      start_time: Time.current,
+      end_time: 2.days.from_now) }
+    let!(:task_c) { create(:task, user: user, title: 'Task C',
+      start_time: Time.current,
+      end_time: 3.days.from_now) }
 
-      before do
-        visit tasks_path
-      end
+    before do
+      visit tasks_path
+    end
 
-      it 'displays tasks ordered by end_time (latest first)' do
-        expect(task_titles).to eq([
-          'Task C',
-          'Task B',
-          'Task A'
-        ])
-      end
+    it 'displays tasks ordered by end_time (latest first)' do
+      expect(task_titles).to eq([
+        'Task C',
+        'Task B',
+        'Task A'
+      ])
     end
   end
 end
