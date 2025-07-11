@@ -1,0 +1,47 @@
+<nav class="bg-white shadow-sm sticky top-0 z-40">
+  <div class="p-4 sm:px-6 lg:px-8 h-16">
+    <div class="flex justify-between">
+      <!-- Left side - Logo and mobile menu button -->
+      <div class="flex items-center">
+        <% if authenticated? %>
+          <button id="mobile-sidebar-toggle" class="lg:hidden p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
+            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+            </svg>
+          </button>
+        <% end %>
+        <%= link_to "TaskManager", root_path, class: "flex items-center px-2 py-2 text-xl font-bold text-indigo-600 hover:text-indigo-700" %>
+      </div>
+      <!-- Right side - User menu or auth buttons -->
+      <div class="flex items-center">
+        <% if authenticated? %>
+          <!-- User dropdown -->
+          <div class="relative ml-3">
+            <button id="user-menu-button" class="flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" aria-expanded="false" aria-haspopup="true">
+              <div class="h-8 w-8 rounded-full bg-indigo-500 flex items-center justify-center text-white font-medium">
+                <%= current_user.username.first.upcase %>
+              </div>
+            </button>
+            <!-- Dropdown menu -->
+            <div id="user-menu" class="hidden origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-sm bg-white ring-1 ring-slate-300 ring-opacity-5 focus:outline-none" role="menu">
+              <div class="py-1" role="none">
+                <div class="px-4 py-2 text-sm text-gray-700 shadow-sm">
+                  <%= t("navbar.signed_in_as") %> <strong><%= current_user.username %></strong>
+                </div>
+                <%= button_to t("navbar.sign_out"), logout_path, method: :delete, 
+                    class: "block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 border-0 bg-transparent"
+                %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+        <div class="flex space-x-2 pl-2">
+          <%= link_to "English", url_for(locale: :en), 
+              class: "px-3 py-1 text-sm rounded #{I18n.locale == :en ? 'bg-blue-600 text-white' : 'bg-white text-gray-700 hover:bg-gray-200'}" %>
+          <%= link_to "中文", url_for(locale: :'zh-TW'), 
+              class: "px-3 py-1 text-sm rounded #{I18n.locale == :'zh-TW' ? 'bg-blue-600 text-white' : 'bg-white text-gray-700 hover:bg-gray-200'}" %>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
