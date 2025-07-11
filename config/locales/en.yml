@@ -65,7 +65,7 @@ en:
     hours: "hours"
     destroy_this_task: "Destroy this task"
     edit_this_task: "Edit this task"
-    
+    all_tasks: "All Tasks"
   # Priority levels
   priority:
     low: "Low"
