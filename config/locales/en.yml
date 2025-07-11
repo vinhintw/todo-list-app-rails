@@ -85,16 +85,28 @@ en:
     task_created: "Task was successfully created."
     task_updated: "Task was successfully updated."
     task_destroyed: "Task was successfully destroyed."
+    registration_successful: "Sign up successful"
     
   # Authentication
   auth:
     login: "Login"
     logout: "Logout"
     sign_in: "Sign in"
+    sign_up: "Sign up"
+    username: "Username"
     email_address: "Email address"
     password: "Password"
+    password_confirmation: "Password confirmation"
     invalid_credentials: "Try another email address or password."
     rate_limit_exceeded: "Try again later."
+    enter_username: "Enter your username"
+    enter_email: "Enter your email address"
+    enter_password: "Enter your password"
+    confirm_password: "Confirm your password"
+    password_requirements: "Password must be at least 6 characters long"
+    already_have_account: "Already have an account? Sign in"
+    dont_have_account: "Don't have an account? Sign up"
+    prohibited_from_being_saved: "prohibited this account from being saved:"
     
   # Confirmations
   confirmations:
@@ -120,5 +132,8 @@ en:
             content:
               too_long: "is too long (maximum is %{count} characters)"
             end_time:
-              end_time_after_start: "must be after start time"
+              end_time_after_start: "End time must be after start time"
   error: "error"
+  navbar:
+    signed_in_as: "Signed in as"
+    sign_out: "Sign out"
