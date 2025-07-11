@@ -78,6 +78,7 @@ zh-TW:
         task:
           title: "標題"
           content: "內容"
+          end_time: "結束時間"
     errors:
       messages:
         not_saved: "禁止保存此任務:"
@@ -90,6 +91,6 @@ zh-TW:
             content:
               too_long: "太長（最多 %{count} 個字符）"
             end_time:
-              end_time_after_start: "結束時間必須在開始時間之後"
+              end_time_after_start: "必須在開始時間之後"
             prohibited: "禁止保存此任務"
   error: "錯誤"
