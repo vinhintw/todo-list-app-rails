@@ -36,7 +36,7 @@ zh-TW:
     hours: "小時"
     destroy_this_task: "刪除此任務"
     edit_this_task: "編輯此任務"
-
+    all_tasks: "所有任務"
   # Priority levels
   priority:
     low: "低"
