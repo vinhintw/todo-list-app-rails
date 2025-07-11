@@ -4,7 +4,7 @@ RSpec.feature 'Task Management', type: :feature do
   # create user
   let(:user) { create(:user) }
   let(:other_user) { create(:user) }
-  let!(:task) { create(:task, user: user, title: 'Original Title', content: 'Original content') }
+  let(:task) { create(:task, user: user, title: 'Original Title', content: 'Original content') }
 
   before do
     # login
@@ -66,7 +66,7 @@ RSpec.feature 'Task Management', type: :feature do
   describe 'Editing tasks' do
     context 'when user edits their own task' do
       before do
-        visit tasks_path
+        visit task_path(I18n.locale, id: task.id)
 
         click_link I18n.t("edit")
 
@@ -199,6 +199,58 @@ RSpec.feature 'Task Management', type: :feature do
           expect(page).to have_current_path(tasks_path(locale: I18n.locale))
           expect(page).not_to have_content('Task to Delete from Show')
         end
+      end
+    end
+  end
+
+  # Test task ordering
+  describe 'Task ordering' do
+    context 'when viewing tasks ordered by created_at' do
+      let(:task_titles) { page.all('h3 a').map(&:text) }
+      # Create tasks at different times
+      before do
+        travel_to 3.hours.ago do
+          create(:task, user: user, title: 'First Task (Oldest)')
+        end
+
+        travel_to 2.hours.ago do
+          create(:task, user: user, title: 'Second Task (Middle)')
+        end
+
+        travel_to 1.hour.ago do
+          create(:task, user: user, title: 'Third Task (Newest)')
+        end
+
+        travel_back
+        visit tasks_path
+      end
+
+
+      it 'displays tasks in newest first order' do
+        expect(task_titles).to eq([
+          'Third Task (Newest)',
+          'Second Task (Middle)',
+          'First Task (Oldest)'
+        ])
+      end
+    end
+
+    context 'when creating a new task' do
+      let(:task_titles) { page.all('h3 a').map(&:text) }
+      let!(:existing_task) { create(:task, user: user, title: 'Existing Task') }
+
+      before do
+        visit tasks_path
+
+        click_link 'New task'
+        fill_in 'Title', with: 'Brand New Task'
+        click_button 'Create Task'
+
+        visit tasks_path
+      end
+
+      it 'shows both tasks in correct order (newest first)' do
+        expect(task_titles).to eq([ 'Brand New Task', existing_task.title ])
       end
     end
   end
