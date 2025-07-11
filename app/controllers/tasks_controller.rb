@@ -3,12 +3,12 @@ class TasksController < ApplicationController
 
   # GET /tasks or /tasks.json
   def index
-    if params[:title].present?
-      @q = current_user.tasks.ransack(title_cont: params[:title])
-      @tasks = @q.result
-    else
-      @tasks = current_user.tasks.order(created_at: :desc)
-    end
+    ransack_params = {}
+    ransack_params[:title_cont] = params[:title] if params[:title].present?
+    ransack_params[:status_eq] = params[:status] if params[:status].present?
+
+    @q = current_user.tasks.ransack(ransack_params)
+    @tasks = @q.result.order(created_at: :desc)
   end
 
   # GET /tasks/1 or /tasks/1.json
