@@ -231,12 +231,12 @@ RSpec.feature 'Task Management', type: :feature do
 
   # Test task search
   describe 'Task search' do
-    let!(:task1) { create(:task, user: user, title: 'Searchable Task 1') }
-    let!(:task2) { create(:task, user: user, title: 'Searchable Task 2') }
+    let!(:task1) { create(:task, user: user, title: 'Searchable Task 1', status: 'in_progress') }
+    let!(:task2) { create(:task, user: user, title: 'Searchable Task 2', status: 'completed') }
     let(:nav_form) { find('#desktop-search-form') }
     let(:mobile_form) { find('#mobile-search-form') }
 
-    context 'when searching from desktop' do
+    context 'when searching title from desktop' do
       before do
         visit tasks_path
         within(nav_form) do
@@ -248,13 +248,22 @@ RSpec.feature 'Task Management', type: :feature do
       it { expect(page).not_to have_content(task2.title) }
     end
 
-    context 'when searching from mobile' do
+    context 'when searching title from mobile' do
       before do
         visit tasks_path
         within(mobile_form) do
           fill_in 'title', with: task1.title
           find('input[type="submit"]').click
         end
+      end
+      it { expect(page).to have_content(task1.title) }
+      it { expect(page).not_to have_content(task2.title) }
+    end
+
+    context 'when searching by status' do
+      before do
+        visit tasks_path
+        click_link I18n.t('status.in_progress')
       end
       it { expect(page).to have_content(task1.title) }
       it { expect(page).not_to have_content(task2.title) }
