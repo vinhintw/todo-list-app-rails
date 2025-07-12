@@ -94,3 +94,7 @@ zh-TW:
               end_time_after_start: "必須在開始時間之後"
             prohibited: "禁止保存此任務"
   error: "錯誤"
+  navbar:
+    signed_in_as: "已登入為"
+    sign_out: "登出"
+    placeholder_search: "搜尋任務"

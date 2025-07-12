@@ -120,5 +120,9 @@ en:
             content:
               too_long: "is too long (maximum is %{count} characters)"
             end_time:
-              end_time_after_start: "must be after start time"
+              end_time_after_start: "End time must be after start time"
   error: "error"
+  navbar:
+    signed_in_as: "Signed in as"
+    sign_out: "Sign out"
+    placeholder_search: "Search tasks"
