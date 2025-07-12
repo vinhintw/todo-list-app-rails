@@ -8,7 +8,7 @@ class TasksController < ApplicationController
     ransack_params[:status_eq] = params[:status] if params[:status].present?
 
     @q = current_user.tasks.ransack(ransack_params)
-    @tasks = @q.result.order(created_at: :desc)
+    @tasks = @q.result.order(end_time: :desc)
   end
 
   # GET /tasks/1 or /tasks/1.json
