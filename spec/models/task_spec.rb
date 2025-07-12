@@ -78,4 +78,24 @@ RSpec.describe Task, type: :model do
       it { expect(task).to_not be_valid }
     end
   end
+
+  describe 'test search condition of task title' do
+    let!(:task1) { create(:task, user: user, title: 'Task 1') }
+    let!(:task2) { create(:task, user: user, title: 'Task 2') }
+    let!(:task3) { create(:task, user: user, title: 'Different') }
+    let(:title_params) { { title: 'Task' } }
+
+    before do
+      @q = user.tasks.ransack(title_cont: title_params[:title])
+    end
+
+    it 'returns tasks that match the title condition' do
+      expect(@q.result).to include(task1, task2)
+      expect(@q.result).not_to include(task3)
+    end
+
+    it 'does not return tasks that do not match the title condition' do
+      expect(@q.result).not_to include(task3)
+    end
+  end
 end
