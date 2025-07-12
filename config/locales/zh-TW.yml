@@ -109,3 +109,4 @@ zh-TW:
   navbar:
     signed_in_as: "已登入為"
     sign_out: "登出"
+    placeholder_search: "搜尋任務"
