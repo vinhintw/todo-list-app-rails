@@ -87,7 +87,8 @@ en:
     task_destroyed: "Task was successfully destroyed."
     registration_successful: "Sign up successful"
     user_updated: "User was successfully updated."
-    
+    user_destroyed: "User was successfully deleted."
+
   # Authentication
   auth:
     login: "Login"

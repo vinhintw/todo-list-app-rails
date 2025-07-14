@@ -58,6 +58,8 @@ zh-TW:
     task_destroyed: "任務已成功刪除。"
     registration_successful: "註冊成功"
     user_updated: "使用者已成功更新。"
+    user_destroyed: "使用者已成功刪除。"
+
 
   # Authentication
   auth:
