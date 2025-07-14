@@ -1,4 +1,6 @@
 class AdminController < ApplicationController
+  before_action :set_user, only: %i[ edit update ]
+
   def index
     @users = User.includes(:tasks)
     @admin_users = @users.select { |user| user.role == "admin" }
@@ -23,7 +25,7 @@ class AdminController < ApplicationController
     @user = User.new(signup_params)
 
     respond_to do |format|
-      if @user.saveuser_created
+      if @user.save
         format.html { redirect_to admin_path, notice: t("flash.registration_successful") }
         format.json { render :show, status: :created, location: @user }
       else
@@ -33,7 +35,27 @@ class AdminController < ApplicationController
     end
   end
 
+  def edit
+  end
+
+  def update
+    respond_to do |format|
+      if @user.update(signup_params)
+        format.html { redirect_to admin_path, notice: t("flash.user_updated") }
+        format.json { render :show, status: :ok, location: @user }
+        format.html { redirect_to admin_path, notice: t("flash.user_updated") }
+      else
+        format.html { render :edit, status: :unprocessable_entity }
+        format.json { render json: @user.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
   private
+
+  def set_user
+    @user = User.find(params[:id])
+  end
 
   def signup_params
     params.require(:user).permit(:username, :email_address, :password, :password_confirmation)
