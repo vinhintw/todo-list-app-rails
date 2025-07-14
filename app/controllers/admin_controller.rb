@@ -15,7 +15,29 @@ class AdminController < ApplicationController
     preload_task_counts
   end
 
+  def new
+    @user = User.new
+  end
+
+  def create
+    @user = User.new(signup_params)
+
+    respond_to do |format|
+      if @user.saveuser_created
+        format.html { redirect_to admin_path, notice: t("flash.registration_successful") }
+        format.json { render :show, status: :created, location: @user }
+      else
+        format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: @user.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
   private
+
+  def signup_params
+    params.require(:user).permit(:username, :email_address, :password, :password_confirmation)
+  end
 
   def preload_task_counts
     user_ids = @users.map(&:id)
