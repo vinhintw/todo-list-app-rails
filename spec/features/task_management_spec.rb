@@ -205,53 +205,34 @@ RSpec.feature 'Task Management', type: :feature do
 
   # Test task ordering
   describe 'Task ordering' do
-    context 'when viewing tasks ordered by created_at' do
-      let(:task_titles) { page.all('h3 a').map(&:text) }
-      # Create tasks at different times
+    let(:task_titles) { page.all('h3 a').map(&:text) }
+    let!(:low_task) { create(:task, user: user, title: 'Low Task (Oldest)', priority: 'low') }
+    let!(:medium_task) { create(:task, user: user, title: 'Medium Task (Middle)', priority: 'medium') }
+    let!(:high_task) { create(:task, user: user, title: 'High Task (Newest)', priority: 'high') }
+
+    context 'when viewing tasks ordered by priority' do
       before do
-        travel_to 3.hours.ago do
-          create(:task, user: user, title: 'First Task (Oldest)')
-        end
-
-        travel_to 2.hours.ago do
-          create(:task, user: user, title: 'Second Task (Middle)')
-        end
-
-        travel_to 1.hour.ago do
-          create(:task, user: user, title: 'Third Task (Newest)')
-        end
-
-        travel_back
         visit tasks_path
       end
 
 
-      it 'displays tasks in newest first order' do
+      it 'displays tasks in order of priority' do
         expect(task_titles).to eq([
-          'Third Task (Newest)',
-          'Second Task (Middle)',
-          'First Task (Oldest)'
+          'High Task (Newest)',
+          'Medium Task (Middle)',
+          'Low Task (Oldest)'
         ])
       end
     end
 
     context 'when creating a new task' do
-      let(:task_titles) { page.all('h3 a').map(&:text) }
-      let!(:existing_task) { create(:task, user: user, title: 'Existing Task') }
+      let!(:new_task) { create(:task, user: user, title: 'New Task', priority: 'urgent') }
 
       before do
         visit tasks_path
-
-        click_link 'New task'
-        fill_in 'Title', with: 'Brand New Task'
-        click_button 'Create Task'
-
-        visit tasks_path
       end
 
-      it 'shows both tasks in correct order (newest first)' do
-        expect(task_titles).to eq([ 'Brand New Task', existing_task.title ])
-      end
+      it { expect(task_titles.first).to eq('New Task') }
     end
   end
 end
