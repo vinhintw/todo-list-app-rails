@@ -170,7 +170,6 @@ en:
       admin_title: "Admin Dashboard"
       title: "Admin Dashboard - User Management"
       user_management: "User Management"
-      manage_monitor_users: "Manage and monitor all users in the system"
       total_users: "Total Users"
       administrators: "Administrators"
       normal_users: "Normal Users"

@@ -122,10 +122,10 @@ module AdminHelper
     [
       { key: "admin.dashboard.username", align: "left" },
       { key: "admin.dashboard.email", align: "left" },
-      { key: "admin.dashboard.pending", align: "center" },
-      { key: "admin.dashboard.in_progress", align: "center" },
-      { key: "admin.dashboard.completed", align: "center" },
-      { key: "admin.dashboard.cancelled", align: "center" },
+      { key: "status.pending", align: "center" },
+      { key: "status.in_progress", align: "center" },
+      { key: "status.completed", align: "center" },
+      { key: "status.cancelled", align: "center" },
       { key: "admin.dashboard.total", align: "center" },
       { key: "admin.dashboard.actions", align: "center" }
     ]

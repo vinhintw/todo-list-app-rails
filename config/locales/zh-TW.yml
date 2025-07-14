@@ -150,7 +150,6 @@ zh-TW:
       admin_title: "管理員儀表板"
       title: "帳號管理"
       user_management: "帳號管理"
-      manage_monitor_users: "管理和監控系統中的所有用戶"
       total_users: "用戶總數"
       administrators: "管理員"
       normal_users: "一般帳號"
