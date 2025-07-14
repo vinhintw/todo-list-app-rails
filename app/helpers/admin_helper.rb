@@ -76,7 +76,7 @@ module AdminHelper
           concat render_task_count_cell(user.completed_tasks_count, "completed")
           concat render_task_count_cell(user.cancelled_tasks_count, "cancelled")
           concat render_task_count_cell(user.total_tasks_count, "total")
-          concat render_actions_cell
+          concat render_actions_cell(user)
         end
       end.join.html_safe
     end
@@ -104,10 +104,10 @@ module AdminHelper
     end
   end
 
-  def render_actions_cell
+  def render_actions_cell(user)
     content_tag :td, class: "px-6 py-4 whitespace-nowrap text-center" do
-      content_tag :button, t("admin.dashboard.view_details"),
-                  class: "text-indigo-600 hover:text-indigo-900 text-sm font-medium"
+      link_to t("admin.user.edit"), admin_edit_user_path(user),
+              class: "text-indigo-600 hover:text-indigo-900 text-sm font-medium"
     end
   end
 
