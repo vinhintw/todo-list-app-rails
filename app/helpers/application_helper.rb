@@ -50,7 +50,7 @@ module ApplicationHelper
 
   def all_tasks_link_class
     base_class = "group flex items-center px-2 py-2 text-base font-medium rounded-md"
-    if params[:status].blank?
+    if params[:status].blank? && controller_name == "tasks"
       "#{base_class} bg-indigo-100 text-indigo-900"
     else
       "#{base_class} text-gray-600 hover:bg-gray-50 hover:text-gray-900"
@@ -82,5 +82,22 @@ module ApplicationHelper
     link_to "TaskManager",
             root_path,
             class: "flex items-center text-xl font-bold text-indigo-600 hover:text-indigo-700"
+  end
+
+  def admin_link_class
+    base_class = "group flex items-center px-2 py-2 text-base font-medium rounded-md"
+    if controller_name == "admin"
+      "#{base_class} bg-indigo-100 text-indigo-900"
+    else
+      "#{base_class} text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+    end
+  end
+
+  def render_admin_link
+    if current_user&.admin?
+      link_to t("admin.dashboard.admin_title"),
+              admin_path,
+              class: admin_link_class
+    end
   end
 end
