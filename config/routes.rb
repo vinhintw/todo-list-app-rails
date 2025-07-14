@@ -8,6 +8,8 @@ Rails.application.routes.draw do
     post "/signup", to: "registrations#create"
 
     get "/admin", to: "admin#index"
+    get "/admin/create-user", to: "admin#new"
+    post "/admin/create-user", to: "admin#create"
     # Defines the root path route ("/")
     root "tasks#index"
   end
