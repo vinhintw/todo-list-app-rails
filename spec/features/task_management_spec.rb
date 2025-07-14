@@ -203,55 +203,29 @@ RSpec.feature 'Task Management', type: :feature do
     end
   end
 
-  # Test task ordering
-  describe 'Task ordering' do
-    context 'when viewing tasks ordered by created_at' do
-      let(:task_titles) { page.all('h3 a').map(&:text) }
-      # Create tasks at different times
-      before do
-        travel_to 3.hours.ago do
-          create(:task, user: user, title: 'First Task (Oldest)')
-        end
+  # Test task ordering by end_time
+  describe 'Task ordering by end_time' do
+    let(:task_titles) { page.all('h3 a').map(&:text) }
+    let!(:task_a) { create(:task, user: user, title: 'Task A',
+      start_time: Time.current,
+      end_time: 1.day.from_now) }
+    let!(:task_b) { create(:task, user: user, title: 'Task B',
+      start_time: Time.current,
+      end_time: 2.days.from_now) }
+    let!(:task_c) { create(:task, user: user, title: 'Task C',
+      start_time: Time.current,
+      end_time: 3.days.from_now) }
 
-        travel_to 2.hours.ago do
-          create(:task, user: user, title: 'Second Task (Middle)')
-        end
-
-        travel_to 1.hour.ago do
-          create(:task, user: user, title: 'Third Task (Newest)')
-        end
-
-        travel_back
-        visit tasks_path
-      end
-
-
-      it 'displays tasks in newest first order' do
-        expect(task_titles).to eq([
-          'Third Task (Newest)',
-          'Second Task (Middle)',
-          'First Task (Oldest)'
-        ])
-      end
+    before do
+      visit tasks_path
     end
 
-    context 'when creating a new task' do
-      let(:task_titles) { page.all('h3 a').map(&:text) }
-      let!(:existing_task) { create(:task, user: user, title: 'Existing Task') }
-
-      before do
-        visit tasks_path
-
-        click_link 'New task'
-        fill_in 'Title', with: 'Brand New Task'
-        click_button 'Create Task'
-
-        visit tasks_path
-      end
-
-      it 'shows both tasks in correct order (newest first)' do
-        expect(task_titles).to eq([ 'Brand New Task', existing_task.title ])
-      end
+    it 'displays tasks ordered by end_time (latest first)' do
+      expect(task_titles).to eq([
+        'Task C',
+        'Task B',
+        'Task A'
+      ])
     end
   end
 end
