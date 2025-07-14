@@ -86,6 +86,7 @@ en:
     task_updated: "Task was successfully updated."
     task_destroyed: "Task was successfully destroyed."
     registration_successful: "Sign up successful"
+    user_updated: "User was successfully updated."
     
   # Authentication
   auth:
@@ -165,6 +166,9 @@ en:
     placeholder_search: "Search tasks"
 
   admin:
+    user: 
+      edit: "Edit User"
+      delete: "Delete User"
     dashboard:
       new_user: "New User"
       admin_title: "Admin Dashboard"
@@ -180,3 +184,4 @@ en:
       actions: "Actions"
       view_details: "View Details"
       no_normal_found: "No normal users found"
+      back_to_dashboard: "Back to Dashboard"

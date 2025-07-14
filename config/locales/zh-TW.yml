@@ -57,6 +57,7 @@ zh-TW:
     task_updated: "任務已成功更新。"
     task_destroyed: "任務已成功刪除。"
     registration_successful: "註冊成功"
+    user_updated: "使用者已成功更新。"
 
   # Authentication
   auth:
@@ -145,6 +146,9 @@ zh-TW:
       truncate: "..."
 
   admin:
+    user: 
+      edit: "編輯使用者"
+      delete: "刪除使用者"
     dashboard:
       new_user: "新建帳號"
       admin_title: "管理員儀表板"
@@ -160,3 +164,4 @@ zh-TW:
       actions: "操作"
       view_details: "查看詳情"
       no_normal_found: "未找到一般帳號"
+      back_to_dashboard: "返回儀表板"
