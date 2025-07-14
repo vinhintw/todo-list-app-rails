@@ -35,4 +35,18 @@ users_data.each do |user_attrs|
   puts "Created user: #{user.username} (#{user.email_address}) - Role: #{user.role}"
 end
 
-puts "Seeding completed! Total users: #{User.count}"
+# Seed 20 tasks for each user
+User.find_each do |user|
+  20.times do |i|
+    Task.find_or_create_by!(title: "Task #{i + 1} for #{user.username}", user: user) do |task|
+      task.content = "Content for Task #{i + 1} of #{user.username}"
+      task.priority = Task.priorities.keys.sample
+      task.status = Task.statuses.keys.sample
+      task.start_time = Time.now + rand(1..10).days
+      task.end_time = task.start_time + rand(1..5).hours
+    end
+  end
+  puts "Seeded 20 tasks for user: #{user.username} (#{user.email_address})"
+end
+
+puts "Seeding completed! Total users: #{User.count}, Total tasks: #{Task.count}"
