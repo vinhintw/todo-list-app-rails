@@ -10,6 +10,8 @@ Rails.application.routes.draw do
     get "/admin", to: "admin#index"
     get "/admin/create-user", to: "admin#new"
     post "/admin/create-user", to: "admin#create"
+    get "/admin/edit-user/:id", to: "admin#edit", as: "admin_edit_user"
+    patch "/admin/edit-user/:id", to: "admin#update"
     # Defines the root path route ("/")
     root "tasks#index"
   end
