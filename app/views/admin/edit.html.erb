@@ -1,0 +1,6 @@
+<% content_for :title, t('tasks.edit_task') %>
+<div class="md:w-2/3 w-full">
+  <h1 class="font-bold text-4xl"><%= t('tasks.edit_task') %></h1>
+  <%= link_to t('admin.dashboard.back_to_dashboard'), admin_path, class: "w-full sm:w-auto text-center mt-2 sm:mt-0 sm:ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
+  <%= render 'user_form', user: @user, path: admin_edit_user_path(@user), submit_btn: t('admin.user.edit') %>
+</div>
