@@ -53,6 +53,8 @@ group :development, :test do
   gem "factory_bot_rails"
   gem "faker"
   gem "ransack"
+  gem "kaminari"
+  gem "kaminari-tailwind"
 
   # Load environment variables from .env file
   gem "dotenv-rails"
