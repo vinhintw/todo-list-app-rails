@@ -163,3 +163,21 @@ en:
     signed_in_as: "Signed in as"
     sign_out: "Sign out"
     placeholder_search: "Search tasks"
+
+  admin:
+    dashboard:
+      new_user: "New User"
+      admin_title: "Admin Dashboard"
+      title: "Admin Dashboard - User Management"
+      user_management: "User Management"
+      manage_monitor_users: "Manage and monitor all users in the system"
+      total_users: "Total Users"
+      administrators: "Administrators"
+      normal_users: "Normal Users"
+      total_tasks: "Total Tasks"
+      username: "Username"
+      email: "Email"
+      total: "Total"
+      actions: "Actions"
+      view_details: "View Details"
+      no_normal_found: "No normal users found"
