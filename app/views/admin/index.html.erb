@@ -18,7 +18,13 @@
     <%= statistics_card('admin.dashboard.total_tasks', @users.sum(&:total_tasks_count), 'text-purple-600') %>
   </div>
   <!-- Admin Users Table -->
+  <div class="flex justify-start mt-2 mb-4">
+    <%= paginate @admin_users, param_name: :admin_page, theme: 'tailwind', window: 1 if @admin_users.total_count > 10 %>
+  </div>
   <%= render_user_table(@admin_users, :admin) %>
   <!-- Normal Users Table -->
+  <div class="flex justify-start mt-2 mb-4">
+    <%= paginate @normal_users, param_name: :normal_page, theme: 'tailwind', window: 1 if @normal_users.total_count > 10 %>
+  </div>
   <%= render_user_table(@normal_users, :normal) %>
 </div>
