@@ -12,7 +12,7 @@
   <!-- Pagination  -->
   <% if @tasks.total_count > 15 %>
     <div class="flex justify-start mt-2 mb-2">
-      <%= paginate @tasks, theme: 'tailwind' %>
+      <%= paginate @tasks, theme: 'tailwind', window: 1 %>
     </div>
   <% end %>
   <div id="tasks" class="min-w-full divide-y divide-gray-200 space-y-5">
