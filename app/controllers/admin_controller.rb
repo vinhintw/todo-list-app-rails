@@ -1,5 +1,5 @@
 class AdminController < ApplicationController
-  before_action :set_user, only: %i[ edit update destroy ]
+  before_action :set_user, only: %i[ edit update destroy user_tasks ]
   before_action :require_admin
 
   def index
@@ -66,6 +66,10 @@ class AdminController < ApplicationController
       format.html { redirect_to admin_path, status: :see_other, notice: t("flash.user_destroyed") }
       format.json { head :no_content }
     end
+  end
+
+  def user_tasks
+    @tasks = @user.tasks.order(created_at: :desc)
   end
 
   private
