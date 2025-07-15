@@ -7,6 +7,9 @@ class AdminController < ApplicationController
     @admin_users = @users.select { |user| user.role == "admin" }
     @normal_users = @users.select { |user| user.role == "normal" }
 
+    @admin_users = Kaminari.paginate_array(@admin_users).page(params[:admin_page]).per(10)
+    @normal_users = Kaminari.paginate_array(@normal_users).page(params[:normal_page]).per(10)
+
     @user_counts = @users.group_by(&:role).transform_values(&:count)
 
     @admin_count = @user_counts["admin"] || 0
