@@ -35,9 +35,24 @@ users_data.each do |user_attrs|
   puts "Created user: #{user.username} (#{user.email_address}) - Role: #{user.role}"
 end
 
-# Seed 20 tasks for each user
+# Create 30 more normal users
+generated_users = []
+30.times do |i|
+  email = "user#{i+3}@example.com"
+  username = "user#{i+3}"
+  user = User.find_or_create_by!(email_address: email) do |u|
+    u.username = username
+    u.password = "password123"
+    u.password_confirmation = "password123"
+    u.role = rand(0..1) == 0 ? :normal : :admin
+  end
+  generated_users << user
+  puts "Created user: #{user.username} (#{user.email_address}) - Role: #{user.role}"
+end
+
+# Seed 30 tasks for each user
 User.find_each do |user|
-  150.times do |i|
+  30.times do |i|
     Task.find_or_create_by!(title: "Task #{i + 1} for #{user.username}", user: user) do |task|
       task.content = "Content for Task #{i + 1} of #{user.username}"
       task.priority = Task.priorities.keys.sample
@@ -46,7 +61,7 @@ User.find_each do |user|
       task.end_time = task.start_time + rand(1..5).hours
     end
   end
-  puts "Seeded 20 tasks for user: #{user.username} (#{user.email_address})"
+  puts "Seeded 30 tasks for user: #{user.username} (#{user.email_address})"
 end
 
 puts "Seeding completed! Total users: #{User.count}, Total tasks: #{Task.count}"
