@@ -9,7 +9,7 @@ class TasksController < ApplicationController
 
     @q = current_user.tasks.ransack(ransack_params)
     @tasks = @q.result.order(priority: :desc).page(params[:page]).per(15)
-    @total_tasks_count = @tasks.count
+    @total_tasks_count = @tasks.total_count
   end
 
   # GET /tasks/1 or /tasks/1.json
