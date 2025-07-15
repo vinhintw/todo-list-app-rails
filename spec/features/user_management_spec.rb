@@ -135,4 +135,20 @@ RSpec.feature "user management", type: :feature do
       it { expect(page).to have_current_path root_path(locale: I18n.locale) }
     end
   end
+
+  describe "admin user management" do
+    let!(:admin) { create(:user, :admin) }
+    let!(:user) { create(:user, :normal) }
+    let(:new_user) { create(:user, :normal, username: "newuser", email_address: "newuser@example.com", password: "password123", password_confirmation: "password123") }
+    context "when admin created a user" do
+      before do
+        sign_in_as(admin)
+        visit admin_path
+        sign_up_as_admin(new_user)
+      end
+
+      it { expect(page).to have_content(I18n.t("flash.registration_successful")) }
+      it { expect(page).to have_content(new_user.username) }
+    end
+  end
 end
