@@ -1,5 +1,6 @@
 class AdminController < ApplicationController
   before_action :set_user, only: %i[ edit update ]
+  before_action :require_admin
 
   def index
     @users = User.includes(:tasks)
@@ -94,6 +95,12 @@ class AdminController < ApplicationController
       user.define_singleton_method(:total_tasks_count) do
         task_counts.select { |key, _| key[0] == user.id }.values.sum
       end
+    end
+  end
+
+  def require_admin
+    unless current_user&.admin?
+      redirect_to root_path
     end
   end
 end
