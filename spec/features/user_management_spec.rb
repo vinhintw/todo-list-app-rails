@@ -161,7 +161,7 @@ RSpec.feature "user management", type: :feature do
 
       it { expect(page).to have_content(I18n.t("auth.prohibited_from_being_saved")) }
       it { expect(page).to have_content(I18n.t("activerecord.errors.messages.too_short", count: 3)) }
-      it { expect(page).to have_content(I18n.t("activerecord.errors.messages.email_taken")) }
+      it { expect(page).to have_content(I18n.t("activerecord.errors.messages.taken")) }
       it { expect(page).to have_content(I18n.t("activerecord.errors.messages.confirmation")) }
     end
   end
