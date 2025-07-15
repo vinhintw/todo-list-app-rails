@@ -134,7 +134,6 @@ zh-TW:
               confirmation: "與密碼不匹配"
     
   error: "錯誤"
-
   navbar:
     signed_in_as: "已登入為"
     sign_out: "登出"

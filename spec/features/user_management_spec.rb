@@ -139,8 +139,9 @@ RSpec.feature "user management", type: :feature do
   describe "admin user management" do
     let!(:admin) { create(:user, :admin) }
     let!(:user) { create(:user, :normal) }
-    let(:new_user) { create(:user, :normal, username: "newuser", email_address: "newuser@example.com", password: "password123", password_confirmation: "password123") }
-    context "when admin created a user" do
+    let(:new_user) { build(:user, :normal, username: "newuser", email_address: "newuser@example.com", password: "password123", password_confirmation: "password123") }
+    let(:invalid_user) { build(:user, :normal, username: "a", email_address: user.email_address, password: "password123", password_confirmation: "mismatch123") }
+    context "when admin created a user with valid credentials" do
       before do
         sign_in_as(admin)
         visit admin_path
@@ -149,6 +150,19 @@ RSpec.feature "user management", type: :feature do
 
       it { expect(page).to have_content(I18n.t("flash.registration_successful")) }
       it { expect(page).to have_content(new_user.username) }
+    end
+
+    context "when admin created a user with invalid credentials" do
+      before do
+        sign_in_as(admin)
+        visit admin_path
+        sign_up_as_admin(invalid_user)
+      end
+
+      it { expect(page).to have_content(I18n.t("auth.prohibited_from_being_saved")) }
+      it { expect(page).to have_content(I18n.t("activerecord.errors.messages.too_short", count: 3)) }
+      it { expect(page).to have_content(I18n.t("activerecord.errors.messages.email_taken")) }
+      it { expect(page).to have_content(I18n.t("activerecord.errors.messages.confirmation")) }
     end
   end
 end
