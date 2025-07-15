@@ -69,7 +69,8 @@ class AdminController < ApplicationController
   end
 
   def user_tasks
-    @tasks = @user.tasks.order(created_at: :desc)
+    @tasks = @user.tasks.order(created_at: :desc).page(params[:page]).per(15)
+    @total_tasks_count = @tasks.total_count
   end
 
   private
