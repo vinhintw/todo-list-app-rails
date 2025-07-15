@@ -1,5 +1,5 @@
 class AdminController < ApplicationController
-  before_action :set_user, only: %i[ edit update ]
+  before_action :set_user, only: %i[ edit update destroy ]
   before_action :require_admin
 
   def index
@@ -57,9 +57,7 @@ class AdminController < ApplicationController
   end
 
   def destroy
-    @user = User.find(params[:id])
     @user.destroy!
-
 
     respond_to do |format|
       format.html { redirect_to admin_path, status: :see_other, notice: t("flash.user_destroyed") }
