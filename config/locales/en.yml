@@ -131,7 +131,7 @@ en:
     errors:
       messages:
         not_saved: "prohibited this task from being saved:"
-        email_taken: "has already been taken"
+        taken: "has already been taken"
         too_short: "is too short (minimum is %{count} characters)"
         confirmation: "doesn't match Password"
       models:
