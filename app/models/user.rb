@@ -10,4 +10,8 @@ class User < ApplicationRecord
   validates :username, presence: true, length: { minimum: 3 }
 
   normalizes :email_address, with: ->(e) { e.strip.downcase }
+
+  def encrypted_password
+    self.password_digest
+  end
 end
