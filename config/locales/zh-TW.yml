@@ -112,7 +112,6 @@ zh-TW:
         task:
           attributes:
             title: 
-              blank: "不能為空"
               too_long: "太長（最多 %{count} 個字符）"
             content:
               too_long: "太長（最多 %{count} 個字符）"
