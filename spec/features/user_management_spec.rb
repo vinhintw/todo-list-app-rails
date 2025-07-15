@@ -73,10 +73,7 @@ RSpec.feature "user management", type: :feature do
     let(:user) { create(:user) }
     context "with valid credentials" do
       before do
-        visit login_path
-        fill_in "email_address", with: user.email_address
-        fill_in "password", with: user.password
-        click_button I18n.t("auth.sign_in")
+        sign_in_as(user)
       end
 
       it { expect(page).to have_content(user.username) }
@@ -99,10 +96,7 @@ RSpec.feature "user management", type: :feature do
     context "when logged in" do
       let(:user) { create(:user) }
       before do
-        visit login_path
-        fill_in "email_address", with: user.email_address
-        fill_in "password", with: user.password
-        click_button I18n.t("auth.sign_in")
+        sign_in_as(user)
       end
 
       it "logs the user out successfully" do
@@ -114,6 +108,31 @@ RSpec.feature "user management", type: :feature do
         visit tasks_path
         expect(page).to have_current_path login_path(locale: I18n.locale)
       end
+    end
+  end
+
+  describe "admin dashboard" do
+    let(:admin) { create(:user, :admin) }
+    let(:user) { create(:user, :normal) }
+
+    context "when admin is logged in can access admin dashboard" do
+      before do
+          sign_in_as(admin)
+          visit admin_path
+        end
+
+        it { expect(page).to have_content(I18n.t("admin.dashboard.user_management")) }
+        it { expect(page).to have_content(I18n.t("admin.dashboard.admin_title")) }
+    end
+
+    context "when normal user is logged in can not access admin dashboard" do
+      before do
+        sign_in_as(user)
+        visit admin_path
+      end
+
+      it { expect(page).not_to have_content(I18n.t("admin.dashboard.user_management")) }
+      it { expect(page).to have_current_path root_path(locale: I18n.locale) }
     end
   end
 end
