@@ -86,16 +86,18 @@ module AdminHelper
     content_tag :td, class: "px-6 py-4 whitespace-nowrap" do
       content_tag :div, class: "flex items-center" do
         content_tag :div, class: "ml-4" do
-          content_tag :div, user.username,
-                      class: "text-sm font-medium text-gray-900"
+          link_to user.username, admin_user_tasks_path(user),
+            class: "text-sm font-medium text-blue-600 hover:underline"
         end
       end
     end
   end
 
   def render_email_cell(user)
-    content_tag :td, user.email_address,
-                class: "px-6 py-4 whitespace-nowrap text-sm text-gray-900"
+    content_tag :td, class: "px-6 py-4 whitespace-nowrap text-sm text-gray-900" do
+      link_to user.email_address, admin_user_tasks_path(user),
+        class: "text-blue-600 hover:underline"
+    end
   end
 
   def render_task_count_cell(count, status)
