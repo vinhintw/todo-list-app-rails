@@ -39,6 +39,10 @@ class AdminController < ApplicationController
   end
 
   def update
+    if signup_params[:password].blank? && signup_params[:password_confirmation].blank?
+      signup_params.delete(:password)
+      signup_params.delete(:password_confirmation)
+    end
     respond_to do |format|
       if @user.update(signup_params)
         format.html { redirect_to admin_path, notice: t("flash.user_updated") }
