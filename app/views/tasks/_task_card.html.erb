@@ -1,0 +1,86 @@
+<div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
+  <div class="flex justify-between items-start">
+    <div class="flex-1">
+      <!-- Task Title -->
+      <div class="mb-4">
+        <h3 class="text-lg font-semibold text-gray-900 mb-1">
+          <% if local_assigns[:link] %>
+            <%= link_to task.title, task, class: "hover:text-blue-600" %>
+          <% else %>
+            <%= task.title %>
+          <% end %>
+        </h3>
+      </div>
+      <!-- Task Description -->
+      <% if task.content.present? %>
+        <div class="mb-4">
+          <h4 class="text-sm font-medium text-gray-700 mb-1"><%= t('tasks.description') %>:</h4>
+          <p class="text-gray-600 text-sm leading-relaxed" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+            <%= truncate(task.content, length: 120) %>
+          </p>
+        </div>
+      <% end %>
+      <!-- Priority and Status -->
+      <div class="mb-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="flex items-center space-x-2">
+            <span class="text-sm font-medium text-gray-700 min-w-[60px]"><%= t('tasks.priority') %>:</span>
+            <%= badge(:priority, task) %>
+          </div>
+          <div class="flex items-center space-x-2">
+            <span class="text-sm font-medium text-gray-700 min-w-[60px]"><%= t('tasks.status') %>:</span>
+            <%= badge(:status, task) %>
+          </div>
+        </div>
+      </div>
+      <!-- Time Information -->
+      <% if task.start_time.present? || task.end_time.present? %>
+        <div class="mb-4">
+          <h4 class="text-sm font-medium text-gray-700 mb-2"><%= t('tasks.time_schedule') %>:</h4>
+          <div class="bg-blue-50 p-3 rounded-md border border-blue-200">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+              <% if task.start_time.present? %>
+                <div class="flex items-center space-x-2">
+                  <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                  </svg>
+                  <span class="font-medium text-blue-700"><%= t('tasks.start') %>:</span>
+                  <span class="text-blue-800"><%= task.start_time.strftime("%d/%m/%Y %H:%M") %></span>
+                </div>
+              <% end %>
+              <% if task.end_time.present? %>
+                <div class="flex items-center space-x-2">
+                  <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                  </svg>
+                  <span class="font-medium text-blue-700"><%= t('tasks.end') %>:</span>
+                  <span class="text-blue-800"><%= task.end_time.strftime("%d/%m/%Y %H:%M") %></span>
+                </div>
+              <% end %>
+            </div>
+            <% if task.start_time.present? && task.end_time.present? %>
+              <div class="mt-2 pt-2 border-t border-blue-200">
+                <div class="flex items-center space-x-2 text-sm">
+                  <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  </svg>
+                  <span class="font-medium text-blue-700"><%= t('tasks.duration') %>:</span>
+                  <span class="text-blue-800 font-semibold">
+                    <% duration = ((task.end_time - task.start_time) / 1.hour).round(1) %>
+                    <%= duration == duration.to_i ? duration.to_i : duration %> <%= t('tasks.hours') %>
+                  </span>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+    <% if local_assigns[:actions] %>
+      <div class="flex flex-col gap-2 ml-6 flex-shrink-0">
+        <%= link_to t('edit'), edit_task_path(task), class: "text-center rounded-md px-4 py-2 bg-blue-100 hover:bg-blue-200 text-blue-700 text-sm font-medium transition-colors" %>
+        <%= button_to t('delete'), task, method: :delete, class: "rounded-md px-4 py-2 text-white bg-red-600 hover:bg-red-700 text-sm font-medium transition-colors", data: { turbo_confirm: t('confirmations.delete_task') } %>
+      </div>
+    <% end %>
+  </div>
+</div>
