@@ -113,6 +113,7 @@ en:
   # Confirmations
   confirmations:
     delete_task: "Are you sure you want to delete this task?"
+    delete_user: "Are you sure you want to delete this user?"
     are_you_sure: "Are you sure?"
 
   # ActiveRecord validation messages

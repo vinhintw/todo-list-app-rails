@@ -85,6 +85,7 @@ zh-TW:
   # Confirmations
   confirmations:
     delete_task: "你確定要刪除此任務嗎？"
+    delete_user: "你確定要刪除此使用者嗎？"
     are_you_sure: "你確定嗎？"
   
   # ActiveRecord validation messages
