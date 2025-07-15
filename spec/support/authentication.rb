@@ -15,6 +15,15 @@ module Helpers
       fill_in "user_password_confirmation", with: user.password_confirmation
       click_button I18n.t("auth.sign_up")
     end
+
+    def sign_up_as_admin(user)
+      visit admin_create_user_path
+      fill_in "user_username", with: user.username
+      fill_in "user_email_address", with: user.email_address
+      fill_in "user_password", with: user.password
+      fill_in "user_password_confirmation", with: user.password_confirmation
+      click_button I18n.t("auth.sign_up")
+    end
   end
 
   module RequestAuthentication
