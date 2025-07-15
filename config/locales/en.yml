@@ -120,9 +120,17 @@ en:
         title: "Title"
         content: "Content"
         end_time: "End time"
+      user:
+        email_address: "Email address"
+        username: "Username"
+        password: "Password"
+        password_confirmation: "Password confirmation"
     errors:
       messages:
         not_saved: "prohibited this task from being saved:"
+        taken: "has already been taken"
+        too_short: "is too short (minimum is %{count} characters)"
+        confirmation: "doesn't match Password"
       models:
         task:
           attributes:
@@ -133,6 +141,21 @@ en:
               too_long: "is too long (maximum is %{count} characters)"
             end_time:
               end_time_after_start: "End time must be after start time"
+        user:
+          attributes:
+            username:
+              blank: "can't be blank"
+              too_short: "is too short (minimum is %{count} characters)"
+            email_address:
+              blank: "can't be blank"
+              invalid: "is not a valid email address"
+            password:
+              blank: "can't be blank"
+              too_short: "is too short (minimum is %{count} characters)"
+            password_confirmation:
+              blank: "can't be blank"
+              confirmation: "doesn't match Password"
+
   error: "error"
   navbar:
     signed_in_as: "Signed in as"

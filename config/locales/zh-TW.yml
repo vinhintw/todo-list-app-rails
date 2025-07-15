@@ -36,7 +36,7 @@ zh-TW:
     hours: "小時"
     destroy_this_task: "刪除此任務"
     edit_this_task: "編輯此任務"
-    
+
   # Priority levels
   priority:
     low: "低"
@@ -91,9 +91,17 @@ zh-TW:
           title: "標題"
           content: "內容"
           end_time: "結束時間"
+        user:
+          email_address: "電子郵件"
+          username: "使用者名稱"
+          password: "密碼"
+          password_confirmation: "確認密碼"
     errors:
       messages:
         not_saved: "禁止保存此任務:"
+        taken: "已被佔用"
+        too_short: "太短（最少 %{count} 個字符）"
+        confirmation: "與密碼不匹配"
       models:
         task:
           attributes:
@@ -105,7 +113,22 @@ zh-TW:
             end_time:
               end_time_after_start: "必須在開始時間之後"
             prohibited: "禁止保存此任務"
+        user:
+          attributes:
+            username:
+              blank: "不能為空"
+              too_short: "太短（最少 %{count} 個字符）"
+            email_address:
+              blank: "不能為空"
+              invalid: "不是有效的電子郵件"
+            password:
+              blank: "不能為空"
+              too_short: "太短（最少 %{count} 個字符）"
+            password_confirmation:
+              blank: "不能為空"
+              confirmation: "與密碼不匹配"
   error: "錯誤"
+
   navbar:
     signed_in_as: "已登入為"
     sign_out: "登出"
