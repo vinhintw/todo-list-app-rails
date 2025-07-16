@@ -13,12 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Close user menu when clicking outside
     document.addEventListener("click", function (e) {
-      if (
-        userMenuButton &&
-        userMenu &&
-        !userMenuButton.contains(e.target) &&
-        !userMenu.contains(e.target)
-      ) {
+      if (!userMenuButton.contains(e.target) && !userMenu.contains(e.target)) {
         userMenu.classList.add("hidden");
       }
     });
