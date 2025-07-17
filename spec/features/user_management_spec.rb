@@ -2,27 +2,18 @@ require "rails_helper"
 
 RSpec.feature "user management", type: :feature do
   describe "user registration" do
+    let(:user) { create(:user) }
+    let(:user_with_blank_username) { build(:user, username: "") }
+    let(:user_with_blank_email) { build(:user, email_address: "") }
+    let(:user_with_blank_password) { build(:user, password: "", password_confirmation: "") }
     context "with valid credentials" do
       before do
         visit signup_path
 
-        fill_in "user_username", with: "testuser"
-        fill_in "user_email_address", with: "test@example.com"
-        fill_in "user_password", with: "password123"
-        fill_in "user_password_confirmation", with: "password123"
-        click_button I18n.t("auth.sign_up")
-      end
-      it { expect(page).to have_content(I18n.t("flash.registration_successful")) }
-    end
-
-    context "with invalid credentials" do
-      before do
-        visit signup_path
-
-        fill_in "user_username", with: "testuser"
-        fill_in "user_email_address", with: "test@example.com"
-        fill_in "user_password", with: "password123"
-        fill_in "user_password_confirmation", with: "password123"
+        fill_in "user_username", with: user.username
+        fill_in "user_email_address", with: user.email_address
+        fill_in "user_password", with: user.password
+        fill_in "user_password_confirmation", with: user.password_confirmation
         click_button I18n.t("auth.sign_up")
       end
       it { expect(page).to have_content(I18n.t("flash.registration_successful")) }
@@ -32,10 +23,10 @@ RSpec.feature "user management", type: :feature do
       before do
         visit signup_path
 
-        fill_in "user_username", with: ""
-        fill_in "user_email_address", with: "test@example.com"
-        fill_in "user_password", with: "password123"
-        fill_in "user_password_confirmation", with: "password123"
+        fill_in "user_username", with: user_with_blank_username.username
+        fill_in "user_email_address", with: user_with_blank_username.email_address
+        fill_in "user_password", with: user_with_blank_username.password
+        fill_in "user_password_confirmation", with: user_with_blank_username.password_confirmation
         click_button I18n.t("auth.sign_up")
       end
       it { expect(page).not_to have_content(I18n.t("flash.registration_unsuccessful")) }
@@ -45,10 +36,10 @@ RSpec.feature "user management", type: :feature do
       before do
         visit signup_path
 
-        fill_in "user_username", with: "testuser"
-        fill_in "user_email_address", with: ""
-        fill_in "user_password", with: "password123"
-        fill_in "user_password_confirmation", with: "password123"
+        fill_in "user_username", with: user_with_blank_email.username
+        fill_in "user_email_address", with: user_with_blank_email.email_address
+        fill_in "user_password", with: user_with_blank_email.password
+        fill_in "user_password_confirmation", with: user_with_blank_email.password_confirmation
         click_button I18n.t("auth.sign_up")
       end
       it { expect(page).not_to have_content(I18n.t("flash.registration_unsuccessful")) }
@@ -58,10 +49,10 @@ RSpec.feature "user management", type: :feature do
       before do
         visit signup_path
 
-        fill_in "user_username", with: "testuser"
-        fill_in "user_email_address", with: "test@example.com"
-        fill_in "user_password", with: ""
-        fill_in "user_password_confirmation", with: ""
+        fill_in "user_username", with: user_with_blank_password.username
+        fill_in "user_email_address", with: user_with_blank_password.email_address
+        fill_in "user_password", with: user_with_blank_password.password
+        fill_in "user_password_confirmation", with: user_with_blank_password.password_confirmation
         click_button I18n.t("auth.sign_up")
       end
       it { expect(page).not_to have_content(I18n.t("flash.registration_unsuccessful")) }
@@ -71,10 +62,10 @@ RSpec.feature "user management", type: :feature do
       before do
         visit signup_path
 
-        fill_in "user_username", with: "testuser"
-        fill_in "user_email_address", with: "test@example.com"
-        fill_in "user_password", with: "password123"
-        fill_in "user_password_confirmation", with: "password456"
+        fill_in "user_username", with: user.username
+        fill_in "user_email_address", with: user.email_address
+        fill_in "user_password", with: user.password
+        fill_in "user_password_confirmation", with: "mismatch_password"
         click_button I18n.t("auth.sign_up")
       end
       it { expect(page).not_to have_content(I18n.t("flash.registration_unsuccessful")) }
