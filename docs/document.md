@@ -221,17 +221,17 @@
 
 ### 步驟15: 加入狀態，並且能夠查詢
 
-- 在任務上加入狀態（待處理、進行中、完成）
+- 在任務上加入狀態（待處理、進行中、完成）✅
 	- 【選項】不是初學者的話，可以使用管理 state 的 gem
-- 在列表頁面，要能夠以標題和狀態進行查詢
+- 在列表頁面，要能夠以標題和狀態進行查詢 ✅
 	- 【選項】不是初學者的話，可以使用 ransack 等 gem
-- 在設定條件查詢時，請觀察 log 並確認 SQL 的變化
+- 在設定條件查詢時，請觀察 log 並確認 SQL 的變化 ✅
 	- 之後的步驟也需要這麼做，請養成習慣
-- 建立 search index
+- 建立 search index ✅
 	- 使用 Factory Bot 和 Faker 準備多筆資料 
 	- 準備一定程度的測試資料後，觀察 log/development.log 以確認加入 index 後對速度的改善
 	- 【選項】使用 PostgreSQL 的 explain 等功能，檢視資料庫端的 index 使用狀況
-- 針對查詢功能增加 model spec（feature spec 也要擴充）
+- 針對查詢功能增加 model spec（feature spec 也要擴充）✅
 
 ### 步驟16: 設定優先順序，並以優先順序排序
 
