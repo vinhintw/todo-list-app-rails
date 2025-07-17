@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.feature "user management", type: :feature do
   describe "user registration" do
-    let(:user) { create(:user) }
+    let(:user) { build(:user) }
     let(:user_with_blank_username) { build(:user, username: "") }
     let(:user_with_blank_email) { build(:user, email_address: "") }
     let(:user_with_blank_password) { build(:user, password: "", password_confirmation: "") }
@@ -13,7 +13,7 @@ RSpec.feature "user management", type: :feature do
         fill_in "user_username", with: user.username
         fill_in "user_email_address", with: user.email_address
         fill_in "user_password", with: user.password
-        fill_in "user_password_confirmation", with: user.password_confirmation
+        fill_in "user_password_confirmation", with: user.password
         click_button I18n.t("auth.sign_up")
       end
       it { expect(page).to have_content(I18n.t("flash.registration_successful")) }
