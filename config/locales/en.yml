@@ -119,6 +119,7 @@ en:
       task:
         title: "Title"
         content: "Content"
+        start_time: "Start time"
         end_time: "End time"
       user:
         email_address: "Email address"
@@ -131,6 +132,7 @@ en:
         taken: "has already been taken"
         too_short: "is too short (minimum is %{count} characters)"
         confirmation: "doesn't match Password"
+        blank: "can't be blank"
       models:
         task:
           attributes:
