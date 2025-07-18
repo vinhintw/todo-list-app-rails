@@ -81,6 +81,19 @@ class AdminController < ApplicationController
     @total_tasks_count = @tasks.total_count
   end
 
+  def create_role
+    @role = Role.new
+  end
+
+  def store_role
+    @role = Role.new(role_params)
+    if @role.save
+      redirect_to admin_path, notice: t("role.created")
+    else
+      render :create_role, status: :unprocessable_entity
+    end
+  end
+
   private
 
   def set_user
@@ -114,7 +127,11 @@ class AdminController < ApplicationController
 
   def require_admin
     unless current_user&.admin?
-      redirect_to root_path
+      redirect_to root_path, notice: t("flash.admin_access_denied")
     end
+  end
+
+  def role_params
+    params.require(:role).permit(:name, :description)
   end
 end
