@@ -70,6 +70,7 @@ zh-TW:
     user_cannot_demote: "你不能降級自己。"
     cannot_delete_last_admin: "無法刪除最後一個管理員使用者。"
     admin_access_denied: "請求存取管理頁面被拒絕。"
+    cannot_delete_self: "無法刪除自己的帳戶。"
 
 
   # Authentication

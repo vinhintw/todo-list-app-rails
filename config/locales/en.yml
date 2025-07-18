@@ -86,7 +86,7 @@ en:
     normal: "Normal User"
     name: "Role Name"
     description: "Role Description"
-    created: "Role was successfully created"
+    created: "Role was successfully created %{name}"
 
   # Flash messages
   flash:
@@ -99,6 +99,7 @@ en:
     user_cannot_demote: "You cannot demote yourself"
     cannot_delete_last_admin: "Cannot delete the last admin user."
     admin_access_denied: "You are not authorized to access the admin page."
+    cannot_delete_self: "You cannot delete your own account."
 
   # Authentication
   auth:
