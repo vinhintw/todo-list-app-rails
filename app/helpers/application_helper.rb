@@ -50,7 +50,7 @@ module ApplicationHelper
 
   def all_tasks_link_class
     base_class = "group flex items-center px-2 py-2 text-base font-medium rounded-md"
-    if params[:status].blank? && controller_name == "tasks"
+    if params[:status].blank? && params[:tag].blank? && controller_name == "tasks"
       "#{base_class} bg-indigo-100 text-indigo-900"
     else
       "#{base_class} text-gray-600 hover:bg-gray-50 hover:text-gray-900"
