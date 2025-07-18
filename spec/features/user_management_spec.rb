@@ -168,5 +168,14 @@ RSpec.feature "user management", type: :feature do
       it { expect(page).to have_content(I18n.t("activerecord.errors.messages.taken")) }
       it { expect(page).to have_content(I18n.t("activerecord.errors.messages.confirmation")) }
     end
+
+    context "when admin is logged in & tries to delete self" do
+      before do
+        sign_in_as(admin)
+        visit admin_edit_user_path(locale: I18n.locale, id: admin.id)
+        click_button I18n.t("delete")
+      end
+      it { expect(page).to have_content(I18n.t("flash.cannot_delete_self")) }
+    end
   end
 end
