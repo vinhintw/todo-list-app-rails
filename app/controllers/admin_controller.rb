@@ -3,7 +3,7 @@ class AdminController < ApplicationController
   before_action :require_admin
 
   def index
-    @users = User.includes(:tasks, :role)
+    @users = User.includes(:tasks, :role).order(created_at: :desc)
     @admin_users = @users.select(&:admin?)
     @normal_users = @users.select(&:user?)
 
