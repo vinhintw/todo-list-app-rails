@@ -60,6 +60,14 @@ class AdminController < ApplicationController
   end
 
   def destroy
+    if @user.admin? && User.joins(:role).where(roles: { name: Role::ADMIN }).count == 1
+      respond_to do |format|
+        format.html { redirect_to admin_path, alert: t("flash.cannot_delete_last_admin") }
+        format.json { render json: { error: t("flash.cannot_delete_last_admin") }, status: :forbidden }
+      end
+      return
+    end
+
     @user.destroy!
 
     respond_to do |format|

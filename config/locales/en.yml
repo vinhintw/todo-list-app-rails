@@ -88,6 +88,7 @@ en:
     registration_successful: "Sign up successful"
     user_updated: "User was successfully updated."
     user_destroyed: "User was successfully deleted."
+    cannot_delete_last_admin: "Cannot delete the last admin user."
 
   # Authentication
   auth:
