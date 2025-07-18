@@ -69,6 +69,19 @@ class AdminController < ApplicationController
     @tasks = @user.tasks.ransack(status_eq: params[:status]).result.order(created_at: :desc).page(params[:page]).per(15)
   end
 
+  def create_role
+    @role = Role.new
+  end
+
+  def store_role
+    @role = Role.new(role_params)
+    if @role.save
+      redirect_to admin_path, notice: t("role.created")
+    else
+      render :create_role, status: :unprocessable_entity
+    end
+  end
+
   private
 
   def prevent_self_demote!
@@ -98,7 +111,7 @@ class AdminController < ApplicationController
 
   def require_admin
     unless current_user&.admin?
-      redirect_to root_path
+      redirect_to root_path, notice: t("flash.admin_access_denied")
     end
   end
 
@@ -121,5 +134,9 @@ class AdminController < ApplicationController
                         .where(role: :normal)
                         .page(params[:normal_page])
                         .per(10)
+  end
+
+  def role_params
+    params.require(:role).permit(:name, :description)
   end
 end
