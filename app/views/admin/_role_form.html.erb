@@ -1,0 +1,23 @@
+<%= form_with model: role, url: path, class: "contents" do |form| %>
+  <% if @role.errors.any? %>
+    <div class="mb-4 text-red-600">
+      <h2><%= pluralize(@role.errors.count, t("error")) %>  <%= t('activerecord.errors.messages.not_saved_role') %></h2>
+      <ul>
+        <% @role.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <div class="my-5">
+    <%= form.label :name, t('role.name'), class: "block font-medium" %>
+    <%= form.text_field :name, class: "border rounded px-3 py-2 w-full #{'border-red-500' if @role.errors[:name].any?}" %>
+  </div>
+  <div class="my-5">
+    <%= form.label :description, t('role.description'), class: "block font-medium" %>
+    <%= form.text_area :description, class: "border rounded px-3 py-2 w-full" %>
+  </div>
+  <div>
+    <%= form.submit submit_btn, class: "bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded" %>
+  </div>
+<% end %>
