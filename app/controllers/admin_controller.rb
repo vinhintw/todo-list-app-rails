@@ -49,6 +49,14 @@ class AdminController < ApplicationController
   end
 
   def destroy
+    if @user == current_user
+      respond_to do |format|
+        format.html { redirect_to admin_path, alert: t("flash.cannot_delete_self") }
+        format.json { render json: { error: t("flash.cannot_delete_self") }, status: :forbidden }
+      end
+      return
+    end
+
     if @user.last_admin?
       respond_to do |format|
         format.html { redirect_to admin_path, alert: t("flash.cannot_delete_last_admin") }
@@ -76,7 +84,7 @@ class AdminController < ApplicationController
   def store_role
     @role = Role.new(role_params)
     if @role.save
-      redirect_to admin_path, notice: t("role.created") + " #{@role.name}"
+      redirect_to admin_path, notice: t("role.created", name: @role.name)
     else
       render :create_role, status: :unprocessable_entity
     end
