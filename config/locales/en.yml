@@ -79,11 +79,15 @@ en:
     in_progress: "In Progress"
     completed: "Completed"
     cancelled: "Cancelled"
-  
+
+  # Role related
   role:
     admin: "Admin"
     normal: "Normal User"
-    
+    name: "Role Name"
+    description: "Role Description"
+    created: "Role was successfully created"
+
   # Flash messages
   flash:
     task_created: "Task was successfully created."
@@ -94,6 +98,7 @@ en:
     user_destroyed: "User was successfully deleted."
     user_cannot_demote: "You cannot demote yourself"
     cannot_delete_last_admin: "Cannot delete the last admin user."
+    admin_access_denied: "You are not authorized to access the admin page."
 
   # Authentication
   auth:
@@ -136,6 +141,9 @@ en:
         password: "Password"
         password_confirmation: "Password confirmation"
         role: "Role"
+      role:
+        name: "Role Name"
+        description: "Role Description"
     errors:
       messages:
         not_saved: "prohibited this task from being saved:"
@@ -143,6 +151,7 @@ en:
         too_short: "is too short (minimum is %{count} characters)"
         confirmation: "doesn't match Password"
         blank: "can't be blank"
+        not_saved_role: "prohibited this role from being saved:"
       models:
         task:
           attributes:
@@ -167,6 +176,8 @@ en:
             password_confirmation:
               blank: "can't be blank"
               confirmation: "doesn't match Password"
+            role:
+              blank: "can't be blank"
 
   error: "error"
   navbar:
@@ -194,3 +205,4 @@ en:
       view_details: "View Details"
       no_normal_found: "No normal users found"
       back_to_dashboard: "Back to Dashboard"
+      new_role: "New Role"

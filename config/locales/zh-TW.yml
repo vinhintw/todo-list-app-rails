@@ -44,9 +44,13 @@ zh-TW:
     high: "高"
     urgent: "緊急"
     
+  # Role related
   role:
     admin: "管理員"
     normal: "一般使用者"
+    name: "角色名稱"
+    description: "角色描述"
+    created: "角色已成功建立"
 
   # Status levels
   status:
@@ -54,7 +58,7 @@ zh-TW:
     in_progress: "進行中"
     completed: "已完成"
     cancelled: "已取消"
-    
+
   # Flash messages
   flash:
     task_created: "任務已成功建立。"
@@ -65,6 +69,7 @@ zh-TW:
     user_destroyed: "使用者已成功刪除。"
     user_cannot_demote: "你不能降級自己。"
     cannot_delete_last_admin: "無法刪除最後一個管理員使用者。"
+    admin_access_denied: "請求存取管理頁面被拒絕。"
 
 
   # Authentication
@@ -108,6 +113,9 @@ zh-TW:
           password: "密碼"
           password_confirmation: "確認密碼"
           role: "角色"
+        role:
+          name: "角色名稱"
+          description: "角色描述"
     errors:
       messages:
         not_saved: "禁止保存此任務:"
@@ -115,6 +123,7 @@ zh-TW:
         too_short: "太短（最少 %{count} 個字符）"
         confirmation: "與密碼不匹配"
         blank: "不能為空"
+        not_saved_role: "禁止保存此角色:"
       models:
         task:
           attributes:
@@ -140,7 +149,8 @@ zh-TW:
             password_confirmation:
               blank: "不能為空"
               confirmation: "與密碼不匹配"
-    
+          role:
+            blank: "不能為空"
   error: "錯誤"
   navbar:
     signed_in_as: "已登入為"
@@ -175,3 +185,4 @@ zh-TW:
       view_details: "查看詳情"
       no_normal_found: "未找到一般帳號"
       back_to_dashboard: "返回儀表板"
+      new_role: "新建角色"
