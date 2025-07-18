@@ -14,7 +14,7 @@
         <% end %>
       </div>
       <!-- Desktop Search Bar -->
-      <%= render "shared/desktop_search_bar" if authenticated? %>
+      <%= render "shared/desktop_search_bar" if authenticated? && controller_name != "admin" %>
       <!-- Right side - User menu or auth buttons -->
       <div class="flex items-center">
         <% if authenticated? %>
