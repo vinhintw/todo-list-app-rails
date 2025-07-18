@@ -76,7 +76,7 @@ class AdminController < ApplicationController
   def store_role
     @role = Role.new(role_params)
     if @role.save
-      redirect_to admin_path, notice: t("role.created")
+      redirect_to admin_path, notice: t("role.created") + " #{@role.name}"
     else
       render :create_role, status: :unprocessable_entity
     end
