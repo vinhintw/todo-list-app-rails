@@ -98,6 +98,19 @@ class AdminController < ApplicationController
     end
   end
 
+  def create_role
+    @role = Role.new
+  end
+
+  def store_role
+    @role = Role.new(role_params)
+    if @role.save
+      redirect_to admin_path, notice: t("role.created")
+    else
+      render :create_role, status: :unprocessable_entity
+    end
+  end
+
   private
 
   def prevent_self_demote!
