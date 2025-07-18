@@ -54,4 +54,8 @@ class User < ApplicationRecord
   def user?
     role&.user?
   end
+
+  def last_admin?
+    admin? && User.where(role: :admin).count == 1
+  end
 end

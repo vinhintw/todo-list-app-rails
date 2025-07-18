@@ -93,6 +93,7 @@ en:
     user_updated: "User was successfully updated."
     user_destroyed: "User was successfully deleted."
     user_cannot_demote: "You cannot demote yourself"
+    cannot_delete_last_admin: "Cannot delete the last admin user."
 
   # Authentication
   auth:

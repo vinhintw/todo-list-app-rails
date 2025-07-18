@@ -64,6 +64,7 @@ zh-TW:
     user_updated: "使用者已成功更新。"
     user_destroyed: "使用者已成功刪除。"
     user_cannot_demote: "你不能降級自己。"
+    cannot_delete_last_admin: "無法刪除最後一個管理員使用者。"
 
 
   # Authentication
