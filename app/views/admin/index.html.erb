@@ -7,7 +7,10 @@
   <div class="md:mb-8 mb-4">
     <div class="flex justify-between items-center p-2">
       <h1 class="text-3xl font-bold text-gray-900"><%= t('admin.dashboard.user_management') %></h1>
-      <%= link_to t('admin.dashboard.new_user'), admin_create_user_path, class: "rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white block font-medium" %>
+      <div class="flex">
+        <%= link_to t('admin.dashboard.new_user'), admin_create_user_path, class: "rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white block font-medium" %>
+        <%= link_to t('admin.dashboard.new_role'), admin_create_role_path, class: "rounded-md px-3.5 py-2.5 bg-green-600 hover:bg-green-500 text-white block font-medium ml-2" %>
+      </div>
     </div>
   </div>
   <!-- Statistics Cards -->
