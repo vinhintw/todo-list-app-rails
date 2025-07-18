@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe "AdminController", type: :request do
   let!(:admin) { create(:user, :admin) }
-  let!(:user) { create(:user, :normal) }
+  let!(:user) { create(:user) }
 
   describe "GET #index" do
     context "when admin is logged in" do
