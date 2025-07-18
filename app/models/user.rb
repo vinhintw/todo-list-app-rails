@@ -13,4 +13,22 @@ class User < ApplicationRecord
   def encrypted_password
     self.password_digest
   end
+
+  before_validation :set_default_role, on: :create
+
+  def set_default_role
+    if User.count == 0
+      self.role ||= Role.find_by(name: "admin")
+    else
+      self.role ||= Role.find_by(name: "user")
+    end
+  end
+
+  def admin?
+   role&.admin?
+  end
+
+  def user?
+    role&.user?
+  end
 end
