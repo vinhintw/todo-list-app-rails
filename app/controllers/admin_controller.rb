@@ -3,17 +3,17 @@ class AdminController < ApplicationController
   before_action :require_admin
 
   def index
-    @users = User.includes(:tasks)
-    @admin_users = @users.select { |user| user.role == "admin" }
-    @normal_users = @users.select { |user| user.role == "normal" }
+    @users = User.includes(:tasks, :role)
+    @admin_users = @users.select(&:admin?)
+    @normal_users = @users.select(&:user?)
 
     @admin_users = Kaminari.paginate_array(@admin_users).page(params[:admin_page]).per(10)
     @normal_users = Kaminari.paginate_array(@normal_users).page(params[:normal_page]).per(10)
 
-    @user_counts = @users.group_by(&:role).transform_values(&:count)
+    @user_counts = @users.group_by { |user| user.role&.name }.transform_values(&:count)
 
-    @admin_count = @user_counts["admin"] || 0
-    @normal_count = @user_counts["normal"] || 0
+    @admin_count = @user_counts[Role::ADMIN] || 0
+    @normal_count = @user_counts[Role::USER] || 0
 
     @total_users = @admin_count + @normal_count
 
