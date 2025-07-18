@@ -1,9 +1,13 @@
+# Seed roles
+admin_role = Role.find_or_create_by!(name: Role::ADMIN) { |r| r.description = "Administrator" }
+user_role = Role.find_or_create_by!(name: Role::USER) { |r| r.description = "Normal user" }
+
 # Create admin user
 admin = User.find_or_create_by!(email_address: "admin@example.com") do |user|
   user.username = "admin"
   user.password = "password123"
   user.password_confirmation = "password123"
-  user.role = :admin
+  user.role = admin_role
 end
 
 puts "Created admin user: #{admin.username} (#{admin.email_address})"
@@ -14,13 +18,13 @@ users_data = [
     email_address: "user1@example.com",
     username: "user1",
     password: "password123",
-    role: :normal
+    role: user_role
   },
   {
     email_address: "user2@example.com",
     username: "user2",
     password: "password123",
-    role: :normal
+    role: user_role
   }
 ]
 
@@ -31,23 +35,23 @@ users_data.each do |user_attrs|
     u.password_confirmation = user_attrs[:password]
     u.role = user_attrs[:role]
   end
-
-  puts "Created user: #{user.username} (#{user.email_address}) - Role: #{user.role}"
+  puts "Created user: #{user.username} (#{user.email_address}) - Role: #{user.role.name}"
 end
 
-# Create 30 more normal users
+# Create 30 more users (randomly admin or user)
 generated_users = []
 30.times do |i|
   email = "user#{i+3}@example.com"
   username = "user#{i+3}"
+  role = [admin_role, user_role].sample
   user = User.find_or_create_by!(email_address: email) do |u|
     u.username = username
     u.password = "password123"
     u.password_confirmation = "password123"
-    u.role = rand(0..1) == 0 ? :normal : :admin
+    u.role = role
   end
   generated_users << user
-  puts "Created user: #{user.username} (#{user.email_address}) - Role: #{user.role}"
+  puts "Created user: #{user.username} (#{user.email_address}) - Role: #{user.role.name}"
 end
 
 # Seed 30 tasks for each user
