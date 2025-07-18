@@ -43,7 +43,7 @@ generated_users = []
 30.times do |i|
   email = "user#{i+3}@example.com"
   username = "user#{i+3}"
-  role = [admin_role, user_role].sample
+  role = [ admin_role, user_role ].sample
   user = User.find_or_create_by!(email_address: email) do |u|
     u.username = username
     u.password = "password123"
