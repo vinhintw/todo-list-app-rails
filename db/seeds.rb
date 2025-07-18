@@ -68,4 +68,18 @@ User.find_each do |user|
   puts "Seeded 30 tasks for user: #{user.username} (#{user.email_address})"
 end
 
-puts "Seeding completed! Total users: #{User.count}, Total tasks: #{Task.count}"
+# Seed tags
+[ 'work', 'personal', 'idea', 'plan' ].each do |tag_name|
+  tag = Tag.find_or_create_by!(name: tag_name)
+  puts "Created tag: #{tag.name}"
+end
+
+sample_tags = Tag.limit(4).to_a
+sample_tasks = Task.limit(20*10*8)
+sample_tasks.each_with_index do |task, idx|
+  tags_for_task = sample_tags.sample(rand(1..2))
+  task.tags << tags_for_task
+  puts "add tag [#{tags_for_task.map(&:name).join(', ')}] for task: #{task.title}"
+end
+
+puts "Seeding completed! Total users: #{User.count}, Total tasks: #{Task.count}, Total tags: #{Tag.count}"
