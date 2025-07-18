@@ -1,6 +1,10 @@
 require "rails_helper"
 
 RSpec.feature "user management", type: :feature do
+  before(:all) do
+    Role.find_or_create_by!(name: "user")
+    Role.find_or_create_by!(name: "admin")
+  end
   describe "user registration" do
     let(:user) { build(:user) }
     context "with valid credentials" do
@@ -113,7 +117,7 @@ RSpec.feature "user management", type: :feature do
 
   describe "admin dashboard" do
     let(:admin) { create(:user, :admin) }
-    let(:user) { create(:user, :normal) }
+    let(:user) { create(:user) }
 
     context "when admin is logged in can access admin dashboard" do
       before do
@@ -138,9 +142,9 @@ RSpec.feature "user management", type: :feature do
 
   describe "admin user management" do
     let!(:admin) { create(:user, :admin) }
-    let!(:user) { create(:user, :normal) }
-    let(:new_user) { build(:user, :normal, username: "newuser", email_address: "newuser@example.com", password: "password123", password_confirmation: "password123") }
-    let(:invalid_user) { build(:user, :normal, username: "a", email_address: user.email_address, password: "password123", password_confirmation: "mismatch123") }
+    let!(:user) { create(:user) }
+    let(:new_user) { build(:user, username: "newuser", email_address: "newuser@example.com", password: "password123", password_confirmation: "password123") }
+    let(:invalid_user) { build(:user, username: "a", email_address: user.email_address, password: "password123", password_confirmation: "mismatch123") }
     context "when admin created a user with valid credentials" do
       before do
         sign_in_as(admin)
