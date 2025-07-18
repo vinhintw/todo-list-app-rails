@@ -8,6 +8,7 @@ class RegistrationsController < ApplicationController
 
   def create
     @user = User.new(registration_params)
+    @user.set_default_role if @user.role.nil?
 
     if @user.save
       start_new_session_for @user
