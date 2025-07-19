@@ -10,7 +10,7 @@
         <% if authenticated? %>
           <!-- User dropdown -->
           <div class="relative ml-3">
-            <button id="user-menu-button" class="flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" aria-expanded="false" aria-haspopup="true" tabindex="0">
+            <button id="user-menu-button" class="flex text-sm rounded-full cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" aria-expanded="false" aria-haspopup="true">
               <div class="h-8 w-8 rounded-full bg-indigo-500 flex items-center justify-center text-white font-medium">
                 <%= current_user.username.first.upcase %>
               </div>
