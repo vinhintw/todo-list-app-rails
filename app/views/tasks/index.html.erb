@@ -4,7 +4,7 @@
     <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-md inline-block" id="notice"><%= notice %></p>
   <% end %>
   <!-- Mobile Search Bar (below navbar on mobile) -->
-  <%= render 'shared/mobile_search_bar' if authenticated? %>
+  <%= render 'shared/mobile_search_bar' %>
   <div class="flex justify-between items-center p-2">
     <h1 class="font-bold text-4xl"><%= t('tasks.title') %></h1>
     <%= link_to t('tasks.new_task'), new_task_path, class: "rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white block font-medium" %>
