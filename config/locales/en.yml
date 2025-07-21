@@ -85,16 +85,28 @@ en:
     task_created: "Task was successfully created."
     task_updated: "Task was successfully updated."
     task_destroyed: "Task was successfully destroyed."
+    registration_successful: "Sign up successful"
     
   # Authentication
   auth:
     login: "Login"
     logout: "Logout"
     sign_in: "Sign in"
+    sign_up: "Sign up"
+    username: "Username"
     email_address: "Email address"
     password: "Password"
+    password_confirmation: "Password confirmation"
     invalid_credentials: "Try another email address or password."
     rate_limit_exceeded: "Try again later."
+    enter_username: "Enter your username"
+    enter_email: "Enter your email address"
+    enter_password: "Enter your password"
+    confirm_password: "Confirm your password"
+    password_requirements: "Password must be at least 6 characters long"
+    already_have_account: "Already have an account? Sign in"
+    dont_have_account: "Don't have an account? Sign up"
+    prohibited_from_being_saved: "prohibited this account from being saved:"
     
   # Confirmations
   confirmations:
@@ -107,10 +119,20 @@ en:
       task:
         title: "Title"
         content: "Content"
+        start_time: "Start time"
         end_time: "End time"
+      user:
+        email_address: "Email address"
+        username: "Username"
+        password: "Password"
+        password_confirmation: "Password confirmation"
     errors:
       messages:
         not_saved: "prohibited this task from being saved:"
+        taken: "has already been taken"
+        too_short: "is too short (minimum is %{count} characters)"
+        confirmation: "doesn't match Password"
+        blank: "can't be blank"
       models:
         task:
           attributes:
@@ -120,5 +142,23 @@ en:
             content:
               too_long: "is too long (maximum is %{count} characters)"
             end_time:
-              end_time_after_start: "must be after start time"
+              end_time_after_start: "End time must be after start time"
+        user:
+          attributes:
+            username:
+              blank: "can't be blank"
+              too_short: "is too short (minimum is %{count} characters)"
+            email_address:
+              blank: "can't be blank"
+              invalid: "is not a valid email address"
+            password:
+              blank: "can't be blank"
+              too_short: "is too short (minimum is %{count} characters)"
+            password_confirmation:
+              blank: "can't be blank"
+              confirmation: "doesn't match Password"
+
   error: "error"
+  navbar:
+    signed_in_as: "Signed in as"
+    sign_out: "Sign out"
