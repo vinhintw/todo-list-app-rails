@@ -28,10 +28,6 @@ export default class extends Controller {
   // Toggle mobile sidebar
   toggleSidebar(event) {
     event.preventDefault();
-    console.log("toggleSidebar called", {
-      hasSidebarTarget: this.hasSidebarTarget,
-      sidebarElement: this.hasSidebarTarget ? this.sidebarTarget : null,
-    });
 
     if (this.hasSidebarTarget) {
       this.sidebarTarget.classList.remove("-translate-x-full");
@@ -39,10 +35,7 @@ export default class extends Controller {
       // Fallback - find sidebar by ID
       const sidebar = document.getElementById("sidebar");
       if (sidebar) {
-        console.log("Using fallback sidebar by ID");
         sidebar.classList.remove("-translate-x-full");
-      } else {
-        console.error("No sidebar found!");
       }
     }
   }
