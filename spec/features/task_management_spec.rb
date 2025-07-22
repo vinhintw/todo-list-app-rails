@@ -203,29 +203,36 @@ RSpec.feature 'Task Management', type: :feature do
     end
   end
 
-  # Test task ordering by end_time
-  describe 'Task ordering by end_time' do
+  # Test task ordering
+  describe 'Task ordering' do
     let(:task_titles) { page.all('h3 a').map(&:text) }
-    let!(:task_a) { create(:task, user: user, title: 'Task A',
-      start_time: Time.current,
-      end_time: 1.day.from_now) }
-    let!(:task_b) { create(:task, user: user, title: 'Task B',
-      start_time: Time.current,
-      end_time: 2.days.from_now) }
-    let!(:task_c) { create(:task, user: user, title: 'Task C',
-      start_time: Time.current,
-      end_time: 3.days.from_now) }
+    let!(:low_task) { create(:task, user: user, title: 'Low Task (Oldest)', priority: 'low') }
+    let!(:medium_task) { create(:task, user: user, title: 'Medium Task (Middle)', priority: 'medium') }
+    let!(:high_task) { create(:task, user: user, title: 'High Task (Newest)', priority: 'high') }
 
-    before do
-      visit tasks_path
+    context 'when viewing tasks ordered by priority' do
+      before do
+        visit tasks_path
+      end
+
+
+      it 'displays tasks in order of priority' do
+        expect(task_titles).to eq([
+          'High Task (Newest)',
+          'Medium Task (Middle)',
+          'Low Task (Oldest)'
+        ])
+      end
     end
 
-    it 'displays tasks ordered by end_time (latest first)' do
-      expect(task_titles).to eq([
-        'Task C',
-        'Task B',
-        'Task A'
-      ])
+    context 'when creating a new task' do
+      let!(:new_task) { create(:task, user: user, title: 'New Task', priority: 'urgent') }
+
+      before do
+        visit tasks_path
+      end
+
+      it { expect(task_titles.first).to eq('New Task') }
     end
   end
 
