@@ -17,7 +17,7 @@
       
       <!-- Desktop Search Bar -->
       <%= render "shared/desktop_search_bar" if authenticated? %>
-      
+      <%= render "shared/desktop_status_filter" if authenticated? %>
       <!-- Right side - User menu or auth buttons -->
       <div class="flex items-center">
         <% if authenticated? %>
@@ -48,10 +48,10 @@
           </div>
         <% end %>
         <div class="flex space-x-2 pl-2">
-          <%= link_to "English", url_for(locale: :en), 
-              class: "px-3 py-1 text-sm rounded #{I18n.locale == :en ? 'bg-blue-600 text-white' : 'bg-white text-gray-700 hover:bg-gray-200'}" %>
+          <%= link_to "EN", url_for(locale: :en), 
+              class: "px-2 py-1 text-xs rounded #{I18n.locale == :en ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}" %>
           <%= link_to "中文", url_for(locale: :'zh-TW'), 
-              class: "px-3 py-1 text-sm rounded #{I18n.locale == :'zh-TW' ? 'bg-blue-600 text-white' : 'bg-white text-gray-700 hover:bg-gray-200'}" %>
+              class: "px-2 py-1 text-xs rounded #{I18n.locale == :'zh-TW' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}" %>
         </div>
       </div>
     </div>
