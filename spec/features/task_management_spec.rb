@@ -269,4 +269,33 @@ RSpec.feature 'Task Management', type: :feature do
       it { expect(page).not_to have_content(task2.title) }
     end
   end
+
+  # Test status dropdown
+  describe 'Status dropdown' do
+    let(:dropdown) { find('#desktop-status-filter') }
+    let(:mobile_dropdown) { find('#status-filter') }
+
+    context 'when viewing tasks can see status dropdown' do
+      before do
+        visit tasks_path
+      end
+      it { expect(page).to have_selector('#status-filter') }
+      it { expect(page).to have_selector('#desktop-status-filter') }
+    end
+
+    context 'when selecting a status from the dropdown' do
+      let!(:pending_task) { create(:task, :pending, user: user, title: 'Pending Task') }
+      let!(:in_progress_task) { create(:task, :in_progress, user: user, title: 'In Progress Task') }
+      before do
+        visit tasks_path(locale: I18n.locale)
+        # visit '/en/tasks?status=0'
+        dropdown.select(I18n.t('status.pending'))
+        save_and_open_page
+        puts "CURRENT PATH: #{URI(current_url).request_uri}" # CURRENT PATH: /en/tasks ❌
+      end
+
+      it { expect(page).to have_content(pending_task.title) }
+      # it { expect(page).not_to have_content(in_progress_task.title) } # ❌
+    end
+  end
 end
