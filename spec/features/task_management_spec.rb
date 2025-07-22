@@ -272,30 +272,30 @@ RSpec.feature 'Task Management', type: :feature do
 
   # Test status dropdown
   describe 'Status dropdown' do
+    let!(:pending_task) { create(:task, :pending, user: user, title: 'Pending Task') }
+    let!(:in_progress_task) { create(:task, :in_progress, user: user, title: 'In Progress Task') }
     let(:dropdown) { find('#desktop-status-filter') }
     let(:mobile_dropdown) { find('#status-filter') }
 
-    context 'when viewing tasks can see status dropdown' do
-      before do
-        visit tasks_path
-      end
-      it { expect(page).to have_selector('#status-filter') }
-      it { expect(page).to have_selector('#desktop-status-filter') }
-    end
-
-    context 'when selecting a status from the dropdown' do
-      let!(:pending_task) { create(:task, :pending, user: user, title: 'Pending Task') }
-      let!(:in_progress_task) { create(:task, :in_progress, user: user, title: 'In Progress Task') }
+    context 'when selecting a status from the dropdown', js: true do
       before do
         visit tasks_path(locale: I18n.locale)
-        # visit '/en/tasks?status=0'
         dropdown.select(I18n.t('status.pending'))
-        save_and_open_page
-        puts "CURRENT PATH: #{URI(current_url).request_uri}" # CURRENT PATH: /en/tasks ❌
       end
 
       it { expect(page).to have_content(pending_task.title) }
-      # it { expect(page).not_to have_content(in_progress_task.title) } # ❌
+      it { expect(page).not_to have_content(in_progress_task.title) }
+    end
+
+    context 'when selecting a status from the mobile dropdown', js: true do
+      before do
+        page.driver.browser.manage.window.resize_to(375, 812)
+        visit tasks_path(locale: I18n.locale)
+        mobile_dropdown.select(I18n.t('status.pending'))
+      end
+
+      it { expect(page).to have_content(pending_task.title) }
+      it { expect(page).not_to have_content(in_progress_task.title) }
     end
   end
 end
