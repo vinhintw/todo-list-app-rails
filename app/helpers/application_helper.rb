@@ -54,7 +54,7 @@ module ApplicationHelper
   end
 
   def sidebar_link_class(current_status = nil)
-    base_class = "#{SIDEBAR_LINK_BASE_CLASS} text-md"
+    base_class = "#{SIDEBAR_LINK_BASE_CLASS} text-base"
 
     return "#{base_class} #{INACTIVE_SIDEBAR_CLASS}" unless status_active?(current_status)
 
