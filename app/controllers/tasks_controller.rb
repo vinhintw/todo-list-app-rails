@@ -7,7 +7,11 @@ class TasksController < ApplicationController
     ransack_params[:title_cont] = params[:title] if params[:title].present?
     ransack_params[:status_eq] = params[:status] if params[:status].present?
 
-    @q = current_user.tasks.ransack(ransack_params)
+    tasks_scope = current_user.tasks.includes(:tags)
+    if params[:tag].present?
+      tasks_scope = tasks_scope.joins(:tags).where(tags: { name: params[:tag] })
+    end
+    @q = tasks_scope.ransack(ransack_params)
     @tasks = @q.result.order(priority: :desc).page(params[:page]).per(15)
   end
 
