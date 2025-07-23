@@ -206,9 +206,9 @@ RSpec.feature 'Task Management', type: :feature do
   # Test task ordering
   describe 'Task ordering' do
     let(:task_titles) { page.all('h3 a').map(&:text) }
-    let!(:low_task) { create(:task, user: user, title: 'Low Task (Oldest)', priority: 'low') }
-    let!(:medium_task) { create(:task, user: user, title: 'Medium Task (Middle)', priority: 'medium') }
-    let!(:high_task) { create(:task, user: user, title: 'High Task (Newest)', priority: 'high') }
+    let!(:low_task) { create(:task, :low_priority, user: user, title: 'Low Task (Oldest)') }
+    let!(:medium_task) { create(:task, :medium_priority, user: user, title: 'Medium Task (Middle)') }
+    let!(:high_task) { create(:task, :high_priority, user: user, title: 'High Task (Newest)') }
 
     context 'when viewing tasks ordered by priority' do
       before do
@@ -226,7 +226,7 @@ RSpec.feature 'Task Management', type: :feature do
     end
 
     context 'when creating a new task' do
-      let!(:new_task) { create(:task, user: user, title: 'New Task', priority: 'urgent') }
+      let!(:new_task) { create(:task, :urgent, user: user, title: 'New Task') }
 
       before do
         visit tasks_path
