@@ -1,6 +1,9 @@
 class Task < ApplicationRecord
   belongs_to :user
 
+  has_many :taggings, dependent: :destroy
+  has_many :tags, through: :taggings
+
   # Enums for priority and status
   enum :priority, { low: 0, medium: 1, high: 2, urgent: 3 }
   enum :status, { pending: 0, in_progress: 1, completed: 2, cancelled: 3 }
