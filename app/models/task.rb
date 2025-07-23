@@ -11,6 +11,10 @@ class Task < ApplicationRecord
   validates :start_time, :end_time, presence: true, if: -> { start_time.present? || end_time.present? }
   validate :end_time_after_start_time
 
+  def self.ransackable_attributes(auth_object = nil)
+    %w[title status]
+  end
+
   private
 
   def end_time_after_start_time

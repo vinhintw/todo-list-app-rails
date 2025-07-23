@@ -65,7 +65,7 @@ en:
     hours: "hours"
     destroy_this_task: "Destroy this task"
     edit_this_task: "Edit this task"
-    
+    all_tasks: "All Tasks"
   # Priority levels
   priority:
     low: "Low"
@@ -162,3 +162,4 @@ en:
   navbar:
     signed_in_as: "Signed in as"
     sign_out: "Sign out"
+    placeholder_search: "Search tasks"

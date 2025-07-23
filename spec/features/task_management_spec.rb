@@ -99,11 +99,11 @@ RSpec.feature 'Task Management', type: :feature do
     context 'when user has tasks and clicks on a task' do
       let!(:task) do
         create(:task,
+        :pending,
         user: user,
         title: 'Detailed Task',
         content: 'This is the detailed content of the task',
         priority: 'high',
-        status: 'pending'
         )
       end
 
@@ -226,6 +226,77 @@ RSpec.feature 'Task Management', type: :feature do
         'Task B',
         'Task A'
       ])
+    end
+  end
+
+  # Test task search
+  describe 'Task search' do
+    let!(:task1) { create(:task, :in_progress, user: user, title: 'Searchable Task 1') }
+    let!(:task2) { create(:task, :completed, user: user, title: 'Searchable Task 2') }
+    let(:nav_form) { find('#desktop-search-form') }
+    let(:mobile_form) { find('#mobile-search-form') }
+
+    context 'when searching title from desktop' do
+      before do
+        visit tasks_path
+        within(nav_form) do
+          fill_in 'title', with: task1.title
+          find('input[type="submit"]').click
+        end
+      end
+      it { expect(page).to have_content(task1.title) }
+      it { expect(page).not_to have_content(task2.title) }
+    end
+
+    context 'when searching title from mobile' do
+      before do
+        visit tasks_path
+        within(mobile_form) do
+          fill_in 'title', with: task1.title
+          find('input[type="submit"]').click
+        end
+      end
+      it { expect(page).to have_content(task1.title) }
+      it { expect(page).not_to have_content(task2.title) }
+    end
+
+    context 'when searching by status' do
+      before do
+        visit tasks_path
+        click_link I18n.t('status.in_progress')
+      end
+      it { expect(page).to have_content(task1.title) }
+      it { expect(page).not_to have_content(task2.title) }
+    end
+  end
+
+  # Test status dropdown
+  describe 'Status dropdown' do
+    let!(:pending_task) { create(:task, :pending, user: user, title: 'Pending Task') }
+    let!(:in_progress_task) { create(:task, :in_progress, user: user, title: 'In Progress Task') }
+    let(:dropdown) { find('#desktop-status-filter select') }
+    let(:mobile_dropdown) { find('#status-filter select') }
+
+    context 'when selecting a status from the dropdown', js: true do
+      before do
+        visit tasks_path(locale: I18n.locale)
+        dropdown.select(I18n.t('status.pending'))
+      end
+
+      it { expect(page).to have_content(pending_task.title) }
+      it { expect(page).not_to have_content(in_progress_task.title) }
+    end
+
+    context 'when selecting a status from the mobile dropdown', js: true do
+      before do
+        page.driver.browser.manage.window.resize_to(375, 812)
+        sleep 1.seconds
+        visit tasks_path(locale: I18n.locale)
+        mobile_dropdown.select(I18n.t('status.pending'))
+      end
+
+      it { expect(page).to have_content(pending_task.title) }
+      it { expect(page).not_to have_content(in_progress_task.title) }
     end
   end
 end

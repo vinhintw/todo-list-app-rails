@@ -69,12 +69,25 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+          
     steps:
-      - name: Install packages
-        run: sudo apt-get update && sudo apt-get install --no-install-recommends -y build-essential git libyaml-dev pkg-config google-chrome-stable
-
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y \
+            build-essential \
+            git \
+            libyaml-dev \
+            pkg-config \
+            xvfb
+
+      - name: Setup Chrome
+        uses: browser-actions/setup-chrome@v1
+        with:
+          chrome-version: stable
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
@@ -89,7 +102,14 @@ jobs:
           POSTGRES_USER: myapp
           POSTGRES_PASSWORD: password1
           POSTGRES_DB: todo_list_test
-        run: bin/rails db:test:prepare && bundle exec rspec
+          CHROME_NO_SANDBOX: true
+          DISPLAY: :99
+        run: |
+          # Start virtual display for headless browser tests
+          Xvfb :99 -screen 0 1920x1080x24 > /dev/null 2>&1 &
+          
+          # Prepare database and run tests
+          bin/rails db:test:prepare && bundle exec rspec
 
       - name: Keep screenshots from failed system tests
         uses: actions/upload-artifact@v4

@@ -1,4 +1,3 @@
-# This file is copied to spec/ when you run 'rails generate rspec:install'
 require 'spec_helper'
 ENV['RAILS_ENV'] ||= 'test'
 require_relative '../config/environment'
@@ -27,6 +26,47 @@ require 'factory_bot_rails'
 #
 # Rails.root.glob('spec/support/**/*.rb').sort_by(&:to_s).each { |f| require f }
 
+# Capybara configuration for headless Chrome in CI
+require 'capybara/rails'
+require 'capybara/rspec'
+
+# Configure Capybara to use headless Chrome
+Capybara.register_driver :headless_chrome do |app|
+  options = Selenium::WebDriver::Chrome::Options.new
+
+  # Essential Chrome options for CI environments
+  options.add_argument('--headless')
+  options.add_argument('--no-sandbox')
+  options.add_argument('--disable-dev-shm-usage')
+  options.add_argument('--disable-gpu')
+  options.add_argument('--disable-extensions')
+  options.add_argument('--disable-background-timer-throttling')
+  options.add_argument('--disable-backgrounding-occluded-windows')
+  options.add_argument('--disable-renderer-backgrounding')
+  options.add_argument('--disable-features=TranslateUI')
+  options.add_argument('--disable-ipc-flooding-protection')
+  options.add_argument('--window-size=1920,1080')
+
+  # Memory and performance optimizations
+  options.add_argument('--memory-pressure-off')
+  options.add_argument('--max_old_space_size=4096')
+
+  # Disable logging to reduce noise
+  options.add_argument('--disable-logging')
+  options.add_argument('--log-level=3')
+
+  Capybara::Selenium::Driver.new(
+    app,
+    browser: :chrome,
+    options: options
+  )
+end
+
+# Set default driver for JavaScript tests
+Capybara.javascript_driver = :headless_chrome
+Capybara.default_driver = :rack_test
+Capybara.default_max_wait_time = 10
+
 # Ensures that the test database schema matches the current schema file.
 # If there are pending migrations it will invoke `db:test:prepare` to
 # recreate the test database by loading the schema.
@@ -36,6 +76,7 @@ begin
 rescue ActiveRecord::PendingMigrationError => e
   abort e.to_s.strip
 end
+
 RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
   config.include ActiveSupport::Testing::TimeHelpers
@@ -74,4 +115,10 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
+
+  # Clean up after feature tests
+  config.after(:each, type: :feature) do
+    Capybara.reset_sessions!
+    Capybara.use_default_driver
+  end
 end
