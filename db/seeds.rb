@@ -79,3 +79,11 @@ begin
 rescue => e
   puts "Error creating tasks: #{e.message}"
 end
+
+# Seed tags
+Tag.transaction do
+  [ 'work', 'personal', 'idea', 'plan' ].each do |tag_name|
+    tag = Tag.find_or_create_by!(name: tag_name)
+    puts "Created tag: #{tag.name}"
+  end
+end
