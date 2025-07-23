@@ -99,11 +99,11 @@ RSpec.feature 'Task Management', type: :feature do
     context 'when user has tasks and clicks on a task' do
       let!(:task) do
         create(:task,
+        :pending,
         user: user,
         title: 'Detailed Task',
         content: 'This is the detailed content of the task',
         priority: 'high',
-        status: 'pending'
         )
       end
 
@@ -231,8 +231,8 @@ RSpec.feature 'Task Management', type: :feature do
 
   # Test task search
   describe 'Task search' do
-    let!(:task1) { create(:task, user: user, title: 'Searchable Task 1', status: 'in_progress') }
-    let!(:task2) { create(:task, user: user, title: 'Searchable Task 2', status: 'completed') }
+    let!(:task1) { create(:task, :in_progress, user: user, title: 'Searchable Task 1') }
+    let!(:task2) { create(:task, :completed, user: user, title: 'Searchable Task 2') }
     let(:nav_form) { find('#desktop-search-form') }
     let(:mobile_form) { find('#mobile-search-form') }
 
