@@ -1,5 +1,5 @@
 module ApplicationHelper
-  SIDEBAR_LINK_BASE_CLASS = "group flex items-center px-2 py-2 font-medium rounded-md".freeze
+  SIDEBAR_LINK_BASE_CLASS = "group flex items-center px-2 py-2 font-medium rounded-md text-base".freeze
   BADGE_BASE_CLASSES = "inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium".freeze
 
   COLOR_MAPPINGS = {
@@ -54,20 +54,17 @@ module ApplicationHelper
   end
 
   def sidebar_link_class(current_status = nil)
-    base_class = "#{SIDEBAR_LINK_BASE_CLASS} text-base"
-
-    return "#{base_class} #{INACTIVE_SIDEBAR_CLASS}" unless status_active?(current_status)
+    return "#{SIDEBAR_LINK_BASE_CLASS} #{INACTIVE_SIDEBAR_CLASS}" unless status_active?(current_status)
 
     active_class = NAV_STATUS_MAPPINGS[current_status] || DEFAULT_NAV_COLOR
-    "#{base_class} #{active_class}"
+    "#{SIDEBAR_LINK_BASE_CLASS} #{active_class}"
   end
 
   def all_tasks_link_class
-    base_class = "#{SIDEBAR_LINK_BASE_CLASS} text-base"
     if params[:status].blank?
-      "#{base_class} #{ACTIVE_ALL_TASKS_CLASS}"
+      "#{SIDEBAR_LINK_BASE_CLASS} #{ACTIVE_ALL_TASKS_CLASS}"
     else
-      "#{base_class} #{INACTIVE_SIDEBAR_CLASS}"
+      "#{SIDEBAR_LINK_BASE_CLASS} #{INACTIVE_SIDEBAR_CLASS}"
     end
   end
 
