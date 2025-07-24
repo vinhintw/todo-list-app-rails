@@ -15,7 +15,7 @@
     <%= statistics_card('admin.dashboard.total_users', @total_users) %>
     <%= statistics_card('admin.dashboard.administrators', @admin_count, 'text-blue-600') %>
     <%= statistics_card('admin.dashboard.normal_users', @normal_count, 'text-green-600') %>
-    <%= statistics_card('admin.dashboard.total_tasks', @users.sum(&:total_tasks_count), 'text-purple-600') %>
+    <%= statistics_card('admin.dashboard.total_tasks', Task.count, 'text-purple-600') %>
   </div>
   <!-- Admin Users Table -->
   <div class="flex justify-start mt-2 mb-4">
