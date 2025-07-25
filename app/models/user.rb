@@ -36,14 +36,14 @@ class User < ApplicationRecord
   def total_tasks_count
     association(:tasks).loaded? ? tasks.size : tasks.count
   end
-  
+
   before_validation :set_default_role, on: :create
 
   def set_default_role
     if User.count == 0
-      self.role ||= Role.find_by(name: "admin")
+      self.role ||= Role.find_by(name: Role::USER)
     else
-      self.role ||= Role.find_by(name: "user")
+      self.role ||= Role.find_by(name: Role::USER)
     end
   end
 
@@ -56,6 +56,6 @@ class User < ApplicationRecord
   end
 
   def last_admin?
-    admin? && User.where(role: :admin).count == 1
+    admin? && User.joins(:role).where(roles: { name: Role::ADMIN }).count == 1
   end
 end
