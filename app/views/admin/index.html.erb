@@ -18,9 +18,9 @@
   </div>
   <!-- Statistics Cards -->
   <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-    <%= render(StatisticsCardComponent.new(title_key: 'admin.dashboard.total_users', count: @total_users)) %>
-    <%= render(StatisticsCardComponent.new(title_key: 'admin.dashboard.administrators', count: @admin_count, color_class: 'text-blue-600')) %>
-    <%= render(StatisticsCardComponent.new(title_key: 'admin.dashboard.normal_users', count: @normal_count, color_class: 'text-green-600')) %>
+    <%= render(StatisticsCardComponent.new(title_key: 'admin.dashboard.total_users', count: @admin_users.total_count + @normal_users.total_count)) %>
+    <%= render(StatisticsCardComponent.new(title_key: 'admin.dashboard.administrators', count: @admin_users.total_count, color_class: 'text-blue-600')) %>
+    <%= render(StatisticsCardComponent.new(title_key: 'admin.dashboard.normal_users', count: @normal_users.total_count, color_class: 'text-green-600')) %>
     <%= render(StatisticsCardComponent.new(title_key: 'admin.dashboard.total_tasks', count: Task.count, color_class: 'text-purple-600')) %>
   </div>
   <!-- Admin Users Table -->
