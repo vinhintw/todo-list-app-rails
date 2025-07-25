@@ -1,7 +1,6 @@
 module ApplicationHelper
   SIDEBAR_LINK_BASE_CLASS = "group flex items-center px-2 py-2 font-medium rounded-md text-base".freeze
   BADGE_BASE_CLASSES = "inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium".freeze
-
   COLOR_MAPPINGS = {
     priority: {
       "low"    => "bg-gray-100 text-gray-800",
