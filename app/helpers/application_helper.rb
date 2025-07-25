@@ -98,15 +98,6 @@ module ApplicationHelper
   end
 
   def admin_link_class
-    base_class = "#{SIDEBAR_LINK_BASE_CLASS} text-base"
-    if controller_name == "admin"
-      "#{base_class} bg-indigo-100 text-indigo-900"
-    else
-      "#{base_class} text-gray-600 hover:bg-gray-50 hover:text-gray-900"
-    end
-  end
-
-  def admin_link_class
     if controller_name == "admin"
       "#{SIDEBAR_LINK_BASE_CLASS} bg-indigo-100 text-indigo-900"
     else
