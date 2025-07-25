@@ -64,7 +64,7 @@ class AdminController < ApplicationController
   end
 
   def user_tasks
-    @tasks = @user.tasks.order(created_at: :desc).page(params[:page]).per(15)
+    @tasks = @user.tasks.ransack(status_eq: params[:status]).result.order(created_at: :desc).page(params[:page]).per(15)
   end
 
   private
