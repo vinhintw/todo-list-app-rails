@@ -35,7 +35,7 @@ users_data.each do |user_attrs|
     u.username = user_attrs[:username]
     u.password = user_attrs[:password]
     u.password_confirmation = user_attrs[:password]
-    u.role = user_attrs[:role]
+    u.role = user_role
   end
   puts "Created user: #{user.username} (#{user.email_address}) - Role: #{user.role.name}"
 end
@@ -49,7 +49,7 @@ begin
         username: "user#{i+3}",
         password: "password123",
         password_confirmation: "password123",
-        role: [admin_role, user_role].sample
+        role: [ admin_role, user_role ].sample
       )
     end
     puts "Created 30 additional users."
