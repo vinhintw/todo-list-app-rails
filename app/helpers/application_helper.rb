@@ -38,6 +38,13 @@ module ApplicationHelper
     { status: 3, label_key: "status.cancelled" }
   ].freeze
 
+  STATUS_STRING_TO_INT = {
+    "pending" => 0,
+    "in_progress" => 1,
+    "completed" => 2,
+    "cancelled" => 3
+  }.freeze
+
   def badge_class(type, value)
     color_classes = COLOR_MAPPINGS.dig(type.to_sym, value) || DEFAULT_BADGE_COLOR
     "#{BADGE_BASE_CLASSES} #{color_classes}"
