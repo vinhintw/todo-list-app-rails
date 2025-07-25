@@ -128,18 +128,18 @@ RSpec.describe "AdminController", type: :request do
     before { sign_in_as(admin) }
 
     it "allows admin to promote normal user to admin" do
-      patch admin_edit_user_path(user), params: { user: { role: "admin" } }
-      expect(user.reload.role).to eq("admin")
+      patch admin_edit_user_path(user), params: { user: { role_id:  Role.find_by(name: Role::ADMIN).id } }
+      expect(user.reload.role.name).to eq("admin")
     end
 
     it "allows admin to demote other admin to normal" do
-      patch admin_edit_user_path(other_admin), params: { user: { role: "normal" } }
-      expect(other_admin.reload.role).to eq("normal")
+      patch admin_edit_user_path(other_admin), params: { user: { role_id: Role.find_by(name: Role::USER).id } }
+      expect(other_admin.reload.role.name).to eq("user")
     end
 
     it "does not allow admin to demote themselves" do
-      patch admin_edit_user_path(admin), params: { user: { role: "normal" } }
-      expect(admin.reload.role).to eq("admin")
+      patch admin_edit_user_path(admin), params: { user: { role_id: Role.find_by(name: Role::USER).id } }
+      expect(admin.reload.role.name).to eq("admin")
       expect(response).to have_http_status(:unprocessable_entity)
     end
   end

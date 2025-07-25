@@ -172,8 +172,10 @@ RSpec.feature "user management", type: :feature do
     context "when admin is logged in & tries to delete self" do
       before do
         sign_in_as(admin)
-        visit admin_edit_user_path(locale: I18n.locale, id: admin.id)
-        click_button I18n.t("delete")
+        visit admin_path(locale: I18n.locale, id: admin.id)
+        within("tr", text: admin.username) do
+          click_button I18n.t("delete")
+        end
       end
       it { expect(page).to have_content(I18n.t("flash.cannot_delete_self")) }
     end
