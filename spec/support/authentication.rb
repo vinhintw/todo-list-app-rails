@@ -22,6 +22,7 @@ module Helpers
       fill_in "user_email_address", with: user.email_address
       fill_in "user_password", with: user.password
       fill_in "user_password_confirmation", with: user.password_confirmation
+      select I18n.t("role.#{user.role}"), from: "user_role"
       click_button I18n.t("auth.sign_up")
     end
   end

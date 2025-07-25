@@ -3,6 +3,7 @@ require "rails_helper"
 RSpec.describe "AdminController", type: :request do
   let!(:admin) { create(:user, :admin) }
   let!(:user) { create(:user, :normal) }
+  let!(:other_admin) { create(:user, :admin) }
 
   describe "GET #index" do
     context "when admin is logged in" do
@@ -123,13 +124,23 @@ RSpec.describe "AdminController", type: :request do
     end
   end
 
-  describe "strong params" do
+  describe "role management security" do
     before { sign_in_as(admin) }
-    let(:target_user) { create(:user) }
 
-    it "does not allow updating forbidden fields" do
-      patch admin_edit_user_path(target_user), params: { user: { role: "admin" } }
-      expect(target_user.reload.role).not_to eq("admin")
+    it "allows admin to promote normal user to admin" do
+      patch admin_edit_user_path(user), params: { user: { role: "admin" } }
+      expect(user.reload.role).to eq("admin")
+    end
+
+    it "allows admin to demote other admin to normal" do
+      patch admin_edit_user_path(other_admin), params: { user: { role: "normal" } }
+      expect(other_admin.reload.role).to eq("normal")
+    end
+
+    it "does not allow admin to demote themselves" do
+      patch admin_edit_user_path(admin), params: { user: { role: "normal" } }
+      expect(admin.reload.role).to eq("admin")
+      expect(response).to have_http_status(:unprocessable_entity)
     end
   end
 end
