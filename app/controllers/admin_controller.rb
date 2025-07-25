@@ -93,8 +93,11 @@ class AdminController < ApplicationController
   private
 
   def prevent_self_demote!
-    if @user == current_user && signup_params[:role] == "normal"
-      @user.errors.add(:role, t("flash.user_cannot_demote"))
+    if @user == current_user && signup_params[:role_id].present?
+      new_role = Role.find_by(id: signup_params[:role_id])
+      unless new_role&.admin?
+        @user.errors.add(:role, t("flash.user_cannot_demote"))
+      end
       return true
     end
     false
@@ -113,7 +116,7 @@ class AdminController < ApplicationController
 
   def signup_params
     permitted = [ :username, :email_address, :password, :password_confirmation ]
-    permitted << :role if current_user&.admin?
+    permitted << :role_id if current_user&.admin?
     params.require(:user).permit(permitted)
   end
 
