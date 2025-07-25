@@ -96,9 +96,9 @@ class AdminController < ApplicationController
     if @user == current_user && signup_params[:role_id].present?
       new_role = Role.find_by(id: signup_params[:role_id])
       unless new_role&.admin?
-        @user.errors.add(:role, t("flash.user_cannot_demote"))
+        @user.errors.add(:base, t("flash.user_cannot_demote"))
+        return true
       end
-      return true
     end
     false
   end
