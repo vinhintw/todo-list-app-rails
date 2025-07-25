@@ -40,7 +40,10 @@
               </td>
             <% end %>
             <td class="px-6 py-4 whitespace-nowrap text-center">
-              <%= link_to t("admin.user.edit"), admin_edit_user_path(user), class: "text-indigo-600 hover:text-indigo-900 text-sm font-medium" %>
+              <div class="flex flex-col items-center gap-1">
+                <%= link_to t("admin.user.edit"), admin_edit_user_path(user), class: "text-indigo-600 hover:text-indigo-900 text-xs font-medium px-2 py-1 rounded", form_class: "inline" %>
+                <%= button_to t('delete'), admin_edit_user_path(user), method: :delete, class: "rounded px-2 py-1 text-xs text-white bg-red-600 hover:bg-red-700 font-medium transition-colors", data: { turbo_confirm: t('confirmations.delete_user') }, form_class: "inline" %>
+              </div>
             </td>
           </tr>
         <% end %>
