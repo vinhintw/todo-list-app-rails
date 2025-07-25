@@ -83,7 +83,7 @@ en:
   # Role related
   role:
     admin: "Admin"
-    normal: "Normal User"
+    user: "Normal User"
     name: "Role Name"
     description: "Role Description"
     created: "Role was successfully created %{name}"
@@ -141,7 +141,6 @@ en:
         username: "Username"
         password: "Password"
         password_confirmation: "Password confirmation"
-        role: "Role"
       role:
         name: "Role Name"
         description: "Role Description"
