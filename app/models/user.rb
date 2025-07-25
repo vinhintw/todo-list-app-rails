@@ -11,6 +11,12 @@ class User < ApplicationRecord
 
   normalizes :email_address, with: ->(e) { e.strip.downcase }
 
+  after_initialize :set_default_role, if: :new_record?
+
+  def set_default_role
+    self.role ||= :normal
+  end
+
   def encrypted_password
     self.password_digest
   end
