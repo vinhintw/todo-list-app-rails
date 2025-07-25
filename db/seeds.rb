@@ -87,3 +87,14 @@ Tag.transaction do
     puts "Created tag: #{tag.name}"
   end
 end
+
+Tagging.transaction do
+  sample_tags = Tag.limit(4).to_a
+  sample_tasks = Task.limit(20*10*8)
+  sample_tasks.each_with_index do |task, idx|
+    tags_for_task = sample_tags.sample(rand(1..2))
+    task.tags << tags_for_task
+  end
+end
+
+puts "Seeding completed! Total users: #{User.count}, Total tasks: #{Task.count}, Total tags: #{Tag.count}"
