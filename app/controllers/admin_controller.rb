@@ -43,6 +43,11 @@ class AdminController < ApplicationController
   def update
     remove_blank_password_params
 
+    if prevent_self_demote!
+      render :edit, status: :unprocessable_entity
+      return
+    end
+
     respond_to do |format|
       if @user.update(signup_params)
         format.html { redirect_to admin_path, notice: t("flash.user_updated") }
@@ -69,6 +74,14 @@ class AdminController < ApplicationController
 
   private
 
+  def prevent_self_demote!
+    if @user == current_user && signup_params[:role] == "normal"
+      @user.errors.add(:role, t("flash.user_cannot_demote"))
+      return true
+    end
+    false
+  end
+
   def remove_blank_password_params
     if signup_params[:password].blank? && signup_params[:password_confirmation].blank?
       signup_params.delete(:password)
@@ -81,7 +94,9 @@ class AdminController < ApplicationController
   end
 
   def signup_params
-    params.require(:user).permit(:username, :email_address, :password, :password_confirmation)
+    permitted = [ :username, :email_address, :password, :password_confirmation ]
+    permitted << :role if current_user&.admin?
+    params.require(:user).permit(permitted)
   end
 
   def require_admin
