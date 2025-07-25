@@ -2,8 +2,8 @@ require "rails_helper"
 
 RSpec.feature "user management", type: :feature do
   before(:each) do
-    Role.find_or_create_by!(name: "user")
-    Role.find_or_create_by!(name: "admin")
+    Role.find_or_create_by!(name: Role::USER)
+    Role.find_or_create_by!(name: Role::ADMIN)
   end
   describe "user registration" do
     let(:user) { build(:user) }
