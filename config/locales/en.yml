@@ -79,6 +79,10 @@ en:
     in_progress: "In Progress"
     completed: "Completed"
     cancelled: "Cancelled"
+  
+  role:
+    admin: "Admin"
+    normal: "Normal User"
     
   # Flash messages
   flash:
@@ -88,6 +92,7 @@ en:
     registration_successful: "Sign up successful"
     user_updated: "User was successfully updated."
     user_destroyed: "User was successfully deleted."
+    user_cannot_demote: "You cannot demote yourself"
 
   # Authentication
   auth:
@@ -129,6 +134,7 @@ en:
         username: "Username"
         password: "Password"
         password_confirmation: "Password confirmation"
+        role: "Role"
     errors:
       messages:
         not_saved: "prohibited this task from being saved:"
