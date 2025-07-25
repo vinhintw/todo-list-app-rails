@@ -287,7 +287,7 @@ RSpec.feature 'Task Management', type: :feature do
     context 'when selecting a status from the dropdown', js: true do
       before do
         visit tasks_path(locale: I18n.locale)
-        sleep 1.seconds
+        sleep 2.seconds
         dropdown.select(I18n.t('status.pending'))
       end
 
