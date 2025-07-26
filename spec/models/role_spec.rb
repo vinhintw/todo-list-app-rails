@@ -8,7 +8,8 @@ describe Role, type: :model do
   end
 
   describe 'validations' do
-    let(:duplicate_role) { Role.new(name: 'admin') }
+    let!(:admin_role) { Role.create(name: 'admin') }
+    let(:duplicate_role) { Role.create(name: 'admin') }
     let(:blank_role) { Role.new(name: nil) }
     it { expect(blank_role.valid?).to be false }
     it { expect(duplicate_role.valid?).to be false }
