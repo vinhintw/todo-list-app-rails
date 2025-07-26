@@ -4,7 +4,7 @@ class UserTableComponent < ViewComponent::Base
   def initialize(users:, table_type:)
     @users = users
     @table_type = table_type
-    @title_key = table_type == :admin ? "admin.dashboard.administrators" : "admin.dashboard.normal_users"
+    @title_key = title_key_for_table_type
   end
 
   def table_headers
@@ -18,5 +18,18 @@ class UserTableComponent < ViewComponent::Base
       { key: "admin.dashboard.total", align: "center" },
       { key: "admin.dashboard.actions", align: "center" }
     ]
+  end
+
+  private
+
+  def title_key_for_table_type
+    case @table_type
+    when :admin
+      "admin.dashboard.administrators"
+    when :normal
+      "admin.dashboard.normal_users"
+    else
+      "admin.dashboard.users"
+    end
   end
 end
