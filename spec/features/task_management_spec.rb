@@ -286,7 +286,9 @@ RSpec.feature 'Task Management', type: :feature do
 
     context 'when selecting a status from the dropdown', js: true do
       before do
+        page.driver.browser.manage.window.resize_to(1920, 1080)
         visit tasks_path(locale: I18n.locale)
+        save_screenshot("desktop_dropdown_test.png")
         dropdown.select(I18n.t('status.pending'))
       end
 
