@@ -149,7 +149,7 @@ RSpec.feature "user management", type: :feature do
       end
 
       it { expect(page).to have_content(I18n.t("flash.registration_successful")) }
-      it { expect(page).to have_content(new_user.username) }
+      it { expect(page).to have_content(new_user.email_address) }
     end
 
     context "when admin created a user with invalid credentials" do
@@ -169,7 +169,7 @@ RSpec.feature "user management", type: :feature do
       before do
         sign_in_as(admin)
         visit admin_path(locale: I18n.locale, id: admin.id)
-        within("tr", text: admin.username) do
+        within("tr", text: admin.email_address) do
           click_button I18n.t("delete")
         end
       end
