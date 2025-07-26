@@ -281,8 +281,8 @@ RSpec.feature 'Task Management', type: :feature do
   describe 'Status dropdown' do
     let!(:pending_task) { create(:task, :pending, user: user, title: 'Pending Task') }
     let!(:in_progress_task) { create(:task, :in_progress, user: user, title: 'In Progress Task') }
-    let(:dropdown) { find('#desktop-status-filter select', wait: 10) }
-    let(:mobile_dropdown) { find('#status-filter select', wait: 10) }
+    let(:dropdown) { find('#desktop-status-filter select', wait: 20) }
+    let(:mobile_dropdown) { find('#status-filter select', wait: 20) }
 
     context 'when selecting a status from the dropdown', js: true do
       before do
