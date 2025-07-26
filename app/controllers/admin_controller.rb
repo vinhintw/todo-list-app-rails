@@ -128,14 +128,14 @@ class AdminController < ApplicationController
   def load_admin_users
     @admin_users = User.with_task_counts.includes(:role)
                        .where(role: Role.find_by(name: Role::ADMIN))
-                       .page(params[:admin_page])
+                       .page(params[:admin_page]).order(created_at: :desc)
                        .per(10)
   end
 
   def load_normal_users
     @normal_users = User.with_task_counts.includes(:role)
                         .where(role: Role.find_by(name: Role::USER))
-                        .page(params[:normal_page])
+                        .page(params[:normal_page]).order(created_at: :desc)
                         .per(10)
   end
 
