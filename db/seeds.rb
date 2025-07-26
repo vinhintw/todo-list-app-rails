@@ -1,3 +1,6 @@
+User.destroy_all
+Task.destroy_all
+
 # Create admin user
 admin = User.find_or_create_by!(email_address: "admin@example.com") do |user|
   user.username = "admin"
@@ -35,4 +38,26 @@ users_data.each do |user_attrs|
   puts "Created user: #{user.username} (#{user.email_address}) - Role: #{user.role}"
 end
 
-puts "Seeding completed! Total users: #{User.count}"
+# Seed 150 tasks for each user
+begin
+  Task.transaction do
+    150.times do |i|
+      start_time = Time.now + rand(1..10).days
+      end_time = start_time + rand(1..5).hours
+      Task.create!(
+        title: "Task #{i+1}",
+        content: "Content for Task #{i+1}",
+        priority: Task.priorities.keys.sample,
+        status: Task.statuses.keys.sample,
+        start_time: start_time,
+        end_time: end_time,
+        user: User.order('RANDOM()').first
+      )
+    end
+  end
+  puts "Created 150 tasks for users."
+rescue => e
+  puts "Error creating tasks: #{e.message}"
+end
+
+puts "Seeding completed! Total users: #{User.count}, Total tasks: #{Task.count}"
