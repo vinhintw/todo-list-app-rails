@@ -12,7 +12,7 @@ class AddRoleIdToUsersAndMigrateEnum < ActiveRecord::Migration[8.0]
     User.unscoped.find_each do |user|
       old_role_value = user.read_attribute(:role)
 
-      if old_role_value == "admin"
+      if old_role_value == 1
         user.update_column(:role_id, admin_role.id)
       else
         user.update_column(:role_id, user_role.id)
