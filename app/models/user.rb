@@ -12,10 +12,6 @@ class User < ApplicationRecord
 
   after_initialize :set_default_role, if: :new_record?
 
-  def set_default_role
-    self.role ||= :normal
-  end
-
   def encrypted_password
     self.password_digest
   end
@@ -41,7 +37,7 @@ class User < ApplicationRecord
 
   def set_default_role
     if User.count == 0
-      self.role ||= Role.find_by(name: Role::USER)
+      self.role ||= Role.find_by(name: Role::ADMIN)
     else
       self.role ||= Role.find_by(name: Role::USER)
     end
