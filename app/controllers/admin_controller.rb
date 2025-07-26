@@ -3,7 +3,6 @@ class AdminController < ApplicationController
   before_action :require_admin
 
   def index
-    set_user_counts
     load_admin_users
     load_normal_users
   end
@@ -126,23 +125,16 @@ class AdminController < ApplicationController
     end
   end
 
-  def set_user_counts
-    counts = User.group(:role).count
-    @admin_count = counts["admin"] || 0
-    @normal_count = counts["normal"] || 0
-    @total_users = @admin_count + @normal_count
-  end
-
   def load_admin_users
-    @admin_users = User.with_task_counts
-                       .where(role: :admin)
+    @admin_users = User.with_task_counts.includes(:role)
+                       .where(role: Role.find_by(name: Role::ADMIN))
                        .page(params[:admin_page])
                        .per(10)
   end
 
   def load_normal_users
-    @normal_users = User.with_task_counts
-                        .where(role: :normal)
+    @normal_users = User.with_task_counts.includes(:role)
+                        .where(role: Role.find_by(name: Role::USER))
                         .page(params[:normal_page])
                         .per(10)
   end
