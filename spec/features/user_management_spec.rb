@@ -113,7 +113,7 @@ RSpec.feature "user management", type: :feature do
 
   describe "admin dashboard" do
     let(:admin) { create(:user, :admin) }
-    let(:user) { create(:user, :normal) }
+    let(:user) { create(:user) }
 
     context "when admin is logged in can access admin dashboard" do
       before do
@@ -138,9 +138,9 @@ RSpec.feature "user management", type: :feature do
 
   describe "admin user management" do
     let!(:admin) { create(:user, :admin) }
-    let!(:user) { create(:user, :normal) }
-    let(:new_user) { build(:user, :normal, username: "newuser", email_address: "newuser@example.com", password: "password123", password_confirmation: "password123") }
-    let(:invalid_user) { build(:user, :normal, username: "a", email_address: user.email_address, password: "password123", password_confirmation: "mismatch123") }
+    let!(:user) { create(:user) }
+    let(:new_user) { build(:user, username: "newuser", email_address: "newuser@example.com", password: "password123", password_confirmation: "password123") }
+    let(:invalid_user) { build(:user, username: "a", email_address: user.email_address, password: "password123", password_confirmation: "mismatch123") }
     context "when admin created a user with valid credentials" do
       before do
         sign_in_as(admin)
@@ -149,7 +149,7 @@ RSpec.feature "user management", type: :feature do
       end
 
       it { expect(page).to have_content(I18n.t("flash.registration_successful")) }
-      it { expect(page).to have_content(new_user.username) }
+      it { expect(page).to have_content(new_user.email_address) }
     end
 
     context "when admin created a user with invalid credentials" do
@@ -163,6 +163,17 @@ RSpec.feature "user management", type: :feature do
       it { expect(page).to have_content(I18n.t("activerecord.errors.messages.too_short", count: 3)) }
       it { expect(page).to have_content(I18n.t("activerecord.errors.messages.taken")) }
       it { expect(page).to have_content(I18n.t("activerecord.errors.messages.confirmation")) }
+    end
+
+    context "when admin is logged in & tries to delete self" do
+      before do
+        sign_in_as(admin)
+        visit admin_path(locale: I18n.locale, id: admin.id)
+        within("tr", text: admin.email_address) do
+          click_button I18n.t("delete")
+        end
+      end
+      it { expect(page).to have_content(I18n.t("flash.cannot_delete_self")) }
     end
   end
 end
