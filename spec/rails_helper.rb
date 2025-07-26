@@ -24,7 +24,7 @@ require 'factory_bot_rails'
 # directory. Alternatively, in the individual `*_spec.rb` files, manually
 # require only the support files necessary.
 #
-# Rails.root.glob('spec/support/**/*.rb').sort_by(&:to_s).each { |f| require f }
+Rails.root.glob('spec/support/**/*.rb').sort_by(&:to_s).each { |f| require f }
 
 # Capybara configuration for headless Chrome in CI
 require 'capybara/rails'
@@ -80,6 +80,8 @@ end
 RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
   config.include ActiveSupport::Testing::TimeHelpers
+  config.include Helpers::FeatureAuthentication, type: :feature
+  config.include Helpers::RequestAuthentication, type: :request
 
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_paths = [

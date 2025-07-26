@@ -38,6 +38,13 @@ module ApplicationHelper
     { status: 3, label_key: "status.cancelled" }
   ].freeze
 
+  STATUS_STRING_TO_INT = {
+    "pending" => 0,
+    "in_progress" => 1,
+    "completed" => 2,
+    "cancelled" => 3
+  }.freeze
+
   def badge_class(type, value)
     color_classes = COLOR_MAPPINGS.dig(type.to_sym, value) || DEFAULT_BADGE_COLOR
     "#{BADGE_BASE_CLASSES} #{color_classes}"
@@ -88,6 +95,22 @@ module ApplicationHelper
     link_to "TaskManager",
             root_path,
             class: "flex items-center text-xl font-bold text-indigo-600 hover:text-indigo-700"
+  end
+
+  def admin_link_class
+    if controller_name == "admin"
+      "#{SIDEBAR_LINK_BASE_CLASS} bg-indigo-100 text-indigo-900"
+    else
+      "#{SIDEBAR_LINK_BASE_CLASS} text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+    end
+  end
+
+  def render_admin_link
+    if current_user&.admin?
+      link_to t("admin.dashboard.admin_title"),
+              admin_path,
+              class: admin_link_class
+    end
   end
 
   private

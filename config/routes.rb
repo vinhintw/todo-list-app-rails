@@ -7,6 +7,13 @@ Rails.application.routes.draw do
     get "/signup", to: "registrations#new"
     post "/signup", to: "registrations#create"
 
+    get "/admin", to: "admin#index"
+    get "/admin/create-user", to: "admin#new"
+    post "/admin/create-user", to: "admin#create"
+    get "/admin/edit-user/:id", to: "admin#edit", as: "admin_edit_user"
+    patch "/admin/edit-user/:id", to: "admin#update"
+    delete "/admin/edit-user/:id", to: "admin#destroy"
+    get "/admin/user-tasks/:id", to: "admin#user_tasks", as: "admin_user_tasks"
     # Defines the root path route ("/")
     root "tasks#index"
   end
