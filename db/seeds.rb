@@ -38,6 +38,24 @@ users_data.each do |user_attrs|
   puts "Created user: #{user.username} (#{user.email_address}) - Role: #{user.role}"
 end
 
+# Create 30 more users
+begin
+  User.transaction do
+    30.times do |i|
+      User.create!(
+        email_address: "user#{i+3}@example.com",
+        username: "user#{i+3}",
+        password: "password123",
+        password_confirmation: "password123",
+        role: rand(0..1) == 0 ? :normal : :admin
+      )
+    end
+    puts "Created 30 additional users."
+  end
+rescue => e
+  puts "Error creating users: #{e.message}"
+end
+
 # Seed 150 tasks for each user
 begin
   Task.transaction do
@@ -59,5 +77,3 @@ begin
 rescue => e
   puts "Error creating tasks: #{e.message}"
 end
-
-puts "Seeding completed! Total users: #{User.count}, Total tasks: #{Task.count}"

@@ -44,7 +44,11 @@ zh-TW:
     high: "高"
     urgent: "緊急"
     
-  # Status levels  
+  role:
+    admin: "管理員"
+    normal: "一般使用者"
+
+  # Status levels
   status:
     pending: "待處理"
     in_progress: "進行中"
@@ -57,6 +61,10 @@ zh-TW:
     task_updated: "任務已成功更新。"
     task_destroyed: "任務已成功刪除。"
     registration_successful: "註冊成功"
+    user_updated: "使用者已成功更新。"
+    user_destroyed: "使用者已成功刪除。"
+    user_cannot_demote: "你不能降級自己。"
+
 
   # Authentication
   auth:
@@ -82,6 +90,7 @@ zh-TW:
   # Confirmations
   confirmations:
     delete_task: "你確定要刪除此任務嗎？"
+    delete_user: "你確定要刪除此使用者嗎？"
     are_you_sure: "你確定嗎？"
   
   # ActiveRecord validation messages
@@ -97,6 +106,7 @@ zh-TW:
           username: "使用者名稱"
           password: "密碼"
           password_confirmation: "確認密碼"
+          role: "角色"
     errors:
       messages:
         not_saved: "禁止保存此任務:"
@@ -143,3 +153,24 @@ zh-TW:
       previous: "前一頁"
       next: "下一頁"
       truncate: "..."
+
+  admin:
+    user: 
+      edit: "編輯使用者"
+      delete: "刪除使用者"
+    dashboard:
+      new_user: "新建帳號"
+      admin_title: "管理員儀表板"
+      title: "帳號管理"
+      user_management: "帳號管理"
+      total_users: "用戶總數"
+      administrators: "管理員"
+      normal_users: "一般帳號"
+      total_tasks: "任務總數"
+      username: "帳號名稱"
+      email: "電子郵件"
+      total: "總計"
+      actions: "操作"
+      view_details: "查看詳情"
+      no_normal_found: "未找到一般帳號"
+      back_to_dashboard: "返回儀表板"

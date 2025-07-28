@@ -1,0 +1,30 @@
+<% content_for :title, t('admin.dashboard.title') %>
+<div class="w-full">
+  <% if notice.present? %>
+    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-md inline-block" id="notice"><%= notice %></p>
+  <% end %>
+  <!-- Header -->
+  <div class="md:mb-8 mb-4">
+    <div class="flex justify-between items-center p-2">
+      <h1 class="text-3xl font-bold text-gray-900"><%= t('admin.dashboard.user_management') %></h1>
+      <%= link_to t('admin.dashboard.new_user'), admin_create_user_path, class: "rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white block font-medium" %>
+    </div>
+  </div>
+  <!-- Statistics Cards -->
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+    <%= render(StatisticsCardComponent.new(title_key: 'admin.dashboard.total_users', count: @total_users)) %>
+    <%= render(StatisticsCardComponent.new(title_key: 'admin.dashboard.administrators', count: @admin_count, color_class: 'text-blue-600')) %>
+    <%= render(StatisticsCardComponent.new(title_key: 'admin.dashboard.normal_users', count: @normal_count, color_class: 'text-green-600')) %>
+    <%= render(StatisticsCardComponent.new(title_key: 'admin.dashboard.total_tasks', count: Task.count, color_class: 'text-purple-600')) %>
+  </div>
+  <!-- Admin Users Table -->
+  <div class="flex justify-start mt-2 mb-4">
+    <%= paginate @admin_users, param_name: :admin_page, theme: 'tailwind', window: 1 if @admin_users.total_count > 10 %>
+  </div>
+  <%= render(UserTableComponent.new(users: @admin_users, table_type: :admin)) %>
+  <!-- Normal Users Table -->
+  <div class="flex justify-start mt-2 mb-4">
+    <%= paginate @normal_users, param_name: :normal_page, theme: 'tailwind', window: 1 if @normal_users.total_count > 10 %>
+  </div>
+  <%= render(UserTableComponent.new(users: @normal_users, table_type: :normal)) %>
+</div>

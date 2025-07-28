@@ -1,0 +1,59 @@
+<div class="bg-white shadow rounded-lg <%= @table_type == :admin ? 'mb-8' : '' %>">
+  <div class="px-6 py-4 border-b border-gray-200">
+    <h2 class="text-lg font-medium text-gray-900">
+      <%= t(@title_key) %> (<%= @users.count %>)
+    </h2>
+  </div>
+  <div class="overflow-x-auto">
+    <table class="min-w-full divide-y divide-gray-200">
+      <thead class="bg-gray-50">
+        <tr>
+          <% table_headers.each do |header| %>
+            <th class="px-6 py-3 text-<%= header[:align] %> text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <%= t(header[:key]) %>
+            </th>
+          <% end %>
+        </tr>
+      </thead>
+      <tbody class="bg-white divide-y divide-gray-200">
+        <% @users.each do |user| %>
+          <tr class="hover:bg-gray-50">
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="flex items-center">
+                <div class="ml-4">
+                  <span class="text-sm font-medium text-gray-900"><%= user.username %></span>
+                </div>
+              </div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+              <span class="text-gray-900"><%= user.email_address %></span>
+            </td>
+            <% statuses = [
+              ["pending", user.pending_tasks_count],
+              ["in_progress", user.in_progress_tasks_count],
+              ["completed", user.completed_tasks_count],
+              ["cancelled", user.cancelled_tasks_count],
+              ["total", user.total_tasks_count]
+            ] %>
+            <% statuses.each do |status, count| %>
+              <td class="px-6 py-4 whitespace-nowrap text-center">
+                <%= render(StatusBadgeComponent.new(user: user, status: status, count: count)) %>
+              </td>
+            <% end %>
+            <td class="px-6 py-4 whitespace-nowrap text-center">
+              <div class="flex flex-col items-center gap-1">
+                <%= link_to t("admin.user.edit"), admin_edit_user_path(user), class: "text-indigo-600 hover:text-indigo-900 text-xs font-medium px-2 py-1 rounded", form_class: "inline" %>
+                <%= button_to t('delete'), admin_edit_user_path(user), method: :delete, class: "rounded px-2 py-1 text-xs text-white bg-red-600 hover:bg-red-700 font-medium transition-colors", data: { turbo_confirm: t('confirmations.delete_user') }, form_class: "inline" %>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <% if @table_type == :normal && @users.empty? %>
+      <div class="text-center py-8">
+        <h3 class="mt-2 text-xl font-medium text-gray-900"><%= t("admin.dashboard.no_normal_found") %></h3>
+      </div>
+    <% end %>
+  </div>
+</div>
