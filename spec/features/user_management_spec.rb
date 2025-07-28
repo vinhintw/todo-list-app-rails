@@ -1,10 +1,6 @@
 require "rails_helper"
 
 RSpec.feature "user management", type: :feature do
-  before(:all) do
-    Role.find_or_create_by!(name: "user")
-    Role.find_or_create_by!(name: "admin")
-  end
   describe "user registration" do
     let(:user) { build(:user) }
     context "with valid credentials" do
@@ -153,7 +149,7 @@ RSpec.feature "user management", type: :feature do
       end
 
       it { expect(page).to have_content(I18n.t("flash.registration_successful")) }
-      it { expect(page).to have_content(new_user.username) }
+      it { expect(page).to have_content(new_user.email_address) }
     end
 
     context "when admin created a user with invalid credentials" do
@@ -167,6 +163,17 @@ RSpec.feature "user management", type: :feature do
       it { expect(page).to have_content(I18n.t("activerecord.errors.messages.too_short", count: 3)) }
       it { expect(page).to have_content(I18n.t("activerecord.errors.messages.taken")) }
       it { expect(page).to have_content(I18n.t("activerecord.errors.messages.confirmation")) }
+    end
+
+    context "when admin is logged in & tries to delete self" do
+      before do
+        sign_in_as(admin)
+        visit admin_path(locale: I18n.locale, id: admin.id)
+        within("tr", text: admin.email_address) do
+          click_button I18n.t("delete")
+        end
+      end
+      it { expect(page).to have_content(I18n.t("flash.cannot_delete_self")) }
     end
   end
 end

@@ -281,11 +281,13 @@ RSpec.feature 'Task Management', type: :feature do
   describe 'Status dropdown' do
     let!(:pending_task) { create(:task, :pending, user: user, title: 'Pending Task') }
     let!(:in_progress_task) { create(:task, :in_progress, user: user, title: 'In Progress Task') }
-    let(:dropdown) { find('#desktop-status-filter select') }
-    let(:mobile_dropdown) { find('#status-filter select') }
+    let(:dropdown) { find('#desktop-status-filter select', wait: 10) }
+    let(:mobile_dropdown) { find('#status-filter select', wait: 10) }
 
     context 'when selecting a status from the dropdown', js: true do
       before do
+        page.driver.browser.manage.window.resize_to(1920, 1080)
+        sleep 1
         visit tasks_path(locale: I18n.locale)
         dropdown.select(I18n.t('status.pending'))
       end
@@ -297,7 +299,7 @@ RSpec.feature 'Task Management', type: :feature do
     context 'when selecting a status from the mobile dropdown', js: true do
       before do
         page.driver.browser.manage.window.resize_to(375, 812)
-        sleep 1.seconds
+        sleep 1
         visit tasks_path(locale: I18n.locale)
         mobile_dropdown.select(I18n.t('status.pending'))
       end
