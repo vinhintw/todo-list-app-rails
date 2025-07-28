@@ -9,7 +9,7 @@ zh-TW:
   new: "新建"
   cancel: "取消"
   confirm: "確認"
-  
+
   # Task related
   tasks:
     title: "任務"
@@ -43,7 +43,7 @@ zh-TW:
     medium: "中"
     high: "高"
     urgent: "緊急"
-    
+
   role:
     admin: "管理員"
     normal: "一般使用者"
@@ -54,7 +54,7 @@ zh-TW:
     in_progress: "進行中"
     completed: "已完成"
     cancelled: "已取消"
-    
+
   # Flash messages
   flash:
     task_created: "任務已成功建立。"
@@ -64,7 +64,8 @@ zh-TW:
     user_updated: "使用者已成功更新。"
     user_destroyed: "使用者已成功刪除。"
     user_cannot_demote: "你不能降級自己。"
-
+    last_admin_cannot_be_deleted: "你不能刪除最後一位管理員。"
+    cannot_delete_self: "你不能刪除自己。"
 
   # Authentication
   auth:
@@ -86,27 +87,27 @@ zh-TW:
     already_have_account: "已經有帳戶？登入"
     dont_have_account: "還沒有帳戶？註冊"
     prohibited_from_being_saved: "禁止保存此帳戶："
-    
+
   # Confirmations
   confirmations:
     delete_task: "你確定要刪除此任務嗎？"
     delete_user: "你確定要刪除此使用者嗎？"
     are_you_sure: "你確定嗎？"
-  
+
   # ActiveRecord validation messages
   activerecord:
     attributes:
-        task:
-          title: "標題"
-          content: "內容"
-          start_time: "開始時間"
-          end_time: "結束時間"
-        user:
-          email_address: "電子郵件"
-          username: "使用者名稱"
-          password: "密碼"
-          password_confirmation: "確認密碼"
-          role: "角色"
+      task:
+        title: "標題"
+        content: "內容"
+        start_time: "開始時間"
+        end_time: "結束時間"
+      user:
+        email_address: "電子郵件"
+        username: "使用者名稱"
+        password: "密碼"
+        password_confirmation: "確認密碼"
+        role: "角色"
     errors:
       messages:
         not_saved: "禁止保存此任務:"
@@ -117,7 +118,7 @@ zh-TW:
       models:
         task:
           attributes:
-            title: 
+            title:
               blank: "不能為空"
               too_long: "太長（最多 %{count} 個字符）"
             content:
@@ -139,7 +140,7 @@ zh-TW:
             password_confirmation:
               blank: "不能為空"
               confirmation: "與密碼不匹配"
-    
+
   error: "錯誤"
   navbar:
     signed_in_as: "已登入為"
@@ -155,7 +156,7 @@ zh-TW:
       truncate: "..."
 
   admin:
-    user: 
+    user:
       edit: "編輯使用者"
       delete: "刪除使用者"
     dashboard:

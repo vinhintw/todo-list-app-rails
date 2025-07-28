@@ -49,6 +49,21 @@ class AdminController < ApplicationController
   end
 
   def destroy
+    if @user == current_user
+      respond_to do |format|
+        format.html { redirect_to admin_path, alert: t("flash.cannot_delete_self") }
+        format.json { render json: { error: t("flash.cannot_delete_self") }, status: :unprocessable_entity }
+      end
+      return
+    end
+    if @user.last_admin?
+      respond_to do |format|
+        format.html { redirect_to admin_path, alert: t("flash.last_admin_cannot_be_deleted") }
+        format.json { render json: { error: t("flash.last_admin_cannot_be_deleted") }, status: :unprocessable_entity }
+      end
+      return
+    end
+
     @user.destroy!
 
     respond_to do |format|

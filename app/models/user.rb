@@ -37,4 +37,8 @@ class User < ApplicationRecord
   def total_tasks_count
     association(:tasks).loaded? ? tasks.size : tasks.count
   end
+
+  def last_admin?
+    admin? && User.where(role: :admin).count == 1
+  end
 end
