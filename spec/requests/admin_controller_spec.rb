@@ -107,7 +107,7 @@ RSpec.describe "AdminController", type: :request do
 
   describe "GET #user_tasks" do
     before { sign_in_as(admin) }
-    let(:target_user) { create(:user) }
+    let!(:target_user) { create(:user) }
     let!(:tasks) { create_list(:task, 20, user: target_user) }
     it "shows paginated tasks and total count" do
       get admin_user_tasks_path(target_user)
@@ -141,6 +141,18 @@ RSpec.describe "AdminController", type: :request do
       patch admin_edit_user_path(admin), params: { user: { role: "normal" } }
       expect(admin.reload.role).to eq("admin")
       expect(response).to have_http_status(:unprocessable_entity)
+    end
+
+    it "does not allow admin to delete last admin(self)" do
+      delete admin_edit_user_path(other_admin)
+      expect(response).to redirect_to(admin_path)
+      follow_redirect!
+      expect(response.body).to include(I18n.t("flash.user_destroyed"))
+
+      delete admin_edit_user_path(admin)
+      expect(response).to redirect_to(admin_path)
+      follow_redirect!
+      expect(response.body).to include(I18n.t("flash.cannot_delete_self"))
     end
   end
 end
