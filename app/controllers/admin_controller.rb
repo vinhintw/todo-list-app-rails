@@ -3,7 +3,6 @@ class AdminController < ApplicationController
   before_action :require_admin
 
   def index
-    set_user_counts
     load_admin_users
     load_normal_users
   end
@@ -49,6 +48,22 @@ class AdminController < ApplicationController
   end
 
   def destroy
+    if @user == current_user
+      respond_to do |format|
+        format.html { redirect_to admin_path, alert: t("flash.cannot_delete_self") }
+        format.json { render json: { error: t("flash.cannot_delete_self") }, status: :forbidden }
+      end
+      return
+    end
+
+    if @user.last_admin?
+      respond_to do |format|
+        format.html { redirect_to admin_path, alert: t("flash.cannot_delete_last_admin") }
+        format.json { render json: { error: t("flash.cannot_delete_last_admin") }, status: :forbidden }
+      end
+      return
+    end
+
     @user.destroy!
 
     respond_to do |format|
@@ -61,12 +76,28 @@ class AdminController < ApplicationController
     @tasks = @user.tasks.ransack(status_eq: params[:status]).result.order(created_at: :desc).page(params[:page]).per(15)
   end
 
+  def create_role
+    @role = Role.new
+  end
+
+  def store_role
+    @role = Role.new(role_params)
+    if @role.save
+      redirect_to admin_path, notice: t("role.created", name: @role.name)
+    else
+      render :create_role, status: :unprocessable_entity
+    end
+  end
+
   private
 
   def prevent_self_demote!
-    if @user == current_user && signup_params[:role] == "normal"
-      @user.errors.add(:role, t("flash.user_cannot_demote"))
-      return true
+    if @user == current_user && signup_params[:role_id].present?
+      new_role = Role.find_by(id: signup_params[:role_id])
+      unless new_role&.admin?
+        @user.errors.add(:base, t("flash.user_cannot_demote"))
+        return true
+      end
     end
     false
   end
@@ -84,34 +115,31 @@ class AdminController < ApplicationController
 
   def signup_params
     permitted = [ :username, :email_address, :password, :password_confirmation ]
-    permitted << :role if current_user&.admin?
+    permitted << :role_id if current_user&.admin?
     params.require(:user).permit(permitted)
   end
 
   def require_admin
     unless current_user&.admin?
-      redirect_to root_path
+      redirect_to root_path, notice: t("flash.admin_access_denied")
     end
   end
 
-  def set_user_counts
-    counts = User.group(:role).count
-    @admin_count = counts["admin"] || 0
-    @normal_count = counts["normal"] || 0
-    @total_users = @admin_count + @normal_count
-  end
-
   def load_admin_users
-    @admin_users = User.with_task_counts
-                       .where(role: :admin)
-                       .page(params[:admin_page])
+    @admin_users = User.with_task_counts.includes(:role)
+                       .where(role: Role.find_by(name: Role::ADMIN))
+                       .page(params[:admin_page]).order(created_at: :desc)
                        .per(10)
   end
 
   def load_normal_users
-    @normal_users = User.with_task_counts
-                        .where(role: :normal)
-                        .page(params[:normal_page])
+    @normal_users = User.with_task_counts.includes(:role)
+                        .where(role: Role.find_by(name: Role::USER))
+                        .page(params[:normal_page]).order(created_at: :desc)
                         .per(10)
+  end
+
+  def role_params
+    params.require(:role).permit(:name, :description)
   end
 end
