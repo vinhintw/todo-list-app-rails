@@ -69,11 +69,18 @@ class TasksController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_task
-      @task = Task.find(params.expect(:id))
+      @task = Task.includes(:tags).find(params.expect(:id))
     end
 
     # Only allow a list of trusted parameters through.
     def task_params
-      params.expect(task: [ :title, :content, :start_time, :end_time, :priority, :status, :user_id ])
+      permitted_params = params.expect(task: [ :title, :content, :start_time, :end_time, :priority, :status, :user_id, tag_ids: [] ])
+
+      if permitted_params[:tag_ids].present?
+        permitted_params[:tag_ids] = permitted_params[:tag_ids].reject(&:blank?).map(&:to_i)
+      else
+        permitted_params[:tag_ids] = []
+      end
+      permitted_params
     end
 end
