@@ -96,7 +96,7 @@ module ApplicationHelper
             root_path,
             class: "flex items-center text-xl font-bold text-indigo-600 hover:text-indigo-700"
   end
-    
+
   def admin_link_class
     if controller_name == "admin"
       "#{SIDEBAR_LINK_BASE_CLASS} bg-indigo-100 text-indigo-900"

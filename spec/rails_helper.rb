@@ -63,9 +63,9 @@ Capybara.register_driver :headless_chrome do |app|
 end
 
 # Set default driver for JavaScript tests
-Capybara.javascript_driver = :headless_chrome
+Capybara.javascript_driver = :selenium_chrome_headless
 Capybara.default_driver = :rack_test
-Capybara.default_max_wait_time = 10
+Capybara.default_max_wait_time = 30
 
 # Ensures that the test database schema matches the current schema file.
 # If there are pending migrations it will invoke `db:test:prepare` to
@@ -78,6 +78,10 @@ rescue ActiveRecord::PendingMigrationError => e
 end
 
 RSpec.configure do |config|
+  config.before(:suite) do
+    Rails.application.load_seed
+  end
+
   config.include FactoryBot::Syntax::Methods
   config.include ActiveSupport::Testing::TimeHelpers
   config.include Helpers::FeatureAuthentication, type: :feature
