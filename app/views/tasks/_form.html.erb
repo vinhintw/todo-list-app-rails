@@ -43,6 +43,7 @@
       [t('status.cancelled'), 'cancelled']
     ], task.status), {}, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": task.errors[:status].none?, "border-red-400 focus:outline-red-600": task.errors[:status].any?}] %>
   </div>
+  <%= render 'tag_select', form: form, task: task %>
   <div class="my-5">
     <%= form.hidden_field :user_id, value: current_user.id %>
   </div>
