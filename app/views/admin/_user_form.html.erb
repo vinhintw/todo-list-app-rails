@@ -30,8 +30,8 @@
     </div>
   <% end %>
   <div class="my-5">
-    <%= form.label :role, t('auth.role'), class: "block text-sm font-medium text-gray-700" %>
-    <%= form.select :role, User.roles.keys.map { |r| [t("role.#{r}"), r] }, {}, class: "block shadow-sm rounded-md border border-gray-400 focus:outline-blue-600 px-3 py-2 mt-2 w-full" %>
+    <%= form.label :role_id, t('role.name'), class: "block text-sm font-medium text-gray-700" %>
+    <%= form.collection_select :role_id, Role.all, :id, :name, { prompt: t('role.name') }, class: "block shadow-sm rounded-md border border-gray-400 focus:outline-blue-600 px-3 py-2 mt-2 w-full" %>
   </div>
   <div class="col-span-6 sm:flex sm:items-center sm:gap-4">
     <div class="inline">

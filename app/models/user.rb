@@ -12,10 +12,6 @@ class User < ApplicationRecord
 
   after_initialize :set_default_role, if: :new_record?
 
-  def set_default_role
-    self.role ||= :normal
-  end
-
   def encrypted_password
     self.password_digest
   end
@@ -36,14 +32,14 @@ class User < ApplicationRecord
   def total_tasks_count
     association(:tasks).loaded? ? tasks.size : tasks.count
   end
-  
+
   before_validation :set_default_role, on: :create
 
   def set_default_role
     if User.count == 0
-      self.role ||= Role.find_by(name: "admin")
+      self.role ||= Role.find_by(name: Role::ADMIN)
     else
-      self.role ||= Role.find_by(name: "user")
+      self.role ||= Role.find_by(name: Role::USER)
     end
   end
 
@@ -53,5 +49,9 @@ class User < ApplicationRecord
 
   def user?
     role&.user?
+  end
+
+  def last_admin?
+    admin? && User.joins(:role).where(roles: { name: Role::ADMIN }).count == 1
   end
 end
