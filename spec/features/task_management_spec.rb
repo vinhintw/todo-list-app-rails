@@ -308,4 +308,47 @@ RSpec.feature 'Task Management', type: :feature do
       it { expect(page).not_to have_content(in_progress_task.title) }
     end
   end
+
+  describe 'Tag management' do
+    let!(:tag1) { create(:tag, name: 'Urgent') }
+    let!(:tag2) { create(:tag, name: 'Work') }
+    let!(:task_with_tags) { create(:task, user: user, tags: [ tag1, tag2 ]) }
+    let(:new_task) { build(:task, user: other_user, tags: [ tag1 ]) }
+
+    context 'when viewing a task with tags' do
+      before do
+        visit tasks_path
+      end
+      it { expect(page).to have_content(tag1.name) }
+      it { expect(page).to have_content(tag2.name) }
+    end
+
+    context 'when creating a task with tags' do
+      before do
+        visit new_task_path
+        fill_in I18n.t('tasks.task_title'), with: new_task.title
+        fill_in I18n.t('tasks.task_content'), with: new_task.content
+        check "task_tag_#{tag1.id}"
+        check "task_tag_#{tag2.id}"
+        click_button I18n.t('tasks.create_task')
+      end
+      it { expect(page).to have_content(I18n.t('flash.task_created')) }
+      it { expect(page).to have_content(new_task.title) }
+      it { expect(page).to have_content(tag1.name) }
+    end
+
+    context 'when editing a task with tags' do
+      before do
+        visit edit_task_path(locale: I18n.locale, id: task_with_tags.id)
+        uncheck "task_tag_#{tag2.id}"
+        click_button I18n.t('tasks.update_task')
+      end
+
+      it 'User can see tags in the task card' do
+        expect(page).to have_content(I18n.t('flash.task_updated'))
+        expect(page).to have_content(tag1.name)
+        expect(page).not_to have_content(tag2.name)
+      end
+    end
+  end
 end
