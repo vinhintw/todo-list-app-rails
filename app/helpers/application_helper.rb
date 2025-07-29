@@ -116,6 +116,6 @@ module ApplicationHelper
   private
 
   def status_active?(current_status)
-    current_status && params[:status] == current_status.to_s
+    current_status && params[:status] == current_status.to_s && controller_name == "tasks" && action_name == "index"
   end
 end
