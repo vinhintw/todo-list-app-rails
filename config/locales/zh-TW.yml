@@ -140,6 +140,7 @@ zh-TW:
             password_confirmation:
               blank: "不能為空"
               confirmation: "與密碼不匹配"
+            role: "角色"
 
   error: "錯誤"
   navbar:
