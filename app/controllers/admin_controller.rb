@@ -56,17 +56,8 @@ class AdminController < ApplicationController
 
   private
 
-  def render_deletion_success
-    redirect_to admin_path, status: :see_other, notice: t("flash.user_destroyed")
-  end
-
   def render_deletion_error(message_key)
     redirect_to admin_path, alert: t(message_key)
-  end
-
-  def render_deletion_errors
-    error_message = @user.errors.full_messages.first || t("flash.user_delete_failed")
-    redirect_to admin_path, alert: error_message
   end
 
   def prevent_self_demote!
