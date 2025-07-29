@@ -15,12 +15,10 @@ class AdminController < ApplicationController
   def create
     @user = User.new(signup_params)
 
-    respond_to do |format|
-      if @user.save
-        format.html { redirect_to admin_path, notice: t("flash.registration_successful") }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-      end
+    if @user.save
+      redirect_to admin_path, notice: t("flash.registration_successful")
+    else
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -35,23 +33,20 @@ class AdminController < ApplicationController
       return
     end
 
-    respond_to do |format|
-      if @user.update(signup_params)
-        format.html { redirect_to admin_path, notice: t("flash.user_updated") }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-      end
+    if @user.update(signup_params)
+      redirect_to admin_path, notice: t("flash.user_updated")
+    else
+      render :edit, status: :unprocessable_entity
     end
   end
 
   def destroy
     return render_deletion_error("flash.cannot_delete_self") if @user == current_user
-    respond_to do |format|
-      if @user.destroy
-        render_deletion_success(format)
-      else
-        render_deletion_errors(format)
-      end
+
+    if @user.destroy
+      redirect_to admin_path, status: :see_other, notice: t("flash.user_destroyed")
+    else
+      render :edit, status: :unprocessable_entity
     end
   end
 
@@ -61,19 +56,17 @@ class AdminController < ApplicationController
 
   private
 
-  def render_deletion_success(format)
-    format.html { redirect_to admin_path, status: :see_other, notice: t("flash.user_destroyed") }
+  def render_deletion_success
+    redirect_to admin_path, status: :see_other, notice: t("flash.user_destroyed")
   end
 
   def render_deletion_error(message_key)
-    respond_to do |format|
-      format.html { redirect_to admin_path, alert: t(message_key) }
-    end
+    redirect_to admin_path, alert: t(message_key)
   end
 
-  def render_deletion_errors(format)
+  def render_deletion_errors
     error_message = @user.errors.full_messages.first || t("flash.user_delete_failed")
-    format.html { redirect_to admin_path, alert: error_message }
+    redirect_to admin_path, alert: error_message
   end
 
   def prevent_self_demote!
