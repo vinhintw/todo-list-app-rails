@@ -68,7 +68,7 @@ module ApplicationHelper
   end
 
   def all_tasks_link_class
-    if params[:status].blank?
+    if current_page?(root_path) && params[:status].blank?
       "#{SIDEBAR_LINK_BASE_CLASS} #{ACTIVE_ALL_TASKS_CLASS}"
     else
       "#{SIDEBAR_LINK_BASE_CLASS} #{INACTIVE_SIDEBAR_CLASS}"
