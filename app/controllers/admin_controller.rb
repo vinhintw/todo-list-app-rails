@@ -49,22 +49,12 @@ class AdminController < ApplicationController
   end
 
   def destroy
-    if @user == current_user
-      respond_to do |format|
-        format.html { redirect_to admin_path, alert: t("flash.cannot_delete_self") }
-        format.json { render json: { error: t("flash.cannot_delete_self") }, status: :unprocessable_entity }
-      end
-      return
-    end
-
     respond_to do |format|
-      if @user.destroy
+      if destroy_user!
         format.html { redirect_to admin_path, status: :see_other, notice: t("flash.user_destroyed") }
         format.json { head :no_content }
       else
-        error_message = @user.errors.full_messages.first || t("flash.user_delete_failed")
-        format.html { redirect_to admin_path, alert: error_message }
-        format.json { render json: { error: error_message }, status: :unprocessable_entity }
+        render_deletion_errors(format)
       end
     end
   end
@@ -81,6 +71,20 @@ class AdminController < ApplicationController
       return true
     end
     false
+  end
+
+  def destroy_user!
+    if @user == current_user
+      @user.errors.add(:base, t("flash.cannot_delete_self"))
+      return false
+    end
+    @user.destroy
+  end
+
+  def render_deletion_errors(format)
+    error_message = @user.errors.full_messages.first || t("flash.user_delete_failed")
+    format.html { redirect_to admin_path, alert: error_message }
+    format.json { render json: { error: error_message }, status: :unprocessable_entity }
   end
 
   def remove_blank_password_params
