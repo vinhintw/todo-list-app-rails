@@ -18,10 +18,8 @@ class AdminController < ApplicationController
     respond_to do |format|
       if @user.save
         format.html { redirect_to admin_path, notice: t("flash.registration_successful") }
-        format.json { render :show, status: :created, location: @user }
       else
         format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -40,19 +38,17 @@ class AdminController < ApplicationController
     respond_to do |format|
       if @user.update(signup_params)
         format.html { redirect_to admin_path, notice: t("flash.user_updated") }
-        format.json { render :show, status: :ok, location: @user }
       else
         format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
       end
     end
   end
 
   def destroy
+    return render_deletion_error("flash.cannot_delete_self") if @user == current_user
     respond_to do |format|
-      if destroy_user!
-        format.html { redirect_to admin_path, status: :see_other, notice: t("flash.user_destroyed") }
-        format.json { head :no_content }
+      if @user.destroy
+        render_deletion_success(format)
       else
         render_deletion_errors(format)
       end
@@ -64,6 +60,21 @@ class AdminController < ApplicationController
   end
 
   private
+
+  def render_deletion_success(format)
+    format.html { redirect_to admin_path, status: :see_other, notice: t("flash.user_destroyed") }
+  end
+
+  def render_deletion_error(message_key)
+    respond_to do |format|
+      format.html { redirect_to admin_path, alert: t(message_key) }
+    end
+  end
+
+  def render_deletion_errors(format)
+    error_message = @user.errors.full_messages.first || t("flash.user_delete_failed")
+    format.html { redirect_to admin_path, alert: error_message }
+  end
 
   def prevent_self_demote!
     if @user == current_user && signup_params[:role] == "normal"
@@ -84,7 +95,6 @@ class AdminController < ApplicationController
   def render_deletion_errors(format)
     error_message = @user.errors.full_messages.first || t("flash.user_delete_failed")
     format.html { redirect_to admin_path, alert: error_message }
-    format.json { render json: { error: error_message }, status: :unprocessable_entity }
   end
 
   def remove_blank_password_params
