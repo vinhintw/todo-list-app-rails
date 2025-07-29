@@ -84,19 +84,6 @@ class AdminController < ApplicationController
     false
   end
 
-  def destroy_user!
-    if @user == current_user
-      @user.errors.add(:base, t("flash.cannot_delete_self"))
-      return false
-    end
-    @user.destroy
-  end
-
-  def render_deletion_errors(format)
-    error_message = @user.errors.full_messages.first || t("flash.user_delete_failed")
-    format.html { redirect_to admin_path, alert: error_message }
-  end
-
   def remove_blank_password_params
     if signup_params[:password].blank? && signup_params[:password_confirmation].blank?
       signup_params.delete(:password)
