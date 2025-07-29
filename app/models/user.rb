@@ -12,6 +12,7 @@ class User < ApplicationRecord
   normalizes :email_address, with: ->(e) { e.strip.downcase }
 
   after_initialize :set_default_role, if: :new_record?
+  before_destroy :prevent_last_admin_deletion
 
   def set_default_role
     self.role ||= :normal
@@ -40,5 +41,14 @@ class User < ApplicationRecord
 
   def last_admin?
     admin? && User.where(role: :admin).count == 1
+  end
+
+  private
+
+  def prevent_last_admin_deletion
+    if last_admin?
+      errors.add(:base, I18n.t("flash.last_admin_cannot_be_deleted"))
+      throw(:abort)
+    end
   end
 end

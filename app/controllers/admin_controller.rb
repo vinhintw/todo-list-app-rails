@@ -56,19 +56,16 @@ class AdminController < ApplicationController
       end
       return
     end
-    if @user.last_admin?
-      respond_to do |format|
-        format.html { redirect_to admin_path, alert: t("flash.last_admin_cannot_be_deleted") }
-        format.json { render json: { error: t("flash.last_admin_cannot_be_deleted") }, status: :unprocessable_entity }
-      end
-      return
-    end
-
-    @user.destroy!
 
     respond_to do |format|
-      format.html { redirect_to admin_path, status: :see_other, notice: t("flash.user_destroyed") }
-      format.json { head :no_content }
+      if @user.destroy
+        format.html { redirect_to admin_path, status: :see_other, notice: t("flash.user_destroyed") }
+        format.json { head :no_content }
+      else
+        error_message = @user.errors.full_messages.first || t("flash.user_delete_failed")
+        format.html { redirect_to admin_path, alert: error_message }
+        format.json { render json: { error: error_message }, status: :unprocessable_entity }
+      end
     end
   end
 
