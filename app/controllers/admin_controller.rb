@@ -46,7 +46,8 @@ class AdminController < ApplicationController
     if @user.destroy
       redirect_to admin_path, status: :see_other, notice: t("flash.user_destroyed")
     else
-      render :edit, status: :unprocessable_entity
+       error_message = @user.errors.full_messages.first || t("flash.user_delete_failed")
+      redirect_to admin_path, alert: error_message
     end
   end
 

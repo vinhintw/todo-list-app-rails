@@ -78,7 +78,7 @@ RSpec.describe "AdminController", type: :request do
       it "does not update user" do
         patch admin_edit_user_path(target_user), params: { user: { username: "" } }
         expect(target_user.reload.username).not_to eq("")
-        expect(response.body).to include("error")
+        expect(response.body).to include(I18n.t("auth.prohibited_from_being_saved"))
       end
     end
 
@@ -140,7 +140,7 @@ RSpec.describe "AdminController", type: :request do
     it "does not allow admin to demote themselves" do
       patch admin_edit_user_path(admin), params: { user: { role: "normal" } }
       expect(admin.reload.role).to eq("admin")
-      expect(response).to have_http_status(:unprocessable_entity)
+      expect(response.body).to include(I18n.t("flash.user_cannot_demote"))
     end
 
     it "does not allow admin to delete last admin(self)" do

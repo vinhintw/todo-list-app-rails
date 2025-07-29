@@ -87,6 +87,7 @@ zh-TW:
     already_have_account: "已經有帳戶？登入"
     dont_have_account: "還沒有帳戶？註冊"
     prohibited_from_being_saved: "禁止保存此帳戶："
+    user_delete_failed: "刪除使用者失敗"
 
   # Confirmations
   confirmations:

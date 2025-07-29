@@ -116,6 +116,7 @@ en:
     already_have_account: "Already have an account? Sign in"
     dont_have_account: "Don't have an account? Sign up"
     prohibited_from_being_saved: "prohibited this account from being saved:"
+    user_delete_failed: "Failed to delete user."
 
   # Confirmations
   confirmations:
