@@ -2,7 +2,7 @@
   <%= form_with url: tasks_path, method: :get, local: true, id: "desktop-status-filter",class: "relative" do |form| %>
     <%= form.select :status,
         options_for_select(Task.statuses.map { |key, value| [t("status.#{key}"), value] },
-          params[:status].present? ? params[:status].to_i : nil ),
+          ( controller_name == "admin" ) ? nil : ( params[:status].present? ? params[:status].to_i : nil )),
           { include_blank: t('tasks.all_tasks') },
           { onchange: "this.form.submit()",
             class: "block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 pl-3 pr-8 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" } %>

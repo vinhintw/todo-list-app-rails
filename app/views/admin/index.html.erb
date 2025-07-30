@@ -1,8 +1,11 @@
 <% content_for :title, t('admin.dashboard.title') %>
 <div class="w-full">
-  <% if notice.present? %>
-    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-md inline-block" id="notice"><%= notice %></p>
-  <% end %>
+   <% if flash[:alert] %>
+     <p class="py-2 px-3 bg-red-50 mb-5 text-red-500 font-medium rounded-lg inline-block" id="alert"><%= flash[:alert] %></p>
+   <% end %>
+   <% if flash[:notice] %>
+     <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= flash[:notice] %></p>
+   <% end %>
   <!-- Header -->
   <div class="md:mb-8 mb-4">
     <div class="flex justify-between items-center p-2">

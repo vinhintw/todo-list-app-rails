@@ -38,7 +38,7 @@ en:
   new: "New"
   cancel: "Cancel"
   confirm: "Confirm"
-  
+
   # Task related
   tasks:
     title: "Tasks"
@@ -72,18 +72,18 @@ en:
     medium: "Medium"
     high: "High"
     urgent: "Urgent"
-    
-  # Status levels  
+
+  # Status levels
   status:
     pending: "Pending"
     in_progress: "In Progress"
     completed: "Completed"
     cancelled: "Cancelled"
-  
+
   role:
     admin: "Admin"
     normal: "Normal User"
-    
+
   # Flash messages
   flash:
     task_created: "Task was successfully created."
@@ -93,6 +93,8 @@ en:
     user_updated: "User was successfully updated."
     user_destroyed: "User was successfully deleted."
     user_cannot_demote: "You cannot demote yourself"
+    last_admin_cannot_be_deleted: "You cannot delete the last admin user."
+    cannot_delete_self: "You cannot delete yourself."
 
   # Authentication
   auth:
@@ -114,7 +116,8 @@ en:
     already_have_account: "Already have an account? Sign in"
     dont_have_account: "Don't have an account? Sign up"
     prohibited_from_being_saved: "prohibited this account from being saved:"
-    
+    user_delete_failed: "Failed to delete user."
+
   # Confirmations
   confirmations:
     delete_task: "Are you sure you want to delete this task?"
@@ -174,7 +177,7 @@ en:
     placeholder_search: "Search tasks"
 
   admin:
-    user: 
+    user:
       edit: "Edit User"
       delete: "Delete User"
     dashboard:
