@@ -60,62 +60,9 @@ module ApplicationHelper
     { locale: I18n.locale }
   end
 
-  def sidebar_link_class(current_status = nil)
-    return "#{SIDEBAR_LINK_BASE_CLASS} #{INACTIVE_SIDEBAR_CLASS}" unless status_active?(current_status)
-
-    active_class = NAV_STATUS_MAPPINGS[current_status] || DEFAULT_NAV_COLOR
-    "#{SIDEBAR_LINK_BASE_CLASS} #{active_class}"
-  end
-
-  def all_tasks_link_class
-    if current_page?(root_path) && params[:status].blank?
-      "#{SIDEBAR_LINK_BASE_CLASS} #{ACTIVE_ALL_TASKS_CLASS}"
-    else
-      "#{SIDEBAR_LINK_BASE_CLASS} #{INACTIVE_SIDEBAR_CLASS}"
-    end
-  end
-
-  def status_filter_link(status, label_key)
-    link_to t(label_key),
-            tasks_path(status: status, title: params[:title]),
-            class: sidebar_link_class(status)
-  end
-
-  def status_filters
-    STATUS_FILTERS
-  end
-
-  def render_status_filters
-    status_filters.map do |filter|
-      status_filter_link(filter[:status], filter[:label_key])
-    end.join.html_safe
-  end
-
   def sidebar_brand_link
     link_to "TaskManager",
             root_path,
             class: "flex items-center text-xl font-bold text-indigo-600 hover:text-indigo-700"
-  end
-
-  def admin_link_class
-    if controller_name == "admin"
-      "#{SIDEBAR_LINK_BASE_CLASS} bg-indigo-100 text-indigo-900"
-    else
-      "#{SIDEBAR_LINK_BASE_CLASS} text-gray-600 hover:bg-gray-50 hover:text-gray-900"
-    end
-  end
-
-  def render_admin_link
-    if current_user&.admin?
-      link_to t("admin.dashboard.admin_title"),
-              admin_path,
-              class: admin_link_class
-    end
-  end
-
-  private
-
-  def status_active?(current_status)
-    current_status && params[:status] == current_status.to_s && controller_name == "tasks" && action_name == "index"
   end
 end

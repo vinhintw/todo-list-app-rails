@@ -3,16 +3,7 @@
     <div class="flex justify-between">
       <!-- Left side - Logo and mobile menu button -->
       <div class="flex items-center">
-        <% if authenticated? %>
-           <button id="mobile-sidebar-toggle"
-                   data-navbar-target="mobileToggle"
-                   data-action="click->navbar#toggleSidebar"
-                   class="lg:hidden p-2 rounded-md cursor-pointer text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
-            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-            </svg>
-          </button>
-        <% end %>
+        <%= sidebar_brand_link %>
       </div>
       
       <!-- Desktop Search Bar -->
@@ -40,6 +31,8 @@
                 <div class="px-4 py-2 text-sm text-gray-700 shadow-sm">
                   <%= t("navbar.signed_in_as") %> <strong><%= current_user.username %></strong>
                 </div>
+                <%= link_to t("admin.dashboard.admin_title"), admin_path, 
+                    class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
                 <%= button_to t("navbar.sign_out"), logout_path, method: :delete, 
                     class: "block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 border-0 bg-transparent"
                 %>
