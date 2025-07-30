@@ -1,15 +1,29 @@
 <div class="hidden md:block">
-  <%= form_with url: tasks_path, method: :get, local: true, id: "desktop-status-filter",class: "relative" do |form| %>
-    <%= form.select :status,
+  <%= form_with url: tasks_path, method: :get, local: true, class: "flex space-x-2" do |form| %>
+    <div class="relative w-48">
+      <%= form.select :tag,
+        options_for_select(Tag.all.map { |tag| [tag.name, tag.id] }, params[:tag]),
+        { include_blank: t('tasks.all_tags') },
+        {  id: "desktop-tag-filter", onchange: "this.form.submit()",
+          class: "block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 pl-3 pr-8 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" } %>
+      <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+          <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.25 4.25a.75.75 0 01-1.06 0L5.21 8.27a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+        </svg>
+      </div>
+    </div>
+    <div class="relative w-48">
+      <%= form.select :status,
         options_for_select(Task.statuses.map { |key, value| [t("status.#{key}"), value] },
           ( controller_name == "admin" ) ? nil : ( params[:status].present? ? params[:status].to_i : nil )),
-          { include_blank: t('tasks.all_tasks') },
-          { onchange: "this.form.submit()",
-            class: "block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 pl-3 pr-8 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" } %>
-    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-      <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-        <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.25 4.25a.75.75 0 01-1.06 0L5.21 8.27a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
-      </svg>
+        { include_blank: t('tasks.all_tasks') },
+        { id: "desktop-status-filter", onchange: "this.form.submit()",
+          class: "block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 pl-3 pr-6 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" } %>
+      <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+          <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.25 4.25a.75.75 0 01-1.06 0L5.21 8.27a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+        </svg>
+      </div>
     </div>
   <% end %>
 </div>
