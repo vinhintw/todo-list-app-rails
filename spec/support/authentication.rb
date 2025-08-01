@@ -17,7 +17,7 @@ module Helpers
     end
 
     def sign_up_as_admin(user)
-      visit admin_create_user_path
+      visit new_dashboard_user_path
       fill_in "user_username", with: user.username
       fill_in "user_email_address", with: user.email_address
       fill_in "user_password", with: user.password
