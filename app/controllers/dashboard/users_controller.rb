@@ -1,10 +1,10 @@
-class AdminController < ApplicationController
-  before_action :set_user, only: %i[ edit update destroy user_tasks ]
+class Dashboard::UsersController < ApplicationController
   before_action :require_admin
+  before_action :set_user, only: %i[edit update destroy tasks]
 
   def index
     set_user_counts
-    load_admin_users
+    load_dashboard_userss
     load_normal_users
   end
 
@@ -16,7 +16,7 @@ class AdminController < ApplicationController
     @user = User.new(signup_params)
 
     if @user.save
-      redirect_to admin_path, notice: t("flash.registration_successful")
+      redirect_to dashboard_root_path, notice: t("flash.registration_successful")
     else
       render :new, status: :unprocessable_entity
     end
@@ -26,15 +26,13 @@ class AdminController < ApplicationController
   end
 
   def update
-    remove_blank_password_params
-
     if prevent_self_demote!
       render :edit, status: :unprocessable_entity
       return
     end
 
     if @user.update(signup_params)
-      redirect_to admin_path, notice: t("flash.user_updated")
+      redirect_to dashboard_root_path, notice: t("flash.user_updated")
     else
       render :edit, status: :unprocessable_entity
     end
@@ -44,21 +42,21 @@ class AdminController < ApplicationController
     return render_deletion_error("flash.cannot_delete_self") if @user == current_user
 
     if @user.destroy
-      redirect_to admin_path, status: :see_other, notice: t("flash.user_destroyed")
+      redirect_to dashboard_root_path, status: :see_other, notice: t("flash.user_destroyed")
     else
-       error_message = @user.errors.full_messages.first || t("flash.user_delete_failed")
-      redirect_to admin_path, alert: error_message
+      error_message = @user.errors.full_messages.first || t("flash.user_delete_failed")
+      redirect_to dashboard_root_path, alert: error_message
     end
   end
 
-  def user_tasks
+  def tasks
     @tasks = @user.tasks.ransack(status_eq: params[:status]).result.order(created_at: :desc).page(params[:page]).per(15)
   end
 
   private
 
   def render_deletion_error(message_key)
-    redirect_to admin_path, alert: t(message_key)
+    redirect_to dashboard_root_path, alert: t(message_key)
   end
 
   def prevent_self_demote!
@@ -86,12 +84,6 @@ class AdminController < ApplicationController
     params.require(:user).permit(permitted)
   end
 
-  def require_admin
-    unless current_user&.admin?
-      redirect_to root_path
-    end
-  end
-
   def set_user_counts
     counts = User.group(:role).count
     @admin_count = counts["admin"] || 0
@@ -99,8 +91,8 @@ class AdminController < ApplicationController
     @total_users = @admin_count + @normal_count
   end
 
-  def load_admin_users
-    @admin_users = User.with_task_counts
+  def load_dashboard_userss
+    @dashboard_userss = User.with_task_counts
                        .where(role: :admin)
                        .page(params[:admin_page])
                        .per(10)
@@ -108,8 +100,8 @@ class AdminController < ApplicationController
 
   def load_normal_users
     @normal_users = User.with_task_counts
-                        .where(role: :normal)
-                        .page(params[:normal_page])
-                        .per(10)
+                         .where(role: :normal)
+                         .page(params[:normal_page])
+                         .per(10)
   end
 end
