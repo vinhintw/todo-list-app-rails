@@ -1,5 +1,5 @@
 <% status_param = ApplicationHelper::STATUS_STRING_TO_INT[@status] %>
 <% link_params = status_param.nil? ? {} : { status: status_param } %>
-<%= link_to admin_user_tasks_path(@user, link_params), class: "inline-flex px-2 py-1 text-base font-semibold rounded-full #{color_classes[@status]}" do %>
+<%= link_to tasks_dashboard_user_path(@user, link_params), class: "inline-flex px-2 py-1 text-base font-semibold rounded-full #{color_classes[@status]}" do %>
   <%= @count %>
 <% end %>
