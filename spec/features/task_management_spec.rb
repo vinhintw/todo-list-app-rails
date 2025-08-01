@@ -370,6 +370,16 @@ RSpec.feature 'Task Management', type: :feature do
     end
 
     context 'when editing a task with tags', js: true do
+      before do
+        visit edit_task_path(locale: I18n.locale, id: task_with_tags.id)
+        tag_selector.click
+        find('.tag-option', text: tag1.name.titleize, visible: :all).click
+        tag_selector.click
+        click_button I18n.t('tasks.update_task')
+      end
+
+      it { expect(page).not_to have_css('.flex.flex-wrap.gap-2', text: tag1.name) }
+      it { expect(page).to have_css('.flex.flex-wrap.gap-2', text: tag2.name) }
     end
   end
 end
