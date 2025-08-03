@@ -108,7 +108,7 @@ module ApplicationHelper
   def render_admin_link
     if current_user&.admin?
       link_to t("admin.dashboard.admin_title"),
-              admin_path,
+              dashboard_root_path,
               class: admin_link_class
     end
   end
