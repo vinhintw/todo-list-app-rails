@@ -1,10 +1,53 @@
-/*
- * This is a manifest file that'll be compiled into application.css.
- *
- * With Propshaft, assets are served efficiently without preprocessing steps. You can still include
- * application-wide styles in this file, but keep in mind that CSS precedence will follow the standard
- * cascading order, meaning styles declared later in the document or manifest will override earlier ones,
- * depending on specificity.
- *
- * Consider organizing styles into separate files for maintainability.
- */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+    gap: 2px;
+}
+
+.pagination a, 
+.pagination span.current {
+    display: inline-block;
+    padding: 10px 16px;
+    text-decoration: none;
+    background-color: white;
+    border: 1px solid #ddd;
+    color: #333;
+    transition: all 0.3s ease;
+    font-size: 14px;
+    min-width: 20px;
+    text-align: center;
+}
+
+.pagination span.current {
+    background-color: #007bff;
+    color: white;
+    border: 2px solid #0056b3;
+    font-weight: bold;
+    box-shadow: 0 2px 5px rgba(0, 123, 255, 0.3);
+}
+
+.pagination a:hover {
+    background-color: #e9ecef;
+    border-color: #007bff;
+    color: #007bff;
+}
+
+.pagination .prev,
+.pagination .next {
+    color: white;
+}
+
+
+.pagination a:first-child,
+.pagination span:first-child {
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+}
+
+.pagination a:last-child,
+.pagination span:last-child {
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
