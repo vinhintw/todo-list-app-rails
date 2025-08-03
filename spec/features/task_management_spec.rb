@@ -281,8 +281,8 @@ RSpec.feature 'Task Management', type: :feature do
   describe 'Status dropdown' do
     let!(:pending_task) { create(:task, :pending, user: user, title: 'Pending Task') }
     let!(:in_progress_task) { create(:task, :in_progress, user: user, title: 'In Progress Task') }
-    let(:dropdown) { find('#desktop-status-filter select', wait: 10) }
-    let(:mobile_dropdown) { find('#status-filter select', wait: 10) }
+    let(:dropdown) { find('#desktop-status-filter', wait: 10) }
+    let(:mobile_dropdown) { find('#status-filter', wait: 10) }
 
     context 'when selecting a status from the dropdown', js: true do
       before do
@@ -306,6 +306,80 @@ RSpec.feature 'Task Management', type: :feature do
 
       it { expect(page).to have_content(pending_task.title) }
       it { expect(page).not_to have_content(in_progress_task.title) }
+    end
+  end
+
+  describe 'Tag management' do
+    let!(:tag1) { create(:tag, name: 'urgent') }
+    let!(:tag2) { create(:tag, name: 'work') }
+    let!(:task_with_tags) { create(:task, user: user, tags: [ tag1, tag2 ]) }
+    let!(:new_task2) { create(:task, user: other_user, tags: [ tag2 ]) }
+    let(:new_task) { create(:task, user: other_user, tags: [ tag1 ]) }
+    let(:dropdown) { find('#desktop-tag-filter', wait: 10) }
+    let(:mobile_dropdown) { find('#mobile-tag-filter', wait: 10) }
+    let(:tag_selector) { find('[data-tag-selector-target="button"]', visible: true) }
+
+    context 'when filtering a tag from the dropdown on desktop', js: true do
+      before do
+        page.driver.browser.manage.window.resize_to(1024, 768)
+        sleep 1.seconds
+        visit tasks_path(locale: I18n.locale)
+        dropdown.select(tag1.name)
+      end
+
+      it { expect(page).to have_content(task_with_tags.title) }
+      it { expect(page).not_to have_content(new_task2.title) }
+    end
+
+    context 'when filtering a tag from the dropdown on mobile', js: true do
+      before do
+        page.driver.browser.manage.window.resize_to(375, 812)
+        sleep 1.seconds
+        visit tasks_path(locale: I18n.locale)
+        mobile_dropdown.select(tag1.name)
+      end
+
+      it { expect(page).to have_content(task_with_tags.title) }
+      it { expect(page).not_to have_content(new_task2.title) }
+    end
+
+    context 'when viewing a task with tags' do
+      before do
+        visit tasks_path
+      end
+      it { expect(page).to have_content(task_with_tags.title) }
+      it { expect(page).to have_content(tag1.name) }
+      it { expect(page).to have_content(tag2.name) }
+    end
+
+    context 'when creating a task with tags', js: true do
+      before do
+        visit new_task_path
+        fill_in I18n.t('tasks.task_title'), with: new_task.title
+        fill_in I18n.t('tasks.task_content'), with: new_task.content
+
+        tag_selector.click
+        find('.tag-option', text: tag1.name.titleize, visible: :all).click
+        tag_selector.click
+
+        click_button I18n.t('tasks.create_task')
+        visit task_path(locale: I18n.locale, id: new_task.id)
+      end
+      it { expect(page).to have_content(new_task.title) }
+      it { expect(page).to have_content(tag1.name) }
+    end
+
+    context 'when editing a task with tags', js: true do
+      before do
+        visit edit_task_path(locale: I18n.locale, id: task_with_tags.id)
+        tag_selector.click
+        find('.tag-option', text: tag1.name.titleize, visible: :all).click
+        tag_selector.click
+        click_button I18n.t('tasks.update_task')
+      end
+
+      it { expect(page).not_to have_css('.flex.flex-wrap.gap-2', text: tag1.name) }
+      it { expect(page).to have_css('.flex.flex-wrap.gap-2', text: tag2.name) }
     end
   end
 end

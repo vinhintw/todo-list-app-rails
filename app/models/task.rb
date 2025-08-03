@@ -20,7 +20,7 @@ class Task < ApplicationRecord
 
   scope :ordered, -> { order(priority: :desc) }
   scope :with_tags, -> { includes(:tags) }
-  scope :by_tag, ->(tag_id) { joins(:tags).where(tags: { id: tag_id }) }
+  scope :by_tag, ->(tag_id) { joins(:taggings).where(taggings: { tag_id: tag_id }).distinct }
 
   def self.search_and_filter(params)
     scope = with_tags
