@@ -1,4 +1,4 @@
-<%= form_with url: tasks_path, method: :get, local: true, id: "desktop-search-form", class: "contents" do |form| %>
+<%= form_with url: tasks_path, method: :get, local: true, id: "desktop-search-form", class: "contents", data: { controller: "navbar" } do |form| %>
   <div class="hidden md:block md:w-[300px] flex-1 justify-center px-2 lg:w-[600px]">
     <div class="max-w-lg w-full lg:max-w-2xl mx-auto">
       <div class="relative">
@@ -21,7 +21,7 @@
           options_for_select(Tag.all.map { |tag| [tag.name, tag.id] }, params[:tag]),
           { include_blank: t('tasks.all_tags') },
           { id: "desktop-tag-filter",
-            onchange: "this.form.submit()",
+            data: { action: "change->navbar#submit" },
             class: "block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 pl-3 pr-8 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" } %>
         <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
           <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -35,7 +35,7 @@
             ( controller_name == "admin" ) ? nil : ( params[:status].present? ? params[:status].to_i : nil )),
             { include_blank: t('tasks.all_tasks') },
             { id: "desktop-status-filter",
-              onchange: "this.form.submit()",
+              data: { action: "change->navbar#submit" },
               class: "block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 pl-3 pr-6 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" } %>
         <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
           <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -45,5 +45,4 @@
       </div>
     </div>
   </div>
-  <%= form.submit class: "hidden" %>
 <% end %>
