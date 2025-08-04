@@ -18,7 +18,6 @@
       <!-- Desktop Search Bar -->
       <% unless controller_path.start_with?("dashboard/") %>
         <%= render "shared/desktop_search_bar" if authenticated? %>
-        <%= render "shared/desktop_status_filter" if authenticated? %>
       <% end %>
       <!-- Right side - User menu or auth buttons -->
       <div class="flex items-center">
