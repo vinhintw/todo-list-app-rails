@@ -1,61 +1,55 @@
 <% if Tag.present? %>
-<div class="my-5">
-  <%= form.label :tag_ids, t('tasks.select_tags'), class: "block text-sm font-medium text-gray-700 mb-2" %>
-  
-  <div id="selected-tags-inputs" style="display: none;">
-    <% if task.tags.any? %>
-      <% task.tags.each do |tag| %>
-        <input type="hidden" name="task[tag_ids][]" value="<%= tag.id %>" class="selected-tag-input" data-tag-id="<%= tag.id %>">
-      <% end %>
-    <% end %>
-  </div>
-
-  <div class="relative" data-controller="tag-selector">
-    <!-- Main dropdown button -->
-    <button type="button" 
-            class="w-full bg-white border rounded-md px-3 py-2 text-left cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 min-h-[2.75rem] relative transition-colors duration-200 <%= task.errors[:tag_ids].any? ? 'border-red-400 focus:border-red-500' : 'border-gray-300' %>"
-            data-action="click->tag-selector#toggleDropdown"
-            data-tag-selector-target="button">
-      
-      <!-- Selected tags display area -->
-      <div class="flex flex-wrap gap-1.5 pr-8 min-h-[1.25rem]" data-tag-selector-target="selectedDisplay"></div>
-      
-      <!-- Dropdown arrow -->
-      <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-        <svg class="w-4 h-4 text-gray-400 transition-transform duration-200" 
-             fill="none" stroke="currentColor" viewBox="0 0 24 24" 
-             data-tag-selector-target="arrow">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-        </svg>
-      </div>
-    </button>
-
-    <!-- Dropdown menu -->
-    <div class="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg hidden max-h-64 overflow-y-auto" 
-         data-tag-selector-target="dropdown">
-      
-      <% Tag.all.order(:name).each do |tag| %>
-        <div class="flex items-center px-3 py-2.5 hover:bg-gray-50 cursor-pointer border-b border-gray-100 last:border-b-0 tag-option transition-colors duration-150" 
-             data-tag-id="<%= tag.id %>" 
-             data-tag-name="<%= tag.name.titleize %>"
-             data-action="click->tag-selector#toggleTag">
-          <div class="flex items-center flex-1">
-            <input type="checkbox" 
-                   class="mr-3 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded tag-checkbox pointer-events-none"
-                   <%= 'checked' if task.tag_ids.include?(tag.id) %>
-                   data-tag-id="<%= tag.id %>">
-            <span class="text-sm text-gray-700 flex-1 font-medium">
-              <%= tag.name.titleize %>
-            </span>
-            <% if task.tag_ids.include?(tag.id) %>
-              <svg class="w-4 h-4 text-blue-600 ml-2 check-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-              </svg>
-            <% end %>
-          </div>
-        </div>
+  <div class="my-5">
+    <%= form.label :tag_ids, t('tasks.select_tags'), class: "block text-sm font-medium text-gray-700 mb-2" %>
+    <div id="selected-tags-inputs" style="display: none;">
+      <% if task.tags.any? %>
+        <% task.tags.each do |tag| %>
+          <input type="hidden" name="task[tag_ids][]" value="<%= tag.id %>" class="selected-tag-input" data-tag-id="<%= tag.id %>">
+        <% end %>
       <% end %>
     </div>
+    <div class="relative" data-controller="tag-selector">
+      <!-- Main dropdown button -->
+      <button type="button" 
+            class="w-full bg-white border rounded-md px-3 py-2 text-left cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 min-h-[2.75rem] relative transition-colors duration-200 <%= task.errors[:tag_ids].any? ? 'border-red-400 focus:border-red-500' : 'border-gray-300' %>"
+            data-action="click->tag-selector#toggleDropdown"
+        data-tag-selector-target="button">
+        <!-- Selected tags display area -->
+        <div class="flex flex-wrap gap-1.5 pr-8 min-h-[1.25rem]" data-tag-selector-target="selectedDisplay"></div>
+        <!-- Dropdown arrow -->
+        <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+          <svg class="w-4 h-4 text-gray-400 transition-transform duration-200" 
+             fill="none" stroke="currentColor" viewBox="0 0 24 24" 
+             data-tag-selector-target="arrow">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+          </svg>
+        </div>
+      </button>
+      <!-- Dropdown menu -->
+      <div class="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg hidden max-h-64 overflow-y-auto" 
+         data-tag-selector-target="dropdown">
+        <% Tag.all.order(:name).each do |tag| %>
+          <div class="flex items-center px-3 py-2.5 hover:bg-gray-50 cursor-pointer border-b border-gray-100 last:border-b-0 tag-option transition-colors duration-150" 
+               data-tag-id="<%= tag.id %>" 
+               data-tag-name="<%= tag.name.titleize %>"
+               data-action="click->tag-selector#toggleTag">
+            <div class="flex items-center flex-1">
+              <input type="checkbox" 
+                     class="mr-3 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded tag-checkbox pointer-events-none"
+                     <%= 'checked' if task.tag_ids.include?(tag.id) %>
+                     data-tag-id="<%= tag.id %>">
+              <span class="text-sm text-gray-700 flex-1 font-medium">
+                <%= tag.name.titleize %>
+              </span>
+              <% if task.tag_ids.include?(tag.id) %>
+                <svg class="w-4 h-4 text-blue-600 ml-2 check-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
   </div>
-</div>
 <% end %>

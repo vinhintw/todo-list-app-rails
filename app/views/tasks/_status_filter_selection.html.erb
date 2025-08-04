@@ -1,4 +1,4 @@
-  <%= form_with url: tasks_path, method: :get, local: true, class: "relative" do |form| %>
+<%= form_with url: tasks_path, method: :get, local: true, class: "relative" do |form| %>
   <%= form.select :status,
         options_for_select(Task.statuses.map { |key, value| [t("status.#{key}"), value] },
           params[:status].present? ? params[:status].to_i : nil ),
