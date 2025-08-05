@@ -1,7 +1,7 @@
 services:
   db:
     image: postgres:16-alpine
-    platform: linux/arm64
+    platform: linux/arm64 # or linux/amd64 depending on local architecture
     restart: unless-stopped
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-todo_list}
