@@ -1,17 +1,42 @@
-<div class="flex flex-1 px-2 pt-4 md:hidden space-x-2">
-  <div class="w-[80%] rounded-full focus-visible:ring-slate-200">
-    <%= form_with url: tasks_path, method: :get, local: true, class: "relative", id: "mobile-search-form" do |form| %>
-      <%= form.text_field :title, 
-                  placeholder: t('navbar.placeholder_search'),
-                  value: params[:title],
-                  class: "block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" %>
-      <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-        <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+<%= form_with url: tasks_path, method: :get, local: true, id: "mobile-search-form", class: "flex flex-col px-2 pt-4 md:hidden space-y-3", data: { controller: "navbar" } do |form| %>
+  <div class="w-full relative">
+    <%= form.text_field :title,
+        placeholder: t('navbar.placeholder_search'),
+        value: params[:title],
+        class: "block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" %>
+    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+      <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+      </svg>
+    </div>
+  </div>
+  <div class="flex space-x-2">
+    <div class="relative flex-1">
+      <%= form.select :status,
+          options_for_select(Task.statuses.map { |key, value| [t("status.#{key}"), value] },
+          params[:status].present? ? params[:status].to_i : nil ),
+          { include_blank: t('tasks.all_tasks') },
+          { id: "status-filter",
+            data: { action: "change->navbar#submit" },
+            class: "block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 pl-3 pr-7 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm leading-5" } %>
+      <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+          <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.25 4.25a.75.75 0 01-1.06 0L5.21 8.27a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
         </svg>
       </div>
-      <%= form.submit class: "hidden" %>
-    <% end %>
+    </div>
+    <div class="relative flex-1">
+      <%= form.select :tag,
+          options_for_select(Tag.all.map { |tag| [tag.name, tag.id] }, params[:tag]),
+          { include_blank: t('tasks.all_tags') },
+          { id: "mobile-tag-filter",
+            data: { action: "change->navbar#submit" },
+            class: "block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 pl-3 pr-7 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm leading-5" } %>
+      <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+          <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.25 4.25a.75.75 0 01-1.06 0L5.21 8.27a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+        </svg>
+      </div>
+    </div>
   </div>
-  <%= render 'tasks/status_filter_selection' %>
-</div>
+<% end %>

@@ -87,7 +87,6 @@ Rails.application.configure do
     "0.0.0.0",
     "todo.vinhintw.com"
   ]
-  
   # Skip DNS rebinding protection for the default health check endpoint.
   config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
 end

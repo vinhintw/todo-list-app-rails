@@ -37,6 +37,9 @@ zh-TW:
     destroy_this_task: "刪除此任務"
     edit_this_task: "編輯此任務"
     all_tasks: "所有任務"
+    select_tags: "選擇標籤"
+    tags: "標籤"
+    all_tags: "所有標籤"
   # Priority levels
   priority:
     low: "低"
