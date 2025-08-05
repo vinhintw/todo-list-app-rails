@@ -1,14 +1,92 @@
-version: "3.9"
 services:
   db:
-    image: postgres
-    restart: always
+    image: postgres:16-alpine
+    platform: linux/arm64
+    restart: unless-stopped
     environment:
-      POSTGRES_USER: myapp
-      POSTGRES_PASSWORD: password1
-      POSTGRES_DB: mydb
-
+      POSTGRES_USER: ${POSTGRES_USER:-todo_list}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-secure_password_change_me}
+      POSTGRES_DB: ${POSTGRES_DB:-todo_list_production}
+      POSTGRES_INITDB_ARGS: "--encoding=UTF-8 --lc-collate=C --lc-ctype=C"
     ports:
-      - "5432:5432"
+      - "${POSTGRES_PORT:-5432}:5432"
     volumes:
-      - ./data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
+      - ./db/init:/docker-entrypoint-initdb.d
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U ${POSTGRES_USER:-todo_list} -d ${POSTGRES_DB:-todo_list_production}",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - app_network
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      platforms:
+        - linux/arm64
+      args:
+        - RUBY_VERSION=${RUBY_VERSION:-3.3.0}
+    platform: linux/arm64
+    restart: unless-stopped
+    environment:
+      # Rails Configuration
+      RAILS_ENV: production
+      RAILS_LOG_TO_STDOUT: "true"
+      RAILS_SERVE_STATIC_FILES: "true"
+      RAILS_LOG_LEVEL: ${RAILS_LOG_LEVEL:-info}
+
+      # Database Configuration
+      POSTGRES_HOST: db
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: ${POSTGRES_USER:-todo_list}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-secure_password_change_me}
+      POSTGRES_DB: ${POSTGRES_DB:-todo_list_production}
+      DATABASE_URL: postgresql://${POSTGRES_USER:-todo_list}:${POSTGRES_PASSWORD:-secure_password_change_me}@db:5432/${POSTGRES_DB:-todo_list_production}
+
+      # Security
+      SECRET_KEY_BASE: ${SECRET_KEY_BASE:-}
+      RAILS_MASTER_KEY: ${RAILS_MASTER_KEY:-}
+
+      # Performance
+      RAILS_MAX_THREADS: ${RAILS_MAX_THREADS:-5}
+      WEB_CONCURRENCY: ${WEB_CONCURRENCY:-1}
+
+      # Optional: if using SSL termination proxy
+      RAILS_ASSUME_SSL: ${RAILS_ASSUME_SSL:-false}
+      RAILS_FORCE_SSL: ${RAILS_FORCE_SSL:-false}
+    ports:
+      - "${APP_PORT:-3000}:80"
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - app_storage:/rails/storage
+      - app_tmp:/rails/tmp
+    networks:
+      - app_network
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:80/up || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+volumes:
+  postgres_data:
+    driver: local
+  app_storage:
+    driver: local
+  app_tmp:
+    driver: local
+
+networks:
+  app_network:
+    driver: bridge
