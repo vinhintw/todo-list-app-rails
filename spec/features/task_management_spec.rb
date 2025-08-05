@@ -240,27 +240,31 @@ RSpec.feature 'Task Management', type: :feature do
   describe 'Task search' do
     let!(:task1) { create(:task, :in_progress, user: user, title: 'Searchable Task 1') }
     let!(:task2) { create(:task, :completed, user: user, title: 'Searchable Task 2') }
-    let(:nav_form) { find('#desktop-search-form') }
-    let(:mobile_form) { find('#mobile-search-form') }
+    let(:nav_form) { find('#desktop-search-form', wait: 10) }
+    let(:mobile_form) { find('#mobile-search-form', wait: 10) }
 
-    context 'when searching title from desktop' do
+    context 'when searching title from desktop', js: true do
       before do
         visit tasks_path
+        page.driver.browser.manage.window.resize_to(1024, 768)
+        sleep 1.seconds
         within(nav_form) do
           fill_in 'title', with: task1.title
-          find('input[type="submit"]').click
+          find_field('title').send_keys(:enter)
         end
       end
       it { expect(page).to have_content(task1.title) }
       it { expect(page).not_to have_content(task2.title) }
     end
 
-    context 'when searching title from mobile' do
+    context 'when searching title from mobile', js: true do
       before do
         visit tasks_path
+        page.driver.browser.manage.window.resize_to(375, 812)
+        sleep 1.seconds
         within(mobile_form) do
           fill_in 'title', with: task1.title
-          find('input[type="submit"]').click
+          find_field('title').send_keys(:enter)
         end
       end
       it { expect(page).to have_content(task1.title) }
