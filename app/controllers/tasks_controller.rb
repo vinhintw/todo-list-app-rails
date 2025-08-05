@@ -2,12 +2,8 @@ class TasksController < ApplicationController
   before_action :set_task, only: %i[ show edit update destroy ]
 
   def index
-    ransack_params = {}
-    ransack_params[:title_cont] = params[:title] if params[:title].present?
-    ransack_params[:status_eq] = params[:status] if params[:status].present?
-
-    @q = current_user.tasks.ransack(ransack_params)
-    @tasks = @q.result.order(priority: :desc).page(params[:page]).per(15)
+    @q = current_user.tasks.search_and_filter(search_params)
+    @tasks = @q.result.ordered.page(params[:page]).per(15)
   end
 
   def show
@@ -21,7 +17,7 @@ class TasksController < ApplicationController
   end
 
   def create
-    @task = Task.new(task_params)
+    @task = current_user.tasks.build(task_params)
 
     if @task.save
       redirect_to @task, notice: t("flash.task_created")
@@ -46,10 +42,23 @@ class TasksController < ApplicationController
 
   private
     def set_task
-      @task = Task.find(params.expect(:id))
+      @task = Task.includes(:tags).find(params.expect(:id))
     end
 
     def task_params
-      params.expect(task: [ :title, :content, :start_time, :end_time, :priority, :status, :user_id ])
+      params.expect(task: [ :title, :content, :start_time, :end_time, :priority, :status, tag_ids: [] ])
+      .tap { |p| sanitize_tag_ids!(p) }
+    end
+
+    def sanitize_tag_ids!(params)
+      if params[:tag_ids].present?
+        params[:tag_ids] = params[:tag_ids].filter_map { |id| id.to_i if id.present? }
+      else
+        params[:tag_ids] = []
+      end
+    end
+
+    def search_params
+      params.permit(:title, :status, :tag, :page, :locale)
     end
 end

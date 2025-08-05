@@ -118,7 +118,7 @@ RSpec.feature "user management", type: :feature do
     context "when admin is logged in can access admin dashboard" do
       before do
           sign_in_as(admin)
-          visit admin_path
+          visit dashboard_root_path
         end
 
         it { expect(page).to have_content(I18n.t("admin.dashboard.user_management")) }
@@ -128,7 +128,7 @@ RSpec.feature "user management", type: :feature do
     context "when normal user is logged in can not access admin dashboard" do
       before do
         sign_in_as(user)
-        visit admin_path
+        visit dashboard_root_path
       end
 
       it { expect(page).not_to have_content(I18n.t("admin.dashboard.user_management")) }
@@ -144,7 +144,6 @@ RSpec.feature "user management", type: :feature do
     context "when admin created a user with valid credentials" do
       before do
         sign_in_as(admin)
-        visit admin_path
         sign_up_as_admin(new_user)
       end
 
@@ -155,7 +154,7 @@ RSpec.feature "user management", type: :feature do
     context "when admin created a user with invalid credentials" do
       before do
         sign_in_as(admin)
-        visit admin_path
+        visit dashboard_root_path
         sign_up_as_admin(invalid_user)
       end
 
@@ -168,7 +167,7 @@ RSpec.feature "user management", type: :feature do
     context "when admin is logged in & tries to delete self" do
       before do
         sign_in_as(admin)
-        visit admin_path(locale: I18n.locale, id: admin.id)
+        visit dashboard_root_path(locale: I18n.locale, id: admin.id)
         within("tr", text: admin.email_address) do
           click_button I18n.t("delete")
         end
