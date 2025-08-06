@@ -17,24 +17,25 @@ test:
   <<: *default
   database: <%= ENV.fetch("POSTGRES_DB", "todo_list_test") %>
 
-
 # Store production database in the storage/ directory, which by default
 # is mounted as a persistent Docker volume in config/deploy.yml.
 production:
   primary: &primary_production
     <<: *default
-    database: todo_list_production
-    username: todo_list
-    password: <%= ENV["todo_list_DATABASE_PASSWORD"] %>
+    database: <%= ENV.fetch("POSTGRES_DB", "todo_list_production") %>
+    username: <%= ENV.fetch("POSTGRES_USER", "todo_list") %>
+    password: <%= ENV.fetch("POSTGRES_PASSWORD", "") %>
+    host: <%= ENV.fetch("POSTGRES_HOST", "localhost") %>
+    port: <%= ENV.fetch("POSTGRES_PORT", 5432) %>
   cache:
     <<: *primary_production
-    database: todo_list_production_cache
+    database: <%= ENV.fetch("POSTGRES_DB", "todo_list_production") %>_cache
     migrations_paths: db/cache_migrate
   queue:
     <<: *primary_production
-    database: todo_list_production_queue
+    database: <%= ENV.fetch("POSTGRES_DB", "todo_list_production") %>_queue
     migrations_paths: db/queue_migrate
   cable:
     <<: *primary_production
-    database: todo_list_production_cable
+    database: <%= ENV.fetch("POSTGRES_DB", "todo_list_production") %>_cable
     migrations_paths: db/cable_migrate
